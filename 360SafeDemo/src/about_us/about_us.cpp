@@ -1,6 +1,5 @@
 #include "about_us.h" 
-//#include "util.h"
-#include "D:/workspace/QtCreator/360SafeDemo/src/util/util.h"
+#include "../util/util.h"
 #include <QLabel>
 #include <QHBoxLayout>
 

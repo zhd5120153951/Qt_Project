@@ -1,6 +1,5 @@
 #include "setting_dialog.h"
-//#include "util.h"
-#include "D:/workspace/QtCreator/360SafeDemo/src/util/util.h"
+#include "../util/util.h"
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QGroupBox>
