@@ -179,6 +179,76 @@ void GLDMaskWidget::parseXMl(const GString& filename)
     }
 }
 
+void GLDMaskWidget::readGuideInfo()
+{
+    QSettings setting(exePath()+ "/config/GuideInfo.ini", QSettings::IniFormat);
+
+    QStringList oGroups = setting.childGroups();
+
+    for (int i = 0; i < oGroups.size(); ++i)
+    {
+        setting.beginGroup(oGroups.at(i));
+
+        QString hintWidgetStyle = setting.value("HintWidgetStyle").toString();
+        QStringList hintWidgetLeftTopPoint = setting.value("HintWidgetLeftTopPoint").toString().split(" ");
+        QStringList hintWidgetSize = setting.value("HintWidgetSize").toString().split(" ");
+
+        QString closeButtonStyleNormal = setting.value("CloseButtonStyleNormal").toString();
+        QString closeButtonStyleHover  = setting.value("CloseButtonStyleHover").toString();
+        QString closeButtonStylePressed = setting.value("CloseButtonStylePressed").toString();
+        QStringList closeButtonLeftTopPoint = setting.value("CloseButtonLeftTopPoint").toString().split(" ");
+        QStringList closeButtonSize = setting.value("CloseButtonSize").toString().split(" ");
+
+        QString nextButtonStyleNormal = setting.value("NextButtonStyleNormal").toString();
+        QString nextButtonStyleHover  = setting.value("NextButtonStyleHover").toString();
+        QString nextButtonStylePressed = setting.value("NextButtonStylePressed").toString();
+        QStringList nextButtonLeftTopPoint = setting.value("NextButtonLeftTopPoint").toString().split(" ");
+        QStringList nextButtonSize = setting.value("NextButtonSize").toString().split(" ");
+
+        GLDGuideInfo newGuideInfo;
+
+        newGuideInfo.m_hintWidgetLeftTopPoint = QPoint(hintWidgetLeftTopPoint.at(0).toInt(), hintWidgetLeftTopPoint.at(1).toInt());
+        newGuideInfo.m_hintWidgetSize = QSize(hintWidgetSize.at(0).toInt(), hintWidgetSize.at(1).toInt());
+        newGuideInfo.m_hintWidgetStyle = "QLabel#m_pMaskTitle{border-image: url("+ hintWidgetStyle + ");}";
+
+        newGuideInfo.m_closeButtonLeftTopPoint = QPoint(closeButtonLeftTopPoint.at(0).toInt(), closeButtonLeftTopPoint.at(1).toInt());
+        newGuideInfo.m_closeButtonSize = QSize(closeButtonSize.at(0).toInt(), closeButtonSize.at(1).toInt());
+        newGuideInfo.m_closeButtonStyle = "QPushButton#m_pCloseButton"
+            "{"
+                "border-image: url("+ closeButtonStyleNormal + ");"
+            "}"
+            "QPushButton#m_pCloseButton:hover"
+            "{"
+                "border-image: url("+ closeButtonStyleHover + ");"
+            "}"
+            "QPushButton#m_pCloseButton:pressed"
+            "{"
+                "border-image: url("+ closeButtonStylePressed + ");"
+            "}"
+            ;
+
+        newGuideInfo.m_nextButtonLeftTopPoint = QPoint(nextButtonLeftTopPoint.at(0).toInt(), nextButtonLeftTopPoint.at(1).toInt());;
+        newGuideInfo.m_nextButtonSize = QSize(nextButtonSize.at(0).toInt(), nextButtonSize.at(1).toInt());
+        newGuideInfo.m_nextButtonStyle = "QPushButton#m_pGuideNextButton"
+            "{"
+                "border-image: url(" + nextButtonStyleNormal + ");"
+            "}"
+            "QPushButton#m_pGuideNextButton:hover"
+            "{"
+            "border-image: url(" + nextButtonStyleHover + ");"
+            "}"
+            "QPushButton#m_pGuideNextButton:pressed"
+            "{"
+            "border-image: url(" + nextButtonStylePressed + ");"
+            "}"
+            ;
+
+        doRegisterGuideInfo(newGuideInfo);
+
+        setting.endGroup();
+    }
+}
+
 void GLDMaskWidget::initCloseButton()
 {
     m_pCloseButton = new QPushButton(this);
@@ -211,6 +281,7 @@ void GLDMaskWidget::init()
 {
     m_gldGuideInfoList.clear();
     parseXMl(exePath() + XMLPath);
+    //readGuideInfo();
     m_Step = 0;
     setCurrentGuide();
 }
