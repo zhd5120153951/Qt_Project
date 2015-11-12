@@ -94,7 +94,19 @@ size_t executeProcess(std::wstring fullPathToExe, std::wstring parameters, size_
             char* pExePath = tchar2char(szFilePath);
             strcat(pExePath, "\\bin\\QLightBoxWidget.exe");
 
-            ::WinExec(pExePath, SW_SHOWNORMAL);
+            //::WinExec(pExePath, SW_SHOWNORMAL);
+            
+            SHELLEXECUTEINFO ShellInfo;
+
+            memset(&ShellInfo, 0, sizeof(ShellInfo));
+            ShellInfo.cbSize = sizeof(ShellInfo);
+            ShellInfo.hwnd = NULL;
+            ShellInfo.lpVerb = _T("open");
+            ShellInfo.lpFile = char2tchar(pExePath);
+            ShellInfo.nShow = SW_SHOWNORMAL;
+            ShellInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+
+            ShellExecuteEx(&ShellInfo);
         }
     }
     else
