@@ -35,43 +35,43 @@ static QWidget* topParentWidget(QWidget* pWgt)
 class GLDMaskBoxParam
 {
 public:
-    GLDMaskBoxParam() :
-        //m_sizeMinTipBox(300, 160),
-        //m_sizeMaxTipBox(435, 0),
-        m_nMaxWidth(435),
-        m_nRowHeight(20),
-        m_sizeArrow(20, 12),
-        m_nTimeFadeOut(2000),
-        m_nTimeRemain(8000),
-        m_fontBody(QFont(TRANS_STRING("微软雅黑"), 9, QFont::Normal)),
-        m_clrBody(QColor("#434343")),
-        m_fontTitle(QFont(TRANS_STRING("微软雅黑"), 12, QFont::Bold)),
-        m_clrTitle(Qt::blue),
-        m_sizeIcon(16, 16),
-        m_wgtOwner(NULL),
-        m_strIcon(exePath() + "/images/Msg/warring.png"),
-        m_strIconClose(exePath() + "/images/Msg/close.png"),
-        m_strTitle(TRANS_STRING("提示")),
-        m_strBody(TRANS_STRING("提示")),
-        m_bIsOverTimeShow(false)
+    GLDMaskBoxParam()
+         //, m_sizeMinTipBox(300, 160)
+         //, m_sizeMaxTipBox(435, 0)
+        : m_strWarnIcon(exePath() + "/images/Msg/warring.png")
+        , m_strCloseIcon(exePath() + "/images/Msg/close.png")
+        , m_sizeIcon(16, 16)
+        , m_strTitle(TRANS_STRING("提示"))
+        , m_titleFont(QFont(TRANS_STRING("微软雅黑"), 12, QFont::Bold))
+        , m_titleColor(Qt::blue)
+        , m_strBody(TRANS_STRING("提示"))
+        , m_bodyFont(QFont(TRANS_STRING("微软雅黑"), 9, QFont::Normal))
+        , m_bodyColor(QColor("#434343"))
+        , m_nRowHeight(20)
+        , m_nTimeRemain(8000)
+        , m_nTimeFadeOut(2000)
+        , m_nMaxWidth(435)
+        , m_arrowSize(20, 12)
+        , m_wgtOwner(NULL)
+        , m_bIsOverTimeShow(true)
     {
 
     }
 
     GLDMaskBoxParam& operator=(GLDMaskBoxParam& param)
     {
-        m_strIcon = param.m_strIcon;
-        m_strIconClose = param.m_strIconClose;
+        m_strWarnIcon = param.m_strWarnIcon;
+        m_strCloseIcon = param.m_strCloseIcon;
         m_strTitle = param.m_strTitle;
-        m_fontTitle = param.m_fontTitle;
-        m_clrTitle = param.m_clrTitle;
+        m_titleFont = param.m_titleFont;
+        m_titleColor = param.m_titleColor;
         m_nRowHeight = param.m_nRowHeight;
         m_strBody = param.m_strBody;
-        m_fontBody = param.m_fontBody;
-        m_clrBody = param.m_clrBody;
+        m_bodyFont = param.m_bodyFont;
+        m_bodyColor = param.m_bodyColor;
         m_nTimeRemain = param.m_nTimeRemain;
         m_nTimeFadeOut = param.m_nTimeFadeOut;
-        m_sizeArrow = param.m_sizeArrow;
+        m_arrowSize = param.m_arrowSize;
         //m_sizeMinTipBox = param.m_sizeMinTipBox;
         //m_sizeMaxTipBox = param.m_sizeMaxTipBox;
         m_sizeIcon = param.m_sizeIcon;
@@ -82,31 +82,34 @@ public:
         return *this;
     }
 
-    QString m_strIcon;      // 图标全路径
-    QString m_strIconClose; // 关闭图标路径
-    QSize   m_sizeIcon;     // 图标的大小
+    QString  m_strWarnIcon;      // 图标全路径
+    QString  m_strCloseIcon;     // 关闭图标路径
+    QSize    m_sizeIcon;         // 图标的大小
 
-    QString m_strTitle;     // titile文字
-    QFont m_fontTitle;      // title文字字体
-    QColor m_clrTitle;      // titile文字颜色
+    QString  m_strTitle;         // titile文字
+    QFont    m_titleFont;        // title文字字体
+    QColor   m_titleColor;       // titile文字颜色
 
-    QString m_strBody;      // 正文文字
-    QFont m_fontBody;       // 正文文字字体
-    QColor m_clrBody;       // 正文文字颜色
-    int m_nRowHeight;       // 正文行高
+    QString  m_strBody;          // 正文文字
+    QFont    m_bodyFont;         // 正文文字字体
+    QColor   m_bodyColor;        // 正文文字颜色
+    int      m_nRowHeight;       // 正文行高
 
-    int m_nTimeRemain;      // 停留时间（milliseconds）
-    int m_nTimeFadeOut;     // 淡出时间(milliseconds)
+    int      m_nTimeRemain;      // 停留时间(milliseconds)
+    int      m_nTimeFadeOut;     // 淡出时间(milliseconds)
 
-    QSize m_sizeArrow;      // 箭头大小（作为内容layout的外边距）
-    //QSize m_sizeMinTipBox;  // tipbox控件的大小
-    //QSize m_sizeMaxTipBox;  // tipbox的最大大小（换行依据）
-    int m_nMaxWidth;        // 最大宽度，换行依据
+    //QSize m_sizeMinTipBox;     // tipbox控件的大小
+    //QSize m_sizeMaxTipBox;     // tipbox的最大大小（换行依据）
 
-    //bool m_bIsWin;          // [保留]是否是独立窗口（不受外围窗体的约束，如果是false，则自动将owner的父设置为自身的父）
-    QWidget * m_wgtOwner;   // 被指向的widget
+    //bool m_bIsWin;             // [保留]是否是独立窗口(不受外围窗体的约束，如果是false，则自动将owner的父设置为自身的父)
 
-    bool m_bIsOverTimeShow; // 是否超时显示，默认false
+    int      m_nMaxWidth;        // 最大宽度,换行依据
+    QSize    m_arrowSize;        // 箭头大小(作为内容layout的外边距)
+
+    QWidget* m_wgtOwner;         // 被指向的widget
+
+    bool     m_bIsOverTimeShow;  // 是否超时显示,默认false
+
 };
 
 class GLDMaskBox : public QWidget
@@ -114,9 +117,9 @@ class GLDMaskBox : public QWidget
     Q_OBJECT
 
 public:
-    static GLDMaskBox * showTipBox(QWidget * wgtOwner, const QString & strTitle, const QString & strBody);
+    static GLDMaskBox* showTipBox(QWidget * wgtOwner, const QString & strTitle, const QString & strBody);
 
-    static GLDMaskBox * showTipBox(GLDMaskBoxParam * pParam);
+    static GLDMaskBox* showTipBox(GLDMaskBoxParam * pParam);
 
     static void closeThis();
 

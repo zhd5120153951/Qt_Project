@@ -25,7 +25,7 @@ Dialog::Dialog(QWidget *parent, Qt::WindowFlags flags)
     QString strErrMsg = QStringLiteral("一个保护指针 QPointer,行为类似正常的C++指针，只不过其在引用对象删除之后会自动设置为0. T必须是QObject的子类\
                                         保护指针在你要保存别人创建的QObject对象，且有可能其已经被删除而你仍然持有其引用的时候非常有用。");
 
-    GLDMaskBox::showTipBox(m_pPreButton, QStringLiteral("无所谓"), "");
+    GLDMaskBox::showTipBox(m_pPreButton, QStringLiteral("无所谓"), strErrMsg);
 
 
     setWindowFlags(windowFlags() /*| Qt::FramelessWindowHint*/ | Qt::WindowMinMaxButtonsHint);

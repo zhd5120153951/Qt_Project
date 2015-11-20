@@ -1,5 +1,6 @@
 #include "GLDMaskBox.h"
 #include "CommonUtil.h"
+#include "custompushbutton.h"
 
 #include <QLabel>
 #include <QDebug>
@@ -44,64 +45,59 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam & oTipBoxParam, QWidget *parent)
     this->setWindowFlags(Qt::FramelessWindowHint | Qt::SplashScreen | Qt::WindowStaysOnTopHint | Qt::WindowType_Mask);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
-    QVBoxLayout * layoutMain = new QVBoxLayout();
-    layoutMain->setContentsMargins(12, 11, 8, 14);
-    this->setLayout(layoutMain);
+    QVBoxLayout* pMainLayout = new QVBoxLayout();
+    pMainLayout->setContentsMargins(0, 4, 10, 14);
+    this->setLayout(pMainLayout);
 
-    QHBoxLayout* layoutToolBar = new QHBoxLayout();
-    layoutMain->addLayout(layoutToolBar);
-    //layoutToolBar->addWidget(new QWidget(this), 1);
+    QHBoxLayout* pCloseLayout = new QHBoxLayout();
+    pCloseLayout->setContentsMargins(0, 8, 0, 0);
 
     m_btnClose = new QPushButton(this);
     m_btnClose->setFlat(true);
     connect(m_btnClose, &QPushButton::clicked, this, &GLDMaskBox::slotClose);
 
-    layoutToolBar->addStretch();
-    layoutToolBar->addWidget(m_btnClose);
+    pCloseLayout->addStretch();
+    pCloseLayout->addWidget(m_btnClose);
 
-    QHBoxLayout * layoutContent = new QHBoxLayout();
-    layoutMain->addSpacing(-9);
-    layoutMain->addLayout(layoutContent);
+    pMainLayout->addLayout(pCloseLayout);
 
-    QVBoxLayout * layoutLeft = new QVBoxLayout();
+    QHBoxLayout* pContentLayout = new QHBoxLayout();
+    pMainLayout->addSpacing(-20);
+    pMainLayout->addLayout(pContentLayout);
+
+    QVBoxLayout* pContentLeftLayout = new QVBoxLayout();
     m_labelIco = new QLabel(this);
 
-    layoutLeft->addSpacing(6);
-    layoutLeft->addWidget(m_labelIco);
-    layoutLeft->addStretch();
-    layoutLeft->addSpacing(18);
+    pContentLeftLayout->addSpacing(6);
+    pContentLeftLayout->addWidget(m_labelIco);
+    pContentLeftLayout->addStretch();
+    pContentLeftLayout->addSpacing(18);
 
-//     layoutLeft->addWidget(m_labelIco);
-//     layoutLeft->addWidget(new QWidget(this));
-
-    QVBoxLayout * layoutRight = new QVBoxLayout();
+    QVBoxLayout* pContentRightLayout = new QVBoxLayout();
     m_labelTextTitle = new QLabel(this);
-    m_labelTextTitle->setHidden(true);
+    //m_labelTextTitle->setHidden(true);
     m_labelTextTitle->setOpenExternalLinks(true);
     m_labelTextTitle->setWordWrap(true);
     m_labelTextTitle->setAlignment(Qt::AlignTop);
-    layoutRight->addWidget(m_labelTextTitle);
+    pContentRightLayout->addWidget(m_labelTextTitle);
 
     m_labelTextBody = new QLabel(this);
-    m_labelTextBody->setOpenExternalLinks(true);
-    m_labelTextBody->setFont(m_oTipBoxParam.m_fontBody);
-    //m_labelTextBody->setWordWrap(true);
-    //m_labelTextBody->setAlignment(Qt::AlignTop);
 
-    QPalette pa;
-    pa.setColor(QPalette::WindowText, m_oTipBoxParam.m_clrBody);
-    m_labelTextBody->setPalette(pa);
+    QPalette palette;
+    palette.setColor(QPalette::WindowText, m_oTipBoxParam.m_bodyColor);
+    m_labelTextBody->setPalette(palette);
+
     m_labelTextBody->setWordWrap(true);
     m_labelTextBody->setAlignment(Qt::AlignTop);
+    m_labelTextBody->setOpenExternalLinks(true);
+    m_labelTextBody->setFont(m_oTipBoxParam.m_bodyFont);
 
-    layoutRight->addWidget(m_labelTextBody);
+    pContentRightLayout->addWidget(m_labelTextBody);
 
-    layoutContent->addSpacing(21);
-    layoutContent->addLayout(layoutLeft, 0);
-    layoutContent->addLayout(layoutRight, 1);
-    layoutContent->addSpacing(21);
-//     layoutContent->addLayout(layoutLeft, 0);
-//     layoutContent->addLayout(layoutRight, 1);
+    pContentLayout->addSpacing(21);
+    pContentLayout->addLayout(pContentLeftLayout, 0);
+    pContentLayout->addLayout(pContentRightLayout, 1);
+    pContentLayout->addSpacing(21);
 
     //this->setContentsMargins(10, 5, 10, 15);
 
@@ -326,7 +322,7 @@ void GLDMaskBox::showEvent(QShowEvent * event)
         this->setMaximumWidth(m_oTipBoxParam.m_nMaxWidth);
     }
 
-    QIcon icon(m_oTipBoxParam.m_strIconClose);
+    QIcon icon(m_oTipBoxParam.m_strCloseIcon);
 
     if (m_oTipBoxParam.m_bIsOverTimeShow)
     {
@@ -338,15 +334,13 @@ void GLDMaskBox::showEvent(QShowEvent * event)
         m_btnClose->setEnabled(false);
     }
 
-    //m_btnClose->setIcon(icon);
-
-    m_labelTextTitle->setFont(m_oTipBoxParam.m_fontTitle);
+    m_labelTextTitle->setFont(m_oTipBoxParam.m_titleFont);
     m_labelTextTitle->setText(m_oTipBoxParam.m_strTitle);
 
-    m_labelTextBody->setFont(m_oTipBoxParam.m_fontBody);
+    m_labelTextBody->setFont(m_oTipBoxParam.m_bodyFont);
     m_labelTextBody->setText(m_oTipBoxParam.m_strBody);
 
-    //为了设置行高，采用HTML，html换行为 <br/>
+    //为了设置行高,采用HTML,html换行为 <br/>
     m_oTipBoxParam.m_strBody.replace("\n", "<br/>");
     m_labelTextBody->setText(QString("<p style=\"line-height:%1px\">%2</p>")
         .arg(m_oTipBoxParam.m_nRowHeight).arg(m_oTipBoxParam.m_strBody));
@@ -356,7 +350,7 @@ void GLDMaskBox::showEvent(QShowEvent * event)
     m_labelTextBody->adjustSize();
 
     QPixmap pxpIco;
-    pxpIco.load(m_oTipBoxParam.m_strIcon);
+    pxpIco.load(m_oTipBoxParam.m_strWarnIcon);
 
     if (!m_oTipBoxParam.m_sizeIcon.isEmpty())
     {
@@ -394,7 +388,7 @@ void GLDMaskBox::slotClose()
 
 bool GLDMaskBox::eventFilter(QObject *obj, QEvent *ev)
 {
-    //if (obj == this->m_oTipBoxParam.m_wgtOwner)
+    if (obj == this->m_oTipBoxParam.m_wgtOwner)
     {
         if (ev->type() == QEvent::Resize
                 || ev->type() == QEvent::Move
@@ -438,17 +432,20 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
         this->move(calcPosOfOwner());
 
         // 设置渐变画刷
-//         QRect rc = this->rect();
-//         QLinearGradient linear(
-//             rc.topLeft(),
-//             rc.bottomLeft()
-//             );
-//         linear.setColorAt(0, QColor(247, 247, 250));
-//         linear.setColorAt(0.5, QColor(240, 242, 247));
-//         linear.setColorAt(1, QColor(233, 233, 242));
+//        QRect rc = this->rect();
+//        QLinearGradient linear(
+//            rc.topLeft(),
+//            rc.bottomLeft()
+//            );
+//        linear.setColorAt(0, QColor(247, 247, 250));
+//        linear.setColorAt(0.5, QColor(240, 242, 247));
+//        linear.setColorAt(1, QColor(233, 233, 242));
 
         // 建造tip形状
         QPainterPath path = this->buildPathRoundRectTip();
+
+
+
 
         //QPainter oPainter(this);
         //QPainterPath roundPath;
@@ -469,27 +466,30 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
         //p.setBrush(b);
         //p.drawPath(path);
 
+
+
+        //QPainter painter(this);
+        //const QString pxpStr = exePath() + "/images/Msg/target.png";
+        //painter.drawPixmap(0, 0, QPixmap(pxpStr));
+
+
+
         QPainter painter(this);
-        const QString pxpStr = exePath() + "/images/Msg/target.png";
-        painter.drawPixmap(0, 0, QPixmap(pxpStr));
+        painter.begin(this);
 
+        painter.setRenderHint(QPainter::Antialiasing, true);
+        QPen pen(QColor(0, 0, 0, 100));
+        pen.setWidth(2);
+        pen.setStyle(Qt::SolidLine);
+        painter.setPen(pen);
+        painter.setBrush(QColor(127, 127, 127, 100));
 
+        painter.drawPath(path);
 
-//        QPainter painter(this);
-//        painter.begin(this);
-//
-//        painter.setRenderHint(QPainter::Antialiasing, true);
-//        QPen pen(QColor(0, 0, 0, 100));
-//        pen.setWidth(2);
-//        pen.setStyle(Qt::SolidLine);
-//        painter.setPen(pen);
-//        painter.setBrush(QColor(127, 127, 127, 100));
-//
-//        painter.drawPath(path);
-////         painter->setRenderHint(QPainter::Antialiasing, true);
-////         painter->setPen(Qt::black);
-////         //painter->setBrush(linear);
-////         painter->drawPath(path);
+//         painter.setRenderHint(QPainter::Antialiasing, true);
+//         painter.setPen(Qt::black);
+//         //painter.setBrush(linear);
+//         painter.drawPath(path);
 
         painter.end();
 
@@ -505,12 +505,12 @@ QPainterPath GLDMaskBox::buildPathRoundRectTip()
     {
         QRect rc = this->rect();
 
-        if (m_oTipBoxParam.m_sizeArrow.isValid())
+        if (m_oTipBoxParam.m_arrowSize.isValid())
         {
-            rc -= QMargins(m_oTipBoxParam.m_sizeArrow.height(),
-                           m_oTipBoxParam.m_sizeArrow.height(),
-                           m_oTipBoxParam.m_sizeArrow.height(),
-                           m_oTipBoxParam.m_sizeArrow.height());
+            rc -= QMargins(m_oTipBoxParam.m_arrowSize.height(),
+                           m_oTipBoxParam.m_arrowSize.height(),
+                           m_oTipBoxParam.m_arrowSize.height(),
+                           m_oTipBoxParam.m_arrowSize.height());
         }
         else
         {
@@ -614,7 +614,7 @@ GLDMaskBoxParam& GLDMaskBox::tipBoxParam()
 {
     return m_oTipBoxParam;
 }
-#include <QBitmap>
+
 GLDMaskBox* GLDMaskBox::showTipBox(QWidget* wgtOwner, const QString& strTitle, const QString& strBody)
 {
     GLDMaskBox* pTip = nullptr;
@@ -627,16 +627,16 @@ GLDMaskBox* GLDMaskBox::showTipBox(QWidget* wgtOwner, const QString& strTitle, c
         }
 
         // 如果owner和内容相同,认为是同一个,不可反复弹出
-//         if (!GLDTipBox::m_pTipBox.isNull())
-//         {
-//             if (wgtOwner == GLDTipBox::m_pTipBox->tipBoxParam().m_wgtOwner
-//                 && strBody == GLDTipBox::m_pTipBox->tipBoxParam().m_strBody)
-//             {
-//                 pTip = GLDTipBox::m_pTipBox;
-//                 break;
-//             }
-//         }
-        // end
+        if (!GLDMaskBox::m_pTipBox.isNull())
+        {
+            if (wgtOwner == GLDMaskBox::m_pTipBox->tipBoxParam().m_wgtOwner
+                && strBody == GLDMaskBox::m_pTipBox->tipBoxParam().m_strBody)
+            {
+                pTip = GLDMaskBox::m_pTipBox;
+                break;
+            }
+        }
+
 
         if (!GLDMaskBox::m_pTipBox.isNull())
         {
@@ -648,8 +648,6 @@ GLDMaskBox* GLDMaskBox::showTipBox(QWidget* wgtOwner, const QString& strTitle, c
         param.m_strTitle = strTitle;
         param.m_strBody = strBody;
         pTip = new GLDMaskBox(param);
-
-        //pTip->setMask(pxpIco.mask());
 
         QWidget* pWidget = topParentWidget(wgtOwner);
         qDebug() << pWidget->objectName();

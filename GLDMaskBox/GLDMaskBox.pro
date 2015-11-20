@@ -19,8 +19,10 @@ include($(GLDRS)/Glodon/shared/GLD.pri)
 
 SOURCES += main.cpp\
            GLDMaskBox.cpp \
-           CustomDialog.cpp
+           CustomDialog.cpp \
+    CustomPushButton.cpp
 
 HEADERS  += GLDMaskBox.h \
             CommonUtil.h \
-            CustomDialog.h
+            CustomDialog.h \
+    CustomPushButton.h
