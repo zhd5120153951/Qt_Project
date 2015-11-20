@@ -8,6 +8,7 @@ using namespace std;
 
 const LPCWSTR iniPath = _T("config\\NewGuide.ini");
 
+// http://www.cnblogs.com/kex1n/archive/2011/04/10/2011254.html
 #pragma comment(linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"")
 
 LPCWSTR getPath(LPCWSTR exeName)

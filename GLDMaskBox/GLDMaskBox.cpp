@@ -41,7 +41,7 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam & oTipBoxParam, QWidget *parent)
         this->setParent(m_oTipBoxParam.m_wgtOwner);
     }
 
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::ToolTip);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::SplashScreen | Qt::WindowStaysOnTopHint | Qt::WindowType_Mask);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
     QVBoxLayout * layoutMain = new QVBoxLayout();
@@ -58,7 +58,6 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam & oTipBoxParam, QWidget *parent)
 
     layoutToolBar->addStretch();
     layoutToolBar->addWidget(m_btnClose);
-    //layoutToolBar->addWidget(m_btnClose, 0);
 
     QHBoxLayout * layoutContent = new QHBoxLayout();
     layoutMain->addSpacing(-9);
@@ -157,7 +156,7 @@ QSize GLDMaskBox::sizeHint() const
             }
             else
             {
-                sz.setHeight(/*64 + */singalTextHeight * (textWidth / (m_oTipBoxParam.m_nMaxWidth/* - 87*/)/* + 1*/));
+                sz.setHeight(64 + singalTextHeight * (textWidth / (m_oTipBoxParam.m_nMaxWidth - 87) + 1));
             }
         }
         else
@@ -451,21 +450,48 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
         // ½¨ÔìtipÐÎ×´
         QPainterPath path = this->buildPathRoundRectTip();
 
-        QPainter * painter = new QPainter();
-        painter->begin(this);
-        painter->setRenderHint(QPainter::Antialiasing, true);
-        QPen pen(QColor(197, 197, 197));
-        pen.setWidth(2);
-        pen.setStyle(Qt::SolidLine);
-        painter->setPen(pen);
-        painter->setBrush(Qt::white);
-        painter->drawPath(path);
-//         painter->setRenderHint(QPainter::Antialiasing, true);
-//         painter->setPen(Qt::black);
-//         //painter->setBrush(linear);
-//         painter->drawPath(path);
+        //QPainter oPainter(this);
+        //QPainterPath roundPath;
+        //roundPath.addRect(parentWidget()->rect());
+        //oPainter.setRenderHint(QPainter::Antialiasing);
+        //oPainter.fillPath(roundPath, QColor(0, 0, 0, 100));
+        //update();
 
-        painter->end();
+
+
+
+        //const QString pxpStr = exePath() + "/images/Msg/target.png";
+        //QPixmap pxpIco;
+        //pxpIco.load(pxpStr);
+
+        //QPainter p(&pxpIco);
+        //QBrush b(QColor(0, 0, 0, 128)); // adjust color and alpha to taste
+        //p.setBrush(b);
+        //p.drawPath(path);
+
+        QPainter painter(this);
+        const QString pxpStr = exePath() + "/images/Msg/target.png";
+        painter.drawPixmap(0, 0, QPixmap(pxpStr));
+
+
+
+//        QPainter painter(this);
+//        painter.begin(this);
+//
+//        painter.setRenderHint(QPainter::Antialiasing, true);
+//        QPen pen(QColor(0, 0, 0, 100));
+//        pen.setWidth(2);
+//        pen.setStyle(Qt::SolidLine);
+//        painter.setPen(pen);
+//        painter.setBrush(QColor(127, 127, 127, 100));
+//
+//        painter.drawPath(path);
+////         painter->setRenderHint(QPainter::Antialiasing, true);
+////         painter->setPen(Qt::black);
+////         //painter->setBrush(linear);
+////         painter->drawPath(path);
+
+        painter.end();
 
     }while(0);
 }
@@ -588,7 +614,7 @@ GLDMaskBoxParam& GLDMaskBox::tipBoxParam()
 {
     return m_oTipBoxParam;
 }
-
+#include <QBitmap>
 GLDMaskBox* GLDMaskBox::showTipBox(QWidget* wgtOwner, const QString& strTitle, const QString& strBody)
 {
     GLDMaskBox* pTip = nullptr;
@@ -622,6 +648,8 @@ GLDMaskBox* GLDMaskBox::showTipBox(QWidget* wgtOwner, const QString& strTitle, c
         param.m_strTitle = strTitle;
         param.m_strBody = strBody;
         pTip = new GLDMaskBox(param);
+
+        //pTip->setMask(pxpIco.mask());
 
         QWidget* pWidget = topParentWidget(wgtOwner);
         qDebug() << pWidget->objectName();
