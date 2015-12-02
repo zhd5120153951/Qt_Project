@@ -42,7 +42,7 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam & oTipBoxParam, QWidget *parent)
         this->setParent(m_oTipBoxParam.m_wgtOwner);
     }
 
-    this->setWindowFlags(Qt::FramelessWindowHint | Qt::SplashScreen | Qt::WindowStaysOnTopHint | Qt::WindowType_Mask);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::SplashScreen /*| Qt::WindowStaysOnTopHint*/ | Qt::WindowType_Mask);
     this->setAttribute(Qt::WA_TranslucentBackground);
 
     QVBoxLayout* pMainLayout = new QVBoxLayout();
@@ -308,7 +308,7 @@ QPoint GLDMaskBox::calcPosOfOwner()
     return pt;
 }
 
-void GLDMaskBox::showEvent(QShowEvent * event)
+void GLDMaskBox::showEvent(QShowEvent* event)
 {
     G_UNUSED(event);
 
@@ -361,18 +361,20 @@ void GLDMaskBox::showEvent(QShowEvent * event)
 
     m_animFadeOut->setDuration(m_oTipBoxParam.m_nTimeFadeOut);
 
-    QWidget* wgt = m_oTipBoxParam.m_wgtOwner;
-    while (wgt)
+    QWidget* pWgt = m_oTipBoxParam.m_wgtOwner;
+    while (pWgt)
     {
-        qDebug() << wgt->objectName();
-        wgt->installEventFilter(this);
-        wgt = wgt->parentWidget();
+        qDebug() << "objectName is:" << pWgt->objectName();
+        pWgt->installEventFilter(this);
+        pWgt = pWgt->parentWidget();
     }
 
     if (m_timerClose)
     {
         //m_timerClose->start(m_oTipBoxParam.m_nTimeRemain);
     }
+
+    QWidget::showEvent(event);
 }
 
 void GLDMaskBox::slotClose()
@@ -441,11 +443,6 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
 //        linear.setColorAt(0.5, QColor(240, 242, 247));
 //        linear.setColorAt(1, QColor(233, 233, 242));
 
-        // 建造tip形状
-        QPainterPath path = this->buildPathRoundRectTip();
-
-
-
 
         //QPainter oPainter(this);
         //QPainterPath roundPath;
@@ -453,8 +450,6 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
         //oPainter.setRenderHint(QPainter::Antialiasing);
         //oPainter.fillPath(roundPath, QColor(0, 0, 0, 100));
         //update();
-
-
 
 
         //const QString pxpStr = exePath() + "/images/Msg/target.png";
@@ -473,6 +468,9 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
         //painter.drawPixmap(0, 0, QPixmap(pxpStr));
 
 
+
+        // 建造tip形状
+        QPainterPath path = this->buildPathRoundRectTip();
 
         QPainter painter(this);
         painter.begin(this);
@@ -523,7 +521,7 @@ QPainterPath GLDMaskBox::buildPathRoundRectTip()
         }
 
         // 添加圆角矩形
-        path.addRoundedRect(rc, 20, 20);
+        path.addRoundedRect(rc, 5, 5);
 
         // 计算箭头（按照屏幕坐标进行计算）
 
@@ -605,8 +603,8 @@ void GLDMaskBox::slotFadeout()
 
 void GLDMaskBox::immediateCloseThis()
 {
-//    QEventLoop eventloop;
-//    connect(this, SIGNAL(destroyed()), &eventloop, SLOT(quit()));
+    QEventLoop eventloop;
+    connect(this, SIGNAL(destroyed()), &eventloop, SLOT(quit()));
     this->slotClose();
 }
 
