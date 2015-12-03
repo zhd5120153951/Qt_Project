@@ -1,0 +1,8 @@
+QFile fl(":/ui/gldtableviewdefault.qss");
+if (fl.open(QIODevice::ReadOnly))
+{
+    QTextStream ts(&fl);
+    //QString qw = ts.readAll(); test
+    app.setStyleSheet(app.styleSheet() + ts.readAll());
+    fl.close();
+}

@@ -1,0 +1,101 @@
+GColorGrid
+{
+    border: 1px solid #c0c0c0;
+    padding: 3px 5px 0px 5px ;
+    height: 25px;
+    width: 235px;
+}
+
+GColorGrid:focus
+{
+    border: 1px solid #658cd9;
+    background-image: url(:/icons/shellcomboboxxl.png);
+    background-repeat: no-repeat;
+    background-position: right center;
+}
+
+GColorGrid:on
+{
+    border: 1px solid #658cd9;
+    padding: 3px 0px 0px 0px;
+    height: 25px;
+    max-width: 235px;
+}
+
+GColorGrid::drop-down {
+    width: 18px;
+    border: 0px solid #fff;
+}
+
+GColorGrid::drop-down:on
+{
+    image: url(:/icons/shellcomboboxon.png);
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-color: white;
+}
+
+GColorGrid QListWidget[outterWidget="true"]
+{
+    border: 1px solid #658cd9;
+    max-width: 235px;
+}
+
+GColorGrid QListWidget[topColorWidget="true"]
+{
+    border-top: 0px solid #06acfd;
+    padding: 5px 1px 6px 3px;
+    max-width: 235px;
+}
+
+GColorGrid QListWidget[standartTitleWidget="true"]
+{
+    border-top: 0px solid #a6b8d3;
+    padding: 3px 1px 0px 3px;
+    max-width: 235px;
+}
+
+GColorGrid QListWidget[themeTitleWidget="true"]
+{
+    border-top: 0px solid #a6b8d3;
+    padding: 3px 1px 0px 3px;
+    max-width: 235px;
+}
+
+GColorGrid QListWidget[standardColorWidget="true"], [themeColorWidget="true"]
+{
+    border-top: 0px solid #a6b8d3;
+    padding: 4px 1px 4px 3px;
+    max-width: 235px;
+}
+
+GColorGrid QListWidget[moreWidget="true"]
+{
+    border-top: 1px solid #a6b8d3;
+    padding: 0px;
+    max-width: 235px;
+    min-height: 23px;
+}
+
+GColorGrid QAbstractItemView::item
+{
+    border: 0px solid #a6b8d3;
+    padding: 0px;
+    margin: 0px;
+}
+
+GColorGrid QAbstractItemView::item:hover
+{
+    border: 1px solid #658cd9;
+    background-color: #fbf2c2;
+}
+
+QTableView
+{
+    border: 0px solid #a6b8d3;
+}
+
+.QWidget
+{
+    background-color:red;
+}

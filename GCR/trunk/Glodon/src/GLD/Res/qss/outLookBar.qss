@@ -1,0 +1,29 @@
+QPushButton {
+    text-align: left;
+    max-height: 84px;
+    border-image:url(:icons/GLDNavigationItem_default.png);
+}
+
+QPushButton:hover, pressed {
+    border-image:url(:icons/GLDNavigationItem_hover);
+}
+
+QPushButton:checked {
+    border-image:url(:icons/GLDNavigationItem_checdked.png);
+}
+
+QToolBar {
+    border-image:url(:icons/GLDNavigationItem_default.png);
+}
+
+QWidget[objectName="titleWidget"] {
+    background-color: rgb(85, 170, 255);
+}
+
+QWidget[objectName="container"] {
+    background-color: rgb(255, 255, 255);
+}
+
+QSplitterHandle{
+    background-color:rgb(170, 170, 127);
+}

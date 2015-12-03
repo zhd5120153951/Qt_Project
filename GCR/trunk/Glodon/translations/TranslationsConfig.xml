@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- translation of document -->
+<Translations> 
+	<!-- translation file path -->
+	<TRFiles Language = "zh_CN">
+		<TRFile>GLD_zh_CN.qm</TRFile>
+		<TRFile>GSP_zh_CN.qm</TRFile>
+	</TRFiles>
+</Translations>

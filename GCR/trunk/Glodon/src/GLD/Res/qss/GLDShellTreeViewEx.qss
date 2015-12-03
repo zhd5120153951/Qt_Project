@@ -1,0 +1,52 @@
+/*下拉中的TreeView属性设置*/
+GLDShellTreeViewEx{
+    border: 1px solid #39a9d1;
+    border-top: 1px solid #39a9d1;
+   /* background-color:#fff;*/
+    padding-left: 5px;
+    padding-right:0px;
+    outline: 0px;
+    padding-top: 0px;
+    padding-bottom 12px;
+}
+
+GLDShellTreeViewEx::item{
+    border: 1px solid transparent;
+    padding-left: -2px;
+    padding-right:20px;
+    font-size 12px;
+    height : 22px;
+}
+
+GLDShellTreeViewEx::item:selected{
+    margin 0 px;
+    border: 1px solid #b6d2ea;
+    padding-left: -2px;
+    color: #010101;
+    background-color:#dbf3fc;
+}
+
+GLDShellTreeViewEx::item:hover{
+    margin 20 px;
+    border: 1px solid #b6d2ea;
+    padding-left: -2px;
+}
+
+GLDShellTreeViewEx::branch{
+    image: none;
+}
+
+
+
+/*滚动条设置*/
+QScrollBar:vertical
+{
+     width: 14px;
+}
+
+QScrollBar:horizontal
+{
+     width: 0px;
+     height: 0px;
+}
+

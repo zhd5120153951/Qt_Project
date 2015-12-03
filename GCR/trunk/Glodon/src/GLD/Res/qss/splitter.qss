@@ -1,0 +1,55 @@
+QPushButton[objectName="left"] {
+    max-width:6px;
+    max-height:84px;
+    border-image:url(://icons/GBQ-splitter-left.png)
+}
+
+QPushButton[objectName="left"]::hover {
+    border-image:url(://icons/GBQ-splitter-hover-left.png)
+}
+
+QPushButton[objectName="left"]::pressed {
+    border-image:url(://icons/GBQ-splitter-pressedH.png)
+}
+
+QPushButton[objectName="right"] {
+    max-width:6px;
+    max-height:84px;
+    border-image:url(://icons/GBQ-splitter-right.png)
+}
+
+QPushButton[objectName="right"]::hover {
+    border-image:url(://icons/GBQ-splitter-hover-right.png)
+}
+
+QPushButton[objectName="right"]::pressed {
+    border-image:url(://icons/GBQ-splitter-pressedH.png)
+}
+
+QPushButton[objectName="top"] {
+    max-width:84px;
+    max-height:6px;
+    border-image:url(://icons/GBQ-splitter-top.png)
+}
+
+QPushButton[objectName="top"]::hover {
+    border-image:url(://icons/GBQ-splitter-hover-top.png)
+}
+
+QPushButton[objectName="top"]::pressed {
+    border-image:url(://icons/GBQ-splitter-pressedV.png)
+}
+
+QPushButton[objectName="bottom"] {
+    max-width:84px;
+    max-height:6px;
+    border-image:url(://icons/GBQ-splitter-bottom.png)
+}
+
+QPushButton[objectName="bottom"]::hover {
+    border-image:url(://icons/GBQ-splitter-hover-bottom.png)
+}
+
+QPushButton[objectName="bottom"]::pressed {
+    border-image:url(://icons/GBQ-splitter-pressedV.png)
+}

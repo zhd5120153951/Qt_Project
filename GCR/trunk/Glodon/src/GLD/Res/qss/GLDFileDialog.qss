@@ -1,0 +1,153 @@
+/*标题栏窗口按钮*/
+QWidget#m_pTitleBar {
+    background-color: qlineargradient(spread:reflect, x1:0.0, y1:0.0, x2:1.0, y2:1.0, stop:0.0284091 #2b9dcd, stop:0.420455 #0480b4);
+}
+
+QLabel#m_pTitleLabel {
+    color: #ffffff;
+    font: 75 13pt "宋体"
+}
+
+QToolButton#m_pQueryMaximize {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Max.png);
+}
+
+QToolButton#m_pQueryMaximize:hover {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Max_Hover.png);
+}
+
+QToolButton#m_pQueryMaximize:pressed {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Max_Pressed.png);
+}
+
+QToolButton#m_pQueryMinimize {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Min.png);
+}
+
+QToolButton#m_pQueryMinimize:hover {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Min_Hover.png);
+}
+
+QToolButton#m_pQueryMinimize:pressed {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Min_Pressed.png);
+}
+
+QToolButton#m_pQueryRestore {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Restore.png);
+}
+
+QToolButton#m_pQueryRestore:hover {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Restore_Hover.png);
+}
+
+QToolButton#m_pQueryRestore:pressed {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Restore_Pressed.png);
+}
+
+QToolButton#m_pQueryClose {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Close.png);
+}
+
+QToolButton#m_pQueryClose:hover {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Close_Hover.png);
+}
+
+QToolButton#m_pQueryClose:pressed {
+    border-image:url(:/icons/GLDCustomTitleBar/Query_Close_Pressed.png);
+}
+
+/*中央部分控件*/
+QAbstractItemView#pFileContent{
+    border: 0px;
+    border-left: 1px solid #39a9d1;
+    border-top: 1px solid #39a9d1;
+    border-bottom: 1px solid #39a9d1;
+}
+
+/*窗口底部按钮*/
+QToolButton#pOpenFileButton{
+    border-image: url(:/icons/GLDFileDialog/Open.png);
+    min-width: 80px;
+    min-height: 28px;
+}
+
+QToolButton#pCancelButton{
+    border-image: url(:/icons/GLDFileDialog/Cancel.png);
+    min-width: 80px;
+    min-height: 28px;
+}
+
+/*打开窗口边线样式*/
+QDialog#GLDOpenFileDialog{
+    border-style: solid;
+    border-width: 1px;
+    border-color: qlineargradient(spread:reflect, x1:0.0, y1:0.0, x2:1.0, y2:1.0, stop:0.0284091 #2b9dcd, stop:0.420455 #0480b4);
+}
+
+/*另存为窗口边线样式*/
+QDialog#GLDSaveAsDialog{
+    border-style: solid;
+    border-width: 1px;
+    border-color: qlineargradient(spread:reflect, x1:0.0, y1:0.0, x2:1.0, y2:1.0, stop:0.0284091 #2b9dcd, stop:0.420455 #0480b4);
+}
+
+/*GLDShellTreeViewEx样式*/
+GLDShellTreeViewEx{
+    border: 0px;
+    border-right: 1px solid #39a9d1;
+    border-top: 1px solid #39a9d1;
+    border-bottom: 1px solid #39a9d1;
+   /* background-color:#fff;*/
+    padding-left: 5px;
+    padding-right:0px;
+    outline: 0px;
+    padding-top: 0px;
+    padding-bottom 12px;
+}
+
+GLDShellTreeViewEx::item{
+    border: 1px solid transparent;
+    padding-left: -2px;
+    padding-right:20px;
+    font-size 12px;
+    height : 22px;
+}
+
+GLDShellTreeViewEx::item:selected{
+    margin 0 px;
+    border: 1px solid #b6d2ea;
+    padding-left: -2px;
+    color: #010101;
+    background-color:#dbf3fc;
+}
+
+GLDShellTreeViewEx::item:hover{
+    margin 20 px;
+    border: 1px solid #b6d2ea;
+    padding-left: -2px;
+}
+
+GLDShellTreeViewEx::branch{
+    image: none;
+}
+
+QLineEdit#m_pFileNameFilter
+{
+    border: 1px solid #39a9d1;
+    padding: 0px 0px 0px 2px;
+    background-color: white;
+    selection-background-color:#a1c3ee;
+    selection-color:#455059;
+    height: 25px;
+}
+
+QTreeView
+{
+    font: large "Microsoft YaHei UI";
+}
+
+QListView
+{
+    font: large "Microsoft YaHei UI";
+}
+

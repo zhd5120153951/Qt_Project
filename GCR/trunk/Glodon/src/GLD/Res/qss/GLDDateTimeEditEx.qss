@@ -1,0 +1,329 @@
+GLDDateTimeEditEx[GLDHasPopup = "true"]
+{
+    border: 1px solid #c0c0c0;
+    padding: 0px 0px 0px 2px;
+    selection-background-color: #a1c3ee;
+    selection-color: #455059;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "true"]:on,
+GLDDateTimeEditEx[GLDHasPopup = "true"]:focus
+{
+    border: 1px solid #39a9d1;
+}
+
+/*GLDDateTimeEditEx下拉框小图标样式*/
+GLDDateTimeEditEx[GLDHasPopup = "true"]::drop-down
+{
+    subcontrol-origin: margin;
+    subcontrol-position: center right;
+    image: url(:/icons/calendar.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    margin-right: 4px;
+    width: 20px;
+}
+
+/*GLDDateTimeEditEx下拉框小图标点开的样式*/
+GLDDateTimeEditEx[GLDHasPopup = "true"]::drop-down:on
+{
+    image: url(:/icons/calendar.png);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    padding: 8px;
+    width: 20px;
+}
+
+QWidget[GLDCalendarWidget = "true"]
+{
+    background-color: #85ccf6;
+}
+
+QWidget[GLDNavBackground = "true"]
+{
+    color: #ffffff;
+    background-color: #85ccf6;
+}
+
+QWidget[GLDCalendarBody = "true"]
+{
+    background-color: white;
+    border-radius: 5px;
+    border-radius: 5px;
+}
+
+QWidget[GLDCalendarHead = "true"]
+{
+    background-color: white;
+    padding: 0px;
+}
+
+QPushButton[GLDHeadBtn = "true"]
+{
+    border: 0px solid white;
+    background-color: white;
+    color: black;
+    font: bold;
+    font-size: 12px;
+}
+
+QPushButton[GLDPrevMonth = "true"]
+{
+    background-image: url(:/icons/arrowleft.png);
+    background-repeat: no repeat;
+    background-position: center;
+    background-color: #85ccf6;
+    border: 0px solid #85ccf6;
+}
+
+QPushButton[GLDNextMonth = "true"]
+{
+    background-image: url(:/icons/arrowright.png);
+    background-repeat: no repeat;
+    background-position: center;
+    background-color: #85ccf6;
+    border: 0px solid #85ccf6;
+}
+
+QLabel[GLDDisplayText = "true"]
+{
+    font-size: 12px;
+    color: black;
+    background-color: #85ccf6;
+    border: 0px solid #85ccf6;
+    width: 6px;
+}
+
+QSpinBox[GLDYearSpinBox = "true"]
+{
+    font-size: 12px;
+    color: black;
+    background-color: #ffffff;
+    border: 1px solid #39a9d1;
+}
+
+QToolButton[GLDYearToolBtn = "true"]
+
+{
+    font-size: 12px;
+    color: black;
+    background-color: #85ccf6;
+    border: 0px solid #85ccf6;
+}
+
+QComboBox[GLDMonthComboBox = "true"]
+{
+    font-size: 12px;
+    color: black;
+    background-color: #85ccf6;
+    border: 0px solid #85ccf6;
+}
+
+QComboBox[GLDMonthComboBox = "true"]:on
+{
+    font-size: 12px;
+    color: black;
+    background-color: #ffffff;
+    border: 1px solid #39a9d1;
+}
+
+QComboBox[GLDMonthComboBox = "true"] QAbstractItemView
+{
+    color: black;
+    background-color: #ffffff;
+    border: 1px solid #39a9d1;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    outline: 0px;
+}
+
+QComboBox[GLDMonthComboBox = "true"] QAbstractItemView::item
+{
+     height: 18px;
+     font-size: 12px;
+}
+
+/*当鼠标滑过每一个Item时的效果控制*/
+QComboBox[GLDMonthComboBox = "true"] QAbstractItemView::item:selected
+{
+     color: #146fae;
+     background-color: #dbf4fc;
+     height: 18px;
+     font-size: 12px;
+}
+
+QComboBox[GLDMonthComboBox = "true"]::drop-down
+{
+    subcontrol-origin: margin;
+    subcontrol-position: center right;
+    image: url(:/icons/arrowwithline.png);
+    background-repeat: no repeat;
+    background-color: #85ccf6;
+    margin-right: 5px;
+    width: 8px;
+    height: 5px;
+}
+
+QComboBox[GLDMonthComboBox = "true"]::drop-down:on
+{
+    subcontrol-origin: margin;
+    subcontrol-position: center right;
+    image: url(:/icons/arrowdown.png);
+    background-repeat: no repeat;
+    background-color: #ffffff;
+    margin-top: 1px;
+    width: 8px;
+    height: 6px;
+}
+
+QSpinBox[GLDYearSpinBox = "true"]::up-button
+{
+    border: 0px solid #788cba;
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+}
+
+QSpinBox[GLDYearSpinBox = "true"]::up-arrow
+{
+    image: url(:/icons/arrowup.png);
+}
+
+QSpinBox[GLDYearSpinBox = "true"]::down-button
+{
+    border: 0px solid #788cba;
+    subcontrol-origin: padding;
+    subcontrol-position: bottom right;
+}
+
+QSpinBox[GLDYearSpinBox = "true"]::down-arrow
+{
+    image: url(:/icons/arrowdown.png);
+}
+
+QCalendarWidget[GLDCalendar = "true"]
+{
+    border-radius: 3px;
+}
+
+QCalendarWidget[GLDCalendar = "true"] QAbstractItemView
+{
+    selection-color: white;
+    selection-background-color: #85ccf6;
+    outline: 0px;
+}
+
+/*无弹出框的日历控件样式*/
+GLDDateTimeEditEx[GLDHasPopup = "false"]
+{
+    color: #414645;
+    padding: 1px;
+    border: 1px solid #c0c0c0;
+    min-height: 13px;
+    selection-background-color: #a1c3ee;
+    selection-color: #455059;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]:on,
+GLDDateTimeEditEx[GLDHasPopup = "false"]:focus
+{
+    border: 1px solid #d4d5d9;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::up-button
+{
+    border: 0px solid #788cba;
+    background-color: rgba(46, 46, 46, 0);
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[UpDownBtnBorder = "true"]::up-button
+{
+    border-left: 1px solid #788cba;
+}
+
+GLDDateTimeEditEx[UpDownBtnBorder = "false"]::up-button
+{
+    border: 0px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::up-button:focus
+{
+    image: url(:/icons/arrowuphover.png);
+    border-left: 1px solid #788cba;
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::down-button
+{
+    border: 0px solid #788cba;
+    background-color: rgba(46, 46, 46 ,0);
+    subcontrol-origin: padding;
+    subcontrol-position: bottom right;
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[UpDownBtnBorder = "true"]::down-button
+{
+    border-left: 1px solid #788cba;
+    border-top: 1px solid #788cba;
+}
+
+GLDDateTimeEditEx[UpDownBtnBorder = "false"]::down-button
+{
+     border: 0px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::down-button:focus
+{
+    image: url(:/icons/arrowdownhover.png);
+    border-left: 1px solid #788cba;
+    border-top: 1px solid #788cba;
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::up-arrow
+{
+    image: url(:/icons/arrowup.png);
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::up-arrow:hover,
+GLDDateTimeEditEx[GLDHasPopup = "false"]::up-arrow:pressed
+{
+    image: url(:/icons/arrowuphover.png);
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::down-arrow
+{
+    image: url(:/icons/arrowdown.png);
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[GLDHasPopup = "false"]::down-arrow:hover,
+GLDDateTimeEditEx[GLDHasPopup = "false"]::down-arrow:pressed
+{
+    image: url(:/icons/arrowdownhover.png);
+    min-width: 18px;
+    min-height: 11px;
+}
+
+GLDDateTimeEditEx[GLDBorderStyle = "noBorder"]
+{
+    border: 0px;
+}
+
+GLDDateTimeEditEx[GLDBorderStyle = "noBorder"]:on,
+GLDDateTimeEditEx[GLDBorderStyle = "noBorder"]:focus
+{
+    border: 0px;
+}

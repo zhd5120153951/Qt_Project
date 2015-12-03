@@ -1,0 +1,195 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file alias="GlodonTableView">GlodonTableView.ico</file>
+        <file alias="rangeFillingCursor">RangFillingCursor.png</file>
+        <file alias="rangeMoveCursor">RangMoveCursor.png</file>
+        <file alias="SDIAA">SDIAA.bmp</file>
+        <file alias="SDIAB">SDIAB.bmp</file>
+        <file alias="SDIABE">SDIABE.bmp</file>
+        <file alias="SDIABF">SDIABF.bmp</file>
+        <file alias="SDIABFE">SDIABFE.bmp</file>
+        <file alias="SDIAC">SDIAC.bmp</file>
+        <file alias="SDIACE">SDIACE.bmp</file>
+        <file alias="SDIACF">SDIACF.bmp</file>
+        <file alias="SDIACFE">SDIACFE.bmp</file>
+        <file alias="SDIAD">SDIAD.bmp</file>
+        <file alias="SDIAE">SDIAE.bmp</file>
+        <file alias="SDIAEEE">SDIAEEE.bmp</file>
+        <file alias="SDIAEF">SDIAEF.bmp</file>
+        <file alias="SDIAEFE">SDIAEFE.bmp</file>
+        <file alias="SDIAG">SDIAG.bmp</file>
+        <file alias="SDIAL">SDIAL.bmp</file>
+        <file alias="SDIAN">SDIAN.bmp</file>
+        <file alias="SDIAY">SDIAY.bmp</file>
+        <file>FilterWidget_ClearText.png</file>
+        <file alias="EllipsisButton_Normal">EllipsisButton_Normal.png</file>
+        <file alias="EllipsisButton_Hover">EllipsisButton_Hover.png</file>
+        <file alias="EllipsisButton_Click">EllipsisButton_Click.png</file>
+        <file>GLDNavigationItem_default.png</file>
+        <file>GLDNavigationItem_hover.png</file>
+        <file>360skin/sysbutton/arrow_down.png</file>
+        <file>360skin/sysbutton/close.png</file>
+        <file>360skin/sysbutton/close_button.png</file>
+        <file>360skin/sysbutton/main_menu.png</file>
+        <file>360skin/sysbutton/max_button.png</file>
+        <file>360skin/sysbutton/min_button.png</file>
+        <file>360skin/sysbutton/skin_button.png</file>
+        <file>360skin/skin/17_big.jpg</file>
+        <file>more.png</file>
+        <file>bottom-conter.png</file>
+        <file>bottom-left.png</file>
+        <file>bottom-right.png</file>
+        <file>right-conter.png</file>
+        <file>right-top.png</file>
+        <file>CLDCustomWaitingBox.png</file>
+        <file>CLDCustomWaitingBox_Gray.png</file>
+        <file>TabDockContainerAnchor.png</file>
+        <file>TabDockContainerNotAnchor.png</file>
+        <file>splitter-bottom.png</file>
+        <file>splitter-left.png</file>
+        <file>splitter-pressedH.png</file>
+        <file>splitter-pressedV.png</file>
+        <file>splitter-right.png</file>
+        <file>splitter-top.png</file>
+        <file>splitter-hover-bottom.png</file>
+        <file>splitter-hover-left.png</file>
+        <file>splitter-hover-right.png</file>
+        <file>splitter-hover-top.png</file>
+        <file>GLDNavigationItem_checdked.png</file>
+        <file>GLDCustomComboBoxEx-downarrow.png</file>
+        <file>GLDCustomComboBoxEx-downarrowon.png</file>
+        <file>scrolldownarrow.png</file>
+        <file>scrollleftarrow.png</file>
+        <file>scrollrightarrow.png</file>
+        <file>scrolluparrow.png</file>
+        <file>GLDComboBoxPopupEx-sizegrip.png</file>
+        <file>GLDComboBoxPopupEx-sizegriphover.png</file>
+        <file>GLDWindowComboBoxEx-downarrow.png</file>
+        <file>GLDWindowComboBoxEx-downarrowon.png</file>
+        <file>GLDLineButtonEditEx-ellipsis.png</file>
+        <file>GLDFontListEx-check_mark.png</file>
+        <file>GLDFontListEx-true_type.png</file>
+        <file>GLDWindowComboBoxEx-ellipsis.png</file>
+        <file>GLDWindowComboBoxEx-ellipsis-hover.png</file>
+        <file>GLDWindowComboBoxEx-ellipsis-press.png</file>
+        <file>GColorListEx-moreColorIcon.png</file>
+        <file>GColorListEx-backgroundColor.png</file>
+        <file>GColorListEx-foreColor.png</file>
+        <file>webLog/02.png</file>
+        <file>webLog/03.png</file>
+        <file>webLog/04.png</file>
+        <file>webLog/06.png</file>
+        <file>webLog/BIMLogin.png</file>
+        <file>webLog/black_checkbox_checked.png</file>
+        <file>webLog/black_checkbox_unchecked_hover.png</file>
+        <file>webLog/black_checkbox_unchecked_pressed.png</file>
+        <file>webLog/black_keyboard01.png</file>
+        <file>webLog/black_keyboard02.png</file>
+        <file>webLog/black_keyboard03.png</file>
+        <file>webLog/blue_checkbox_checked.png</file>
+        <file>webLog/blue_checkbox_unchecked_hover.png</file>
+        <file>webLog/blue_checkbox_unchecked_pressed.png</file>
+        <file>webLog/blue_keyboard01.png</file>
+        <file>webLog/blue_keyboard02.png</file>
+        <file>webLog/blue_keyboard03.png</file>
+        <file>webLog/close01.png</file>
+        <file>webLog/Close1.png</file>
+        <file>webLog/close02.png</file>
+        <file>webLog/Close2.png</file>
+        <file>webLog/Close3.png</file>
+        <file>webLog/common_checkbox_unchecked.png</file>
+        <file>webLog/darkblue_checkbox_checked.png</file>
+        <file>webLog/darkblue_checkbox_unchecked_hover.png</file>
+        <file>webLog/darkblue_checkbox_unchecked_pressed.png</file>
+        <file>webLog/darkblue_keyboard01.png</file>
+        <file>webLog/darkblue_keyboard02.png</file>
+        <file>webLog/darkblue_keyboard03.png</file>
+        <file>webLog/eroo.png</file>
+        <file>webLog/ew.png</file>
+        <file>webLog/green_checkbox_checked.png</file>
+        <file>webLog/green_checkbox_unchecked_hover.png</file>
+        <file>webLog/green_checkbox_unchecked_pressed.png</file>
+        <file>webLog/green_keyboard01.png</file>
+        <file>webLog/green_keyboard02.png</file>
+        <file>webLog/green_keyboard03.png</file>
+        <file>webLog/orange_checkbox_checked.png</file>
+        <file>webLog/orange_checkbox_unchecked_hover.png</file>
+        <file>webLog/orange_checkbox_unchecked_pressed.png</file>
+        <file>webLog/orange_keyboard01.png</file>
+        <file>webLog/orange_keyboard02.png</file>
+        <file>webLog/orange_keyboard03.png</file>
+        <file>webLog/purple_checkbox_checked.png</file>
+        <file>webLog/purple_checkbox_unchecked_hover.png</file>
+        <file>webLog/purple_checkbox_unchecked_pressed.png</file>
+        <file>webLog/purple_keyboard01.png</file>
+        <file>webLog/purple_keyboard02.png</file>
+        <file>webLog/purple_keyboard03.png</file>
+        <file>webLog/skin.png</file>
+        <file>hs.png</file>
+        <file>r-hover.png</file>
+        <file>right.png</file>
+        <file>rigjt02.png</file>
+        <file>z-hover.png</file>
+        <file>arrowdown.png</file>
+        <file>arrowdownhover.png</file>
+        <file>arrowleft.png</file>
+        <file>arrowright.png</file>
+        <file>arrowup.png</file>
+        <file>arrowuphover.png</file>
+        <file>arrowwithline.png</file>
+        <file>calendar.png</file>
+        <file>GLDLineWidthEx-line.png</file>
+        <file>GLDLineWidthEx-noline.png</file>
+        <file>GLDLineWidthEx-virtualLine.png</file>
+        <file>GlodonTreeView-add.png</file>
+        <file>GlodonTreeView-bottom.png</file>
+        <file>GlodonTreeView-hover.png</file>
+        <file>GlodonTreeView-sub.png</file>
+        <file>GLDSearchEdit_Clear_Hove.png</file>
+        <file>GLDSearchEdit_Clear_Norm.png</file>
+        <file>GLDSearchEdit_Clear_Press.png</file>
+        <file>GLDSearchEdit_Search.png</file>
+        <file>GLDCustomTitleBar/Query_Close.png</file>
+        <file>GLDCustomTitleBar/Query_Close_Hover.png</file>
+        <file>GLDCustomTitleBar/Query_Close_Pressed.png</file>
+        <file>GLDCustomTitleBar/Query_Max.png</file>
+        <file>GLDCustomTitleBar/Query_Max_Hover.png</file>
+        <file>GLDCustomTitleBar/Query_Max_Pressed.png</file>
+        <file>GLDCustomTitleBar/Query_Min.png</file>
+        <file>GLDCustomTitleBar/Query_Min_Hover.png</file>
+        <file>GLDCustomTitleBar/Query_Min_Pressed.png</file>
+        <file>GLDCustomTitleBar/Query_Restore.png</file>
+        <file>GLDCustomTitleBar/Query_Restore_Hover.png</file>
+        <file>GLDCustomTitleBar/Query_Restore_Pressed.png</file>
+        <file>GLDFileDialog/backward.png</file>
+        <file>GLDFileDialog/backward-press.png</file>
+        <file>GLDFileDialog/forward.png</file>
+        <file>GLDFileDialog/forward-press.png</file>
+        <file>GLDFileDialog/refresh.png</file>
+        <file>GLDFileDialog/view.png</file>
+        <file>GLDFileDialog/new.png</file>
+        <file>GLDFileDialog/Cancel.png</file>
+        <file>GLDFileDialog/Open.png</file>
+        <file>GLDSearchEdit_Clear_Hove_Focus.png</file>
+        <file>GLDSearchEdit_Clear_Norm_Focus.png</file>
+        <file>GLDSearchEdit_Clear_Press_Focus.png</file>
+        <file>GLDSearchEdit_Search_Focus.png</file>
+        <file>GLDFileDialog/MidIconMode.png</file>
+        <file>GLDFileDialog/SmallIconMode.png</file>
+        <file>GBQ-splitter-bottom.png</file>
+        <file>GBQ-splitter-hover-bottom.png</file>
+        <file>GBQ-splitter-hover-left.png</file>
+        <file>GBQ-splitter-hover-right.png</file>
+        <file>GBQ-splitter-hover-top.png</file>
+        <file>GBQ-splitter-left.png</file>
+        <file>GBQ-splitter-pressedH.png</file>
+        <file>GBQ-splitter-top.png</file>
+        <file>GBQ-splitter-pressedV.png</file>
+        <file>GBQ-splitter-right.png</file>
+        <file>GLDDockPanel/bottom.png</file>
+        <file>GLDDockPanel/center.png</file>
+        <file>GLDDockPanel/left.png</file>
+        <file>GLDDockPanel/right.png</file>
+        <file>GLDDockPanel/top.png</file>
+    </qresource>
+</RCC>

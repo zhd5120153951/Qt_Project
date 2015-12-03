@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/ui">
+        <file>gldhheadviewbackground.png</file>
+        <file>gldhheadviewsection.png</file>
+        <file>gldhheadviewsectionchecked.png</file>
+        <file>gldvheadviewbackground.png</file>
+        <file>gldvheadviewsection.png</file>
+        <file>gldvheadviewsectionchecked.png</file>
+        <file>gldtableviewdefault.qss</file>
+        <file>jiJiahheadviewsection.png</file>
+        <file>jiJiahheadviewsectionchecked.png</file>
+    </qresource>
+</RCC>

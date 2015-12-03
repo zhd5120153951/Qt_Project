@@ -1,0 +1,78 @@
+/*******************GLDCustomComboBoxEx*************************/
+/*GLDCustomComboBoxEx处于关闭状态*/
+GLDCustomComboBoxEx {
+    padding: 0px 0px 0px 1px;
+    height: 25px;
+    color: #435057;
+    font-size: 12px;
+    border: 1px solid #39a9d1;
+    selection-background-color: #a1c3ee;
+    selection-color: #455059;
+}
+
+GLDCustomComboBoxEx[borderStyle="noBorder"]
+{
+     border: 0px solid #39a9d1;
+}
+
+/* GLDCustomComboBoxEx处于打开状态 */
+GLDCustomComboBoxEx:on
+{
+    color:#6f6f6f;
+    border: 1px solid #39a9d1;
+}
+
+GLDCustomComboBoxEx[borderStyle="noBorder"]:on
+{
+    border: 0px solid #39a9d1;
+}
+
+/*drop-down处于默认状态*/
+GLDCustomComboBoxEx::drop-down {
+    width: 24px;
+    border: 1px solid #fff;
+    image: url(:/icons/GLDCustomComboBoxEx-downarrow.png);
+}
+
+/*下拉出来的QAbstractItemView参数控制*/
+GLDCustomComboBoxEx QAbstractItemView
+{
+    margin-top: 0px;
+    padding-left: 0px;
+    color: #6f6f6f;
+    background-color: #fff;
+    border: 1px solid #39a9d1;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    outline: 0px;
+}
+
+/*对QAbstractItemView中的每一个item进行控制*/
+GLDCustomComboBoxEx QAbstractItemView::item
+{
+     min-height: 25px;
+     margin-left: 4px;
+     margin-right: 5px;
+     padding-left: 0px;
+     color: #757575;
+     border-bottom: 0px;
+     background-color: #fff;
+}
+
+/*当鼠标滑过每一个Item时的效果控制*/
+GLDCustomComboBoxEx QAbstractItemView::item:selected
+{
+     color: #146fae;
+     background-color: #dbf4fc;
+}
+
+QScrollBar:vertical
+{
+     width: 14px;
+}
+
+QScrollBar:horizontal
+{
+     width: 0px;
+     height: 0px;
+}

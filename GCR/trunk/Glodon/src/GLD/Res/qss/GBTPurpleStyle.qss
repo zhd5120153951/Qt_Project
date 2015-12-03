@@ -1,0 +1,150 @@
+/*登录界面边框QSS*/
+QDialog#GLDWebLogin
+{
+    border-width: 1px;
+    border-radius: 0px;
+    border-style: solid;
+    border-color: rgb(124, 126, 221);
+    background-color: rgb(255, 255, 255);
+}
+
+/*登录标题背景图片QSS*/
+QLabel#GLDLoginTitle
+{
+    background-image: url(:/icons/webLog/04.png);
+}
+
+/*登录标题之关闭按钮QSS*/
+QPushButton#LoginTitleCloseButton
+{
+    background-image: url(:/icons/webLog/Close1.png);
+    border: 0px;
+}
+QPushButton#LoginTitleCloseButton:hover
+{
+    background-image: url(:/icons/webLog/Close2.png);
+    border: 0px;
+}
+QPushButton#LoginTitleCloseButton:pressed
+{
+    background-image: url(:/icons/webLog/Close3.png);
+    border: 0px;
+}
+
+/*用户名和密码输入框QSS*/
+QLineEdit#UserNameAndPassWord 
+{
+    border: 1px solid #c4c4c4;
+    border-radius: 0px;
+    selection-background-color: #8D8FE1;
+    font-family: Arial;
+    font-size: 9pt;
+}
+
+QLineEdit#UserNameAndPassWord:hover 
+{
+    border: 1px solid #8D8FE1;
+}
+
+/*登陆界面注册按钮QSS*/
+QPushButton#RegisterUser
+{
+    color: rgb(124, 126, 221);
+    background-color: Transparent;
+    border-style: none;
+}
+QPushButton#RegisterUser:hover
+{
+    color: rgb(178, 182, 238);
+    background-color: Transparent;
+    border-style: none;
+}
+QPushButton#RegisterUser:pressed
+{
+    color: gray;
+    background-color: Transparent;
+    border-style :none;
+}
+
+/*虚拟按键QSS*/
+QPushButton#VirtualKeyboard
+{
+    background-image: url(:/icons/webLog/purple_keyboard01.png);
+    vertical-align: middle;
+    border: 0px;
+}
+QPushButton#VirtualKeyboard:hover
+{
+    background-image: url(:/icons/webLog/purple_keyboard02.png);
+    vertical-align: middle;
+    border: 0px;
+}
+QPushButton#VirtualKeyboard:pressed
+{
+    background-image: url(:/icons/webLog/purple_keyboard03.png);
+    vertical-align: middle;
+    border: 0px;
+}
+
+/*登陆界面找回密码按钮QSS*/
+QPushButton#RetrivePassword
+{
+    color: rgb(124, 126, 221);
+    background-color: Transparent;
+    border-style: none;
+}
+QPushButton#RetrivePassword:hover
+{
+    color: rgb(178, 182, 238);
+    background-color: Transparent;
+    border-style: none;
+}
+QPushButton#RetrivePassword:pressed
+{
+    color: gray;
+    background-color: Transparent;
+    border-style :none;
+}
+
+
+/*登陆界面记住密码和自动登录QSS*/
+QCheckBox#RememberPassWord::indicator:unchecked {
+    image: url(:/icons/webLog/common_checkbox_unchecked.png);
+}
+
+QCheckBox#RememberPassWord::indicator:unchecked:hover {
+    image: url(:/icons/webLog/purple_checkbox_unchecked_hover.png);
+}
+
+QCheckBox#RememberPassWord::indicator:unchecked:pressed {
+    image: url(:/icons/webLog/purple_checkbox_unchecked_pressed.png);
+}
+
+QCheckBox#RememberPassWord::indicator:checked {
+    image: url(:/icons/webLog/purple_checkbox_checked.png);
+}
+
+QPushButton#ErrorInformation
+{
+    color: rgb(255,102,0);
+    border: 1px solid #ff9999;
+    font-size: 12px;
+    font: Times New Roman;
+    icon-size: 16px 16px;
+    image-position: left center;
+    image: url(:/icons/webLog/eroo.png);
+}
+
+/*登录界面登录按钮QSS*/
+QPushButton#Login
+{
+    color: rgb(255, 255, 255);
+    background-color: rgb(137, 139, 224);
+    border-radius: 0px;
+}
+QPushButton#Login:hover
+{
+    background-color: rgb(124, 126, 221);
+    border: 1px solid #333333;
+    border-radius: 0px;
+}

@@ -1,0 +1,45 @@
+/***********************垂直滚动条******************************/
+QScrollBar:vertical
+{
+     width: 14px;
+}
+
+/***********************水平滚动条******************************/
+QScrollBar:horizontal
+{
+     height: 14px;
+}
+
+/*选中格子，垂直表头右边框绿色*/
+GlodonTableView GlodonHeaderView::section:vertical:checked
+{
+    background-color:#ffefb5;
+    border-top:0;
+    border-left:0;
+    border-bottom:0;
+    border-right: 2px solid #39a9d3;
+}
+
+/*选中格子，水平表头右边框绿色*/
+GlodonTableView GlodonHeaderView::section:horizontal:checked
+{
+    background-color:#ffefb5;
+    border-top:0;
+    border-left:0;
+    border-right:0;
+    border-bottom: 2px solid #39a9d3;
+}
+
+/*
+画水平表头格线
+GlodonTableView GlodonHeaderView::section:horizontal
+{
+    border: 1px solid #d8d8d8;
+}
+
+画垂直表头格线
+GlodonTableView GlodonHeaderView::section:vertical
+{
+    border: 1px solid #d8d8d8;
+}
+*/

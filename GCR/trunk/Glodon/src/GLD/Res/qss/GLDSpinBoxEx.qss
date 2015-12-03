@@ -1,0 +1,218 @@
+/* QSpinBox基本样式 */
+QSpinBox
+{
+    padding: 0px 5px 0px 2px;
+    font: 12px solid;
+    color: #6f6f6f;
+    selection-background-color:#a1c3ee;
+    selection-color:#455059;
+}
+
+/* 有边框时样式 */
+QSpinBox[border="true"]
+{
+    border: 1px solid #d7d7da;
+}
+
+QSpinBox[border="true"]:hover,
+QSpinBox[border="true"]:focus
+{
+    border: 1px solid #39a9d1;
+}
+
+/* 无边框时样式 */
+QSpinBox[border="false"]
+{
+    border: 0px;
+}
+
+/* 向上按钮样式 */
+QSpinBox::up-button
+{
+    border: 0px solid #788cba;
+    background-color: rgba(46, 46, 46, 0);
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    min-width: 16px;
+    min-height: 7px;
+}
+
+QSpinBox[UpDownBtnBorder = "true"]::up-button
+{
+    border-left: 1px solid #788cba;
+}
+
+QSpinBox[UpDownBtnBorder = "false"]::up-button
+{
+    border: 0px;
+}
+
+/* 由于Qss中后面的样式会覆盖前面样式 */
+/* 因此Focus应该放在最后，否则会失去Focus的样式，后面同 */
+QSpinBox::up-button:focus
+{
+    border-left: 1px solid #788cba;
+}
+
+/* 向下按钮样式 */
+QSpinBox::down-button
+{
+    border: 0px solid #788cba;
+    subcontrol-origin: padding;
+    subcontrol-position: bottom right;
+    min-width: 16px;
+    min-height: 8px;
+}
+
+QSpinBox[UpDownBtnBorder = "true"]::down-button
+{
+    border-left: 1px solid #788cba;
+    border-top: 1px solid #788cba;
+}
+
+QSpinBox[UpDownBtnBorder = "false"]::down-button
+{
+    border: 0px;
+}
+
+QSpinBox::down-button:focus
+{
+    border-left: 1px solid #788cba;
+    border-top: 1px solid #788cba;
+}
+
+/* 向上三角样式 */
+QSpinBox::up-arrow
+{
+    image: url(:/icons/arrowup.png);
+    min-width: 8px;
+    min-height: 5px;
+}
+
+QSpinBox::up-arrow:hover,
+QSpinBox::up-arrow:pressed
+{
+    image: url(:/icons/arrowuphover.png);    
+}
+
+/* 向下三角样式 */
+QSpinBox::down-arrow
+{
+    image: url(:/icons/arrowdown.png);
+    min-width: 8px;
+    min-height: 5px;
+}
+
+QSpinBox::down-arrow:hover,
+QSpinBox::down-arrow:pressed
+{
+    image: url(:/icons/arrowdownhover.png);
+}
+
+/* QDoubleSpinBox基本样式 */
+QDoubleSpinBox
+{
+    padding: 0px 6px 0px 2px;
+    font: 12px solid;
+    color: #6f6f6f;
+    selection-background-color:#a1c3ee;
+    selection-color:#455059;
+}
+
+/* 有边框时的样式 */
+QDoubleSpinBox[border = "true"]
+{
+    border: 1px solid #d7d7da;
+}
+
+QDoubleSpinBox[border = "true"]:hover,
+QDoubleSpinBox[border = "true"]:focus
+{
+    border: 1px solid #39a9d1;
+}
+
+/* 无边框时的样式 */
+QDoubleSpinBox[border = "false"]
+{
+    border: 0px;
+}
+
+/* 向上按钮样式 */
+QDoubleSpinBox::up-button
+{
+    border: 0px solid #788cba;
+    background-color: rgba(46, 46, 46, 0);
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    min-width: 16px;
+    min-height: 7px;
+}
+
+QDoubleSpinBox[UpDownBtnBorder = "true"]::up-button
+{
+    border-left: 1px solid #788cba;
+}
+
+QDoubleSpinBox[UpDownBtnBorder = "false"]::up-button
+{
+    border: 0px;
+}
+
+QDoubleSpinBox::up-button:focus
+{
+    border-left: 1px solid #788cba;
+}
+
+/* 向下按钮样式 */
+QDoubleSpinBox::down-button
+{
+    border: 0px solid #788cba;
+    subcontrol-origin: padding;
+    subcontrol-position: bottom right;
+    min-width: 16px;
+    min-height: 8px;
+}
+
+QDoubleSpinBox[UpDownBtnBorder = "true"]::down-button
+{
+    border-left: 1px solid #788cba;
+    border-top: 1px solid #788cba;
+}
+
+QDoubleSpinBox[UpDownBtnBorder = "false"]::down-button
+{
+    border: 0px;
+}
+
+QDoubleSpinBox::down-button:focus
+{
+    border-top: 1px solid #788cba;
+    border-left: 1px solid #788cba;
+}
+
+/* 向上三角样式 */
+QDoubleSpinBox::up-arrow
+{
+    image: url(:/icons/arrowup.png);
+    min-width: 8px;
+    min-height: 5px;
+}
+
+QDoubleSpinBox::up-arrow:hover,
+QDoubleSpinBox::up-arrow:pressed
+{
+    image: url(:/icons/arrowuphover.png);
+}
+
+QDoubleSpinBox::down-arrow
+{
+    image: url(:/icons/arrowdown.png);
+    min-width: 8px;
+    min-height: 5px;
+}
+
+QDoubleSpinBox::down-arrow:hover,
+QDoubleSpinBox::down-arrow:pressed
+{
+    image: url(:/icons/arrowdownhover.png);
+}

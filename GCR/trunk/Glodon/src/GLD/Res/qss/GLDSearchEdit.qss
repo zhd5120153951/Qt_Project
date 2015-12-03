@@ -1,0 +1,50 @@
+QLineEdit#GLDSearchEdit[hasFocus="false"]{border: 1px solid #d7d6db; }
+QLineEdit#GLDSearchEdit[hasFocus="true"]{border: 1px solid #569de5; }
+
+QPushButton[searching="false"][hasFocus="false"]{
+    border-image:url(:/icons/GLDSearchEdit_Search.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="false"][hasFocus="true"]{
+    border-image:url(:/icons/GLDSearchEdit_Search_Focus.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="true"][hasFocus="false"]:hover{
+    border-image:url(:/icons/GLDSearchEdit_Clear_Hove.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="true"][hasFocus="false"]:pressed{
+    border-image:url(:/icons/GLDSearchEdit_Clear_Press.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="true"][hasFocus="false"]{
+    border-image:url(:/icons/GLDSearchEdit_Clear_Norm.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="true"][hasFocus="true"]:hover{
+    border-image:url(:/icons/GLDSearchEdit_Clear_Hove_Focus.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="true"][hasFocus="true"]:pressed{
+    border-image:url(:/icons/GLDSearchEdit_Clear_Press_Focus.png);
+    min-width:34px;
+    min-height:25px;
+}
+
+QPushButton[searching="true"][hasFocus="true"]{
+    border-image:url(:/icons/GLDSearchEdit_Clear_Norm_Focus.png);
+    min-width:34px;
+    min-height:25px;
+}

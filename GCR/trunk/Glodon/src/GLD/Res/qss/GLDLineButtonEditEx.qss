@@ -1,0 +1,76 @@
+[EllipsisButtonWrap = "GLDLineButtonEditEx"],
+[EllipsisButtonWrap = "GLDLineButtonEditEx"]:hover {
+    border: 1px solid #39a9d1;
+/*    min-height: 16px;
+    min-width: 10px;
+    max-width: 500px;*/
+    background-color: #fff;
+}
+
+[EllipsisButtonWrap = "GLDLineButtonEditEx"] QLineEdit {
+    padding-left: 2px;
+    min-height: 16px;
+    color: #435057;
+    background-color: white;
+    border: 1px solid #39a9d1;
+    margin-right: 2px;
+    selection-background-color: #a1c3ee;
+    selection-color: #455059
+}
+
+[EllipsisButtonWrap = "GLDLineButtonEditEx"] QPushButton {
+    min-height: 10px;
+    border: 1px solid #5da7e5;
+    margin: 3px 3px 4px 0px;
+    border-radius: 2px;
+    color: #f2f6fa;
+    font-size: 12px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(242, 246, 250, 255), stop:1 rgba(233,237,244, 255));
+    background-image: url(:/icons/GLDLineButtonEditEx-ellipsis.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+[EllipsisButtonWrap = "GLDLineButtonEditEx"] QPushButton:hover {
+    border: 1px solid #de9a53;
+}
+
+/* 无边框时的样式 */
+[EllipsisButtonWrap = "noborder"],
+[EllipsisButtonWrap = "noborder"]:hover {
+    border: 0px;
+/*    min-height: 16px;
+    min-width: 10px;
+    max-width: 500px;*/
+    background-color: #fff;
+}
+
+[EllipsisButtonWrap = "noborder"] QLineEdit {
+    padding-left: 2px;
+    min-height: 16px;
+    color: #435057;
+    background-color: white;
+    border: 0px;
+    margin-right: 2px;
+    selection-background-color: #a1c3ee;
+    selection-color: #455059
+}
+
+[EllipsisButtonWrap = "noborder"] QPushButton {
+    min-height: 10px;
+    background-color: #fff;
+    border: 1px solid #5da7e5;
+    margin: 3px;
+    margin-left: 0px;
+    border-radius: 2px;
+    color: #fff;
+    text-decoration: none;
+    background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(242, 246, 250, 255), stop:1 rgba(233,237,244, 255));
+    background-image: url(:/icons/GLDLineButtonEditEx-ellipsis.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+[EllipsisButtonWrap = "noborder"] QPushButton:hover {
+    border: 1px solid #de9a53;
+}

@@ -1,0 +1,141 @@
+GLDToolBox
+{
+    padding:0px, 0px, 0px, 0px;
+}
+
+GLDToolBoxButton
+{
+    background-color: #f6fbfc;
+    color: #6d6d6d;
+}
+
+GLDToolBoxButton[GLDCurrentBtn = "NoSelected"]
+{
+    background-color: #f6fbfc;
+    color: #6d6d6d;
+}
+
+GLDToolBoxButton[GLDCurrentBtn = "Selected"]
+{
+    background-color: #439cf3;
+    color: #f6fbfc;
+}
+
+QListView
+{
+    outline:0px;
+    border: 1px solid #c6d1de;
+    margin-bottom: 0px;
+    background-color: #f6fbfc;
+}
+
+QListView::item
+{
+    background-color:#f6fbfc;
+    min-height:28px;
+    font-size:12px;
+    color:#595959;
+    padding-left:28px;
+}
+
+QListView::item:hover
+{
+    background-color:#e7e7e7;
+    min-height:28px;
+    font-size:12px;
+    color:#595959;
+    padding-left:28px;
+}
+
+QListView::item:selected
+{
+    background-color:#b6e6f0;
+    color:#595959;
+    min-height:28px;
+    font-size:12px;
+    outline:0px;
+    padding-left:28px;
+}
+
+QListView::item:selected:active
+{
+    background-color:#b6e6f0;
+    color:#595959;
+    min-height:28px;
+    font-size:12px;
+    outline:0px;
+    padding-left:28px;
+}
+
+QListView::item:selected:!active
+{
+    background-color:#b6e6f0;
+    min-height:28px;
+    font-size:12px;
+    outline:0px;
+    padding-left:28px;
+}
+
+QTreeView
+{
+    outline:0px;
+    border: 1px solid #c6d1de;
+    margin-bottom: 0px;
+}
+
+QTreeView::item
+{
+    background-color:#f6fbfc;
+    min-height:28px;
+    font-size:12px;
+    color:#595959;
+    padding-left:5px;
+}
+
+QTreeView::item:has-children
+{
+    min-height:28px;
+    font-size: 18px;
+    color:#022846;
+    padding-left:5px;
+}
+
+QTreeView::item:hover
+{
+    background-color:#e7e7e7;
+    min-height:28px;
+    font-size:12px;
+    color:#595959;
+    padding-left:5px;
+}
+
+QTreeView::item:selected
+{
+    background-color:#b6e6f0;
+    min-height:28px;
+    font-size:12px;
+    outline:0px;
+    padding-left:5px;
+    outline:0px;
+}
+
+QTreeView::item:selected:active
+{
+    background-color:#b6e6f0;
+    min-height:28px;
+    font-size:12px;
+    outline:0px;
+    padding-left:5px;
+    outline:0px;
+}
+
+QTreeView::item:selected:!active
+{
+    background-color:#b6e6f0;
+    min-height:28px;
+    font-size:12px;
+    outline:0px;
+    padding-left:5px;
+    outline:0px;
+}
+
