@@ -78,12 +78,9 @@ void Dialog::initUI()
     btn->setPalette(palette);
     btn->setFlat(true);
 
-//    m_pMask = GLDMaskBox::createMaskFor(m_btn1, btn, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png");
     m_pMask = GLDMaskBox::createMaskFor(m_btn1, btn, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "config.ini");
 
     connect(btn, &QPushButton::clicked, this, &Dialog::showMask);
-//    connect(m_btn1, &QPushButton::clicked, m_pMask, &GLDMaskBox::customClicked);
-//    connect(m_pMask, &GLDMaskBox::customClicked, this, &Dialog::showMask);
 }
 
 void Dialog::showPosition()
@@ -93,6 +90,5 @@ void Dialog::showPosition()
 
 void Dialog::showMask()
 {
-//    disconnect(m_pMask, &GLDMaskBox::customClicked, this, &Dialog::showMask);
     GLDMaskBox::createMaskFor(m_textEdt, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "config.ini");
 }

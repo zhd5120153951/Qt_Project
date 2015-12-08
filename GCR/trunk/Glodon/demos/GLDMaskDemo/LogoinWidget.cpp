@@ -64,12 +64,10 @@ LogoinWidget::LogoinWidget(QWidget *parent)
     pIKnow->setFlat(true);
 
     pMask = GLDMaskBox::createMaskFor(m_logoin, pIKnow, exePath() + "/images/Msg/login.png", "", exePath() + "/config/config.ini");
-    //connect(btn, &QPushButton::clicked, this, &LogoinWidget::showDialog);
 
     pMask->setArrowColor(QColor(Qt::red));
     pMask->setArrowLineWidth(2);
     connect(m_logoin, &QPushButton::clicked, this, &LogoinWidget::showDialog);
-    //connect(pMask, &GLDMaskBox::customClicked, this, &LogoinWidget::showDialog);
 }
 
 LogoinWidget::~LogoinWidget()
@@ -79,8 +77,6 @@ LogoinWidget::~LogoinWidget()
 
 void LogoinWidget::showDialog()
 {
-    //disconnect(pMask, &GLDMaskBox::customClicked, this, &LogoinWidget::showDialog);
-    //pMask->close();
     m_dialog = new Dialog(this);
     m_dialog->show();
 }
