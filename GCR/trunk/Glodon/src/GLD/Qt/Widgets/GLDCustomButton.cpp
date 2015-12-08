@@ -1,6 +1,6 @@
 #include "GLDCustomButton.h"
-#include <QPainter>
 
+#include <QPainter>
 
 GLDCustomButton::GLDCustomButton(QWidget *parent)
     : QPushButton(parent)
@@ -13,9 +13,12 @@ GLDCustomButton::GLDCustomButton(const QString &iconPath, QWidget* parent)
     : QPushButton(parent)
     , m_pixmap("")
 {
-    QPixmap btnPixmap;
-    btnPixmap.load(iconPath);
-    setPixmap(btnPixmap);
+    if (iconPath != "")
+    {
+        QPixmap btnPixmap;
+        btnPixmap.load(iconPath);
+        setPixmap(btnPixmap);
+    }
 }
 
 void GLDCustomButton::setPixmap(const QPixmap& pm)
@@ -37,6 +40,11 @@ QSize GLDCustomButton::sizeHint() const
 void GLDCustomButton::paintEvent(QPaintEvent* e)
 {
     Q_UNUSED(e);
+
     QPainter p(this);
-    p.drawPixmap(0, 0, m_pixmap);
+
+    if (!m_pixmap.isNull())
+    {
+        p.drawPixmap(0, 0, m_pixmap);
+    }
 }

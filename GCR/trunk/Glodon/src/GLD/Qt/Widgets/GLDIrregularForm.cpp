@@ -1,16 +1,14 @@
 #include "GLDCustomButton.h"
 #include "GLDIrregularForm.h"
 
-#include <QLabel>
-#include <QDebug>
 #include <QPainter>
-#include <QPalette>
 #include <QMouseEvent>
 #include <QApplication>
 #include <QDesktopWidget>
 
 GLDIrregularForm::GLDIrregularForm(QWidget *parent)
     : QWidget(parent)
+    , m_pPushBtn(nullptr)
     , m_pCustomBtn(nullptr)
     , m_irregularFormPm("")
 {
@@ -19,9 +17,10 @@ GLDIrregularForm::GLDIrregularForm(QWidget *parent)
 
 GLDIrregularForm::GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent)
     : QWidget(parent)
+    , m_pPushBtn(nullptr)
     , m_pCustomBtn(new GLDCustomButton(btnImgPath, this))
     , m_irregularFormPm("")
-{
+{    
     setFlagAndAttribute();
 
     loadPixmap(irregularImgPath);
@@ -29,11 +28,34 @@ GLDIrregularForm::GLDIrregularForm(const QString & irregularImgPath, const QStri
     connect(m_pCustomBtn, &QPushButton::clicked, this, &GLDIrregularForm::irregularFormClicked);
 }
 
+GLDIrregularForm::GLDIrregularForm(const QString &irregularImgPath, QPushButton *btn, QWidget *parent)
+    : QWidget(parent)
+    , m_pPushBtn(btn)
+    , m_pCustomBtn(nullptr)
+    , m_irregularFormPm("")
+{
+    setFlagAndAttribute();
+
+    btn->setParent(this);
+
+    loadPixmap(irregularImgPath);
+
+    if (m_pPushBtn)
+    {
+        connect(m_pPushBtn, &QPushButton::clicked, this, &GLDIrregularForm::irregularFormClicked);
+    }
+    else
+    {
+        connect(m_pCustomBtn, &QPushButton::clicked, this, &GLDIrregularForm::irregularFormClicked);
+    }
+}
+
 void GLDIrregularForm::setFlagAndAttribute()
 {
-    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
 
 GLDIrregularForm::~GLDIrregularForm()
@@ -43,6 +65,9 @@ GLDIrregularForm::~GLDIrregularForm()
 
 QSize GLDIrregularForm::sizeHint() const
 {
+    int width = QApplication::desktop()->screenGeometry().width();
+    int height = QApplication::desktop()->screenGeometry().height();
+
     if (!m_irregularFormPm.isNull())
     {
         return m_irregularFormPm.size();
@@ -68,7 +93,14 @@ void GLDIrregularForm::paintEvent(QPaintEvent *event)
 {
     QPainter painter(this);
 
-    m_pCustomBtn->move(this->rect().topRight().x() - m_pCustomBtn->width(), this->rect().topRight().y());
+    if (m_pPushBtn)
+    {
+        m_pPushBtn->move(this->rect().topRight().x() - m_pPushBtn->width(), this->rect().topRight().y());
+    }
+    else
+    {
+        m_pCustomBtn->move(this->rect().topRight().x() - m_pCustomBtn->width(), this->rect().topRight().y());
+    }
 
     painter.drawPixmap(0, 0, m_irregularFormPm);
 

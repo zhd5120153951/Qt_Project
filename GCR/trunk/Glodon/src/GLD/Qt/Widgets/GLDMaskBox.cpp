@@ -15,7 +15,7 @@ GLDMaskBox::GLDMaskBox(QWidget *parent)
     , m_pSettings(nullptr)
     , m_bShowMask(false)
 {
-    m_pTipBox = new GLDIrregularForm(""/*exePath() + "/images/Msg/login.png"*/,""/* exePath() + "/images/Msg/know.png"*/, this);
+    m_pTipBox = new GLDIrregularForm("", "", this);
 
     setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
 
@@ -34,11 +34,38 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent)
 {
     m_oMaskBoxParam = param;
     m_pClippedWgt = param.m_maskWidget;
+
     m_pTipBox = new GLDIrregularForm(param.m_strTipPath, param.m_strBtnPath, this);
+    connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
 
     setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
+}
 
-    connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
+GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, QPushButton *btn, QWidget *parent)
+    : QWidget(parent)
+    , m_maskColor(GLDMaskBox::GrayColor)
+    , m_pClippedWgt(nullptr)
+    , m_pTipBox(nullptr)
+    , m_pSettings(nullptr)
+    , m_bShowMask(false)
+    , m_arrowColor(QColor(1, 169, 240))
+    , m_arrowLineWidth(2)
+{
+    m_oMaskBoxParam = param;
+    m_pClippedWgt = param.m_maskWidget;
+
+    if (!btn)
+    {
+        m_pTipBox = new GLDIrregularForm(param.m_strTipPath, param.m_strBtnPath, this);
+        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
+    }
+    else
+    {
+        m_pTipBox = new GLDIrregularForm(param.m_strTipPath, btn, this);
+        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
+    }
+
+    setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
 }
 
 GLDMaskBox::~GLDMaskBox()
@@ -59,11 +86,8 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
     QPoint ptGlobalTopLeft = m_pClippedWgt->mapToParent(clippedWgtTopLeft);
     QRect pOwnerRect(ptGlobalTopLeft.x(), ptGlobalTopLeft.y(), nClippedWidgetWidth, nClippedWidgetHeight);
 
-
-
     QPoint clippedWgtTopRight = m_pClippedWgt->rect().topRight();
     QPoint ptGlobalTopRight = m_pClippedWgt->mapToParent(clippedWgtTopRight);
-
 
     int w = GLDCBB::topParentWidget(m_pClippedWgt)->width();
 
@@ -71,7 +95,7 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
 
     if(param.m_quadrant == CoordinateParam::Third || param.m_quadrant == CoordinateParam::Fourth)
     {
-        if(w - ptGlobalTopRight.x() > m_pTipBox->width() && ptGlobalTopRight.y() > m_pTipBox->height())
+//        if(w - ptGlobalTopRight.x() > m_pTipBox->width() && ptGlobalTopRight.y() > m_pTipBox->height())
         {
             QPoint endPoint;
             drawLeftBottomArrow(param.m_point, endPoint, painter);
@@ -138,7 +162,7 @@ void GLDMaskBox::drawMask(QPainter & painter)
 
     painter.setCompositionMode(mode);
     painter.setBrush(Qt::NoBrush);
-    painter.setPen(QPen(color, 2));
+    painter.setPen(QPen(color, 1));
     painter.drawRect(globalTopLeft.x(), globalTopLeft.y(), clippedWgtWidth, clippedWgtHeight);
 }
 
@@ -149,6 +173,7 @@ void GLDMaskBox::drawLeftTopArrow(QPoint &startPoint, QPoint &endPoint, QPainter
 
     int x1 = x + 70;
     int y1 = y + 50;
+
     endPoint = QPoint(x1, y1);
 
     painter.setPen(QPen(m_arrowColor, m_arrowLineWidth));
@@ -222,6 +247,86 @@ void GLDMaskBox::drawLeftBottomArrow(QPoint &startPoint, QPoint &endPoint, QPain
     painter.drawLine(line2);
 }
 
+void GLDMaskBox::drawTopRightArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter)
+{
+    int x = startPoint.x();
+    int y = startPoint.y();
+
+    int x1 = x - 70;
+    int y1 = y + 50;
+    endPoint = QPoint(x1, y1);
+
+    painter.setPen(QPen(m_arrowColor, m_arrowLineWidth));
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPainterPath path;
+    path.moveTo(startPoint);
+
+    QPoint point1((x - (x - x1) * 3 / 10), (y + (y1 - y) * 4 / 7));
+    QPoint point2((x - (x - x1) * 4 / 10), (y + (y1 - y) * 6 / 7));
+    QPoint point3((x - (x - x1) * 8 / 10), (y + (y1 - y) * 3 / 7));
+    path.cubicTo(point1, point2, point3);
+
+
+    QPoint point4((x - (x - x1) * 5 / 10), (y + (y1 - y) * 1 / 7));
+    QPoint point5((x - (x - x1) * 3 / 10), (y + (y1 - y) * 2 / 7));
+    QPoint point6((x - (x - x1) * 4 / 10), (y + (y1 - y) * 9 / 14));
+    path.cubicTo(point4, point5, point6);
+
+    QPoint point7((x - (x - x1) * 5 / 10), (y + (y1 - y) * 6 / 7));
+    QPoint point8((x - (x - x1) * 5 / 10), (y + (y1 - y) * 7 / 7));
+    path.cubicTo(point7, point8, endPoint);
+
+    painter.drawPath(path);
+
+    int xOffset = (y1 - y) / 5;
+    int yOffset = (x - x1) / 7;
+    QLine line1(startPoint, QPoint(x - xOffset * 3 / 2, y + yOffset / 2));
+    QLine line2(startPoint, QPoint(x, y + yOffset));
+    painter.drawLine(line1);
+    painter.drawLine(line2);
+}
+
+void GLDMaskBox::drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter)
+{
+    int x = startPoint.x();
+    int y = startPoint.y();
+
+    int x1 = x - 70;
+    int y1 = y - 50;
+    endPoint = QPoint(x1, y1);
+
+    painter.setPen(QPen(m_arrowColor, m_arrowLineWidth));
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPainterPath path;
+    path.moveTo(startPoint);
+
+    QPoint point1((x - (x - x1) * 3 / 10), (y - (y - y1) * 4 / 7));
+    QPoint point2((x - (x - x1) * 4 / 10), (y - (y - y1) * 6 / 7));
+    QPoint point3((x - (x - x1) * 8 / 10), (y - (y - y1) * 3 / 7));
+    path.cubicTo(point1, point2, point3);
+
+
+    QPoint point4((x - (x - x1) * 5 / 10), (y - (y - y1) * 1 / 7));
+    QPoint point5((x - (x - x1) * 3 / 10), (y - (y - y1) * 2 / 7));
+    QPoint point6((x - (x - x1) * 4 / 10), (y - (y - y1) * 9 / 14));
+    path.cubicTo(point4, point5, point6);
+
+    QPoint point7((x - (x - x1) * 5 / 10), (y - (y - y1) * 6 / 7));
+    QPoint point8((x - (x - x1) * 5 / 10), (y - (y - y1) * 7 / 7));
+    path.cubicTo(point7, point8, endPoint);
+
+    painter.drawPath(path);
+
+    int xOffset = (x - x1) / 5;
+    int yOffset = (y - y1) / 7;
+    QLine line1(startPoint, QPoint(x - 2, y - xOffset));
+    QLine line2(startPoint, QPoint(x - xOffset, y - yOffset));
+    painter.drawLine(line1);
+    painter.drawLine(line2);
+}
+
 void GLDMaskBox::mousePressEvent(QMouseEvent * event)
 {
     QPoint ptGlobalOwnerCenter = m_pClippedWgt->mapToParent(m_pClippedWgt->rect().topLeft());
@@ -230,6 +335,7 @@ void GLDMaskBox::mousePressEvent(QMouseEvent * event)
 
     if (rect.contains(event->pos()))
     {
+        close();
         emit customClicked();
     }
 
@@ -239,11 +345,6 @@ void GLDMaskBox::mousePressEvent(QMouseEvent * event)
 void GLDMaskBox::openIniFile(const QString& filePath)
 {
     Q_ASSERT(!filePath.isEmpty());
-
-    if (filePath.isEmpty())
-    {
-        return;
-    }
 
     m_pSettings = new QSettings(filePath, QSettings::IniFormat, this);
 
@@ -255,14 +356,15 @@ void GLDMaskBox::openIniFile(const QString& filePath)
     setMaskShow();
 }
 
-GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, const QString & tipInfoPath, const QString & btnInfoPath)
+bool GLDMaskBox::isShown(const QString & iniPath)
+{
+    QSettings oInis(iniPath, QSettings::IniFormat);
+    return oInis.value("GLDMask/MaskIsShown").toInt() == 0;
+}
+
+GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, QPushButton *btn, const QString & tipInfoPath, const QString & btnInfoPath, const QString & iniPath)
 {
     GLDMaskBox* pTip = nullptr;
-
-//    if (!m_bShowMask)
-//    {
-//        return nullptr;
-//    }
 
     do
     {
@@ -277,11 +379,19 @@ GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, const QString & tipInfoPa
         param.m_strBtnPath = btnInfoPath;
 
         QWidget* pWidget = GLDCBB::topParentWidget(widget);
-        pTip = new GLDMaskBox(param, pWidget);
+        pTip = new GLDMaskBox(param, btn, pWidget);
 
         m_pMaskBox = pTip;
 
-        pTip->show();
+        //pTip->show();
+        if (pTip->isShown(iniPath))
+        {
+            pTip->show();
+        }
+        else
+        {
+            pTip->hide();
+        }
 
     } while (0);
 
@@ -306,121 +416,6 @@ void GLDMaskBox::setArrowColor(const QColor &color)
 void GLDMaskBox::setArrowLineWidth(const int lineWidth)
 {
     m_arrowLineWidth = lineWidth;
-}
-
-QPoint GLDMaskBox::calcPosOfOwner()
-{
-    QPoint pt(0, 0);
-
-    do
-    {
-        // 计算owner位置对应屏幕中心的象限
-        if (!m_pClippedWgt)
-        {
-            break;
-        }
-
-        QPoint ptGlobalOwnerCenter = m_pClippedWgt->mapToGlobal(m_pClippedWgt->rect().center());
-        QPoint ptGlobalScreen = QApplication::desktop()->screenGeometry().center();
-        QPoint ptDelta = ptGlobalOwnerCenter - ptGlobalScreen;
-
-        if (ptDelta.x() >= 0 && ptDelta.y() <= 0)
-        {
-            // 第一象限
-            pt = QPoint(ptGlobalOwnerCenter.x() - m_pClippedWgt->width()/2,
-                            ptGlobalOwnerCenter.y() + m_pClippedWgt->height()/2);
-            pt += QPoint(-this->width()/2, 0);
-        }
-        else if (ptDelta.x() <= 0 && ptDelta.y() <= 0)
-        {
-            // 第二象限
-            pt = QPoint(ptGlobalOwnerCenter.x() + m_pClippedWgt->width()/2,
-                            ptGlobalOwnerCenter.y() + m_pClippedWgt->height()/2);
-            pt += QPoint(-this->width()/2, 0);
-        }
-        else if (ptDelta.x() <= 0 && ptDelta.y() >= 0)
-        {
-            // 第三象限
-            pt = QPoint(ptGlobalOwnerCenter.x() + m_pClippedWgt->width()/2,
-                            ptGlobalOwnerCenter.y() - m_pClippedWgt->height()/2);
-            pt += QPoint(-this->width()/2, -this->height());
-        }
-        else if (ptDelta.x() >= 0 && ptDelta.y() >= 0)
-        {
-            // 第四象限
-            pt = QPoint(ptGlobalOwnerCenter.x() - m_pClippedWgt->width()/2,
-                        ptGlobalOwnerCenter.y() - m_pClippedWgt->height()/2);
-            pt += QPoint(-this->width()/2, -this->height());
-        }
-
-        // 超出屏幕范围的校准
-        QRect rcThis(pt, pt + QPoint(this->width(), this->height()));
-        QRect rcScreen = QApplication::desktop()->screenGeometry();
-
-        if (!rcScreen.contains(rcThis.topLeft()))
-        {
-            int nXOffset = rcThis.topLeft().x() - rcScreen.topLeft().x();
-            int nYOffset = rcThis.topLeft().y() - rcScreen.topLeft().y();
-
-            if (nXOffset < 0)
-            {
-                pt.setX(pt.x() - nXOffset);
-            }
-
-            if (nYOffset < 0)
-            {
-                pt.setY(pt.y() - nYOffset);
-            }
-        }
-        else if (!rcScreen.contains(rcThis.topRight()))
-        {
-            int nXOffset = rcThis.topRight().x() - rcScreen.topRight().x();
-            int nYOffset = rcThis.topRight().y() - rcScreen.topRight().y();
-
-            if (nXOffset > 0)
-            {
-                pt.setX(pt.x() - nXOffset);
-            }
-
-            if (nYOffset < 0)
-            {
-                pt.setY(pt.y() - nYOffset);
-            }
-        }
-        else if (!rcScreen.contains(rcThis.bottomLeft()))
-        {
-            int nXOffset = rcThis.bottomLeft().x() - rcScreen.bottomLeft().x();
-            int nYOffset = rcThis.bottomLeft().y() - rcScreen.bottomLeft().y();
-
-            if (nXOffset < 0)
-            {
-                pt.setX(pt.x() - nXOffset);
-            }
-
-            if (nYOffset > 0)
-            {
-                pt.setY(pt.y() - nYOffset);
-            }
-        }
-        else if (!rcScreen.contains(rcThis.bottomRight()))
-        {
-            int nXOffset = rcThis.bottomRight().x() - rcScreen.bottomRight().x();
-            int nYOffset = rcThis.bottomRight().y() - rcScreen.bottomRight().y();
-
-            if (nXOffset > 0)
-            {
-                pt.setX(pt.x() - nXOffset);
-            }
-
-            if (nYOffset > 0)
-            {
-                pt.setY(pt.y() - nYOffset);
-            }
-        }
-
-    } while(0);
-
-    return pt;
 }
 
 CoordinateParam GLDMaskBox::calcPosOfTipInfo()
@@ -478,7 +473,7 @@ CoordinateParam GLDMaskBox::calcPosOfTipInfo()
 
 void GLDMaskBox::setMaskShow()
 {
-    m_bShowMask = getMaskShow(tr("Mask"), tr("MaskShow"));
+    m_bShowMask = getMaskShow(tr("GLDMask"), tr("MaskIsShow"));
 }
 
 bool GLDMaskBox::getMaskShow(const QString &prefix, const QString &key)
@@ -496,8 +491,6 @@ bool GLDMaskBox::getMaskShow(const QString &prefix, const QString &key)
             // setValue(prefix, key);
             return true;
         }
-
-        return false;
     }
 
     return false;
@@ -526,6 +519,7 @@ void GLDMaskBox::setValue(const QString &prefix, const QString &key)
     Q_ASSERT(m_pSettings != NULL);
 
     m_pSettings->beginGroup(prefix);
+
     m_pSettings->setValue(key, "fasle");
 
     m_pSettings->endGroup();

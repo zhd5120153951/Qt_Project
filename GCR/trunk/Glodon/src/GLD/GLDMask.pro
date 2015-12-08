@@ -3,7 +3,7 @@
 # Project created by QtCreator 2015-12-02T20:26:51
 #
 #-------------------------------------------------
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += core-private widgets
 
 TARGET = GLDMask
 TEMPLATE = lib
@@ -44,10 +44,10 @@ win32-msvc|win32-msvc.net|win32-msvc2002|win32-msvc2003|win32-msvc2005|win32-msv
 INCLUDEPATH += ../../include/GLD
 
 HEADERS += \
-    ../../include/GLD/GLDMaskBox.h \
     ../../include/GLD/GLDMask_Global.h \
+    ../../include/GLD/GLDCustomButton.h \
     ../../include/GLD/GLDIrregularForm.h \
-    ../../include/GLD/GLDCustomButton.h
+    ../../include/GLD/GLDMaskBox.h
 
 SOURCES += \
     Qt/Widgets/GLDMaskBox.cpp \
