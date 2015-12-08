@@ -67,8 +67,10 @@ public:
      */
     inline QColor trackHoverColor() const { return m_scrollBarTrackHoverColor; }
 
+protected:
+    virtual void loadStyleIniFile(const QString &path = ":/inis/scrollstyle.ini");
+
 private:
-    void loadStyleIniFile(const QString &path = ":/inis/scrollstyle.ini");
     void initScrollBar(
             const QStyleOptionComplex * option,
             const QWidget             * widget,
@@ -100,7 +102,6 @@ private:
 
 private:
     bool m_isShowArrow;
-    bool m_bFirstLoad;
     int m_nSliderMinLength;
     int m_nSliderSize;
     int m_nArrowWidth;
@@ -117,5 +118,13 @@ private:
     QColor m_scrollBarHandleHoverColor; // 鼠标划过滚柄时的颜色
     QColor m_scrollBarTrackColor; // 滚动条轨道的默认颜色
     QColor m_scrollBarTrackHoverColor; // 鼠标划过轨道时的颜色
+
+    int m_scrollBarHandleRadiusX;  // 滚动条滚柄圆角x
+    int m_scrollBarHandleRadiusY;  // 滚动条滚柄圆角y
+
+    QString m_strLeftArrowIconPath;
+    QString m_strRightArrowIconPath;
+    QString m_strUpArrowIconPath;
+    QString m_strDownArrowIconPath;
 };
 #endif // GLDSCROLLSTYLE_H

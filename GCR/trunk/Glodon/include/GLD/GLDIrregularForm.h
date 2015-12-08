@@ -4,8 +4,8 @@
 #include "GLDMask_Global.h"
 
 #include <QWidget>
-#include <QPushButton>
 
+class QPushButton;
 class GLDCustomButton;
 
 class GLDMASKSHARED_EXPORT GLDIrregularForm : public QWidget
@@ -14,14 +14,14 @@ class GLDMASKSHARED_EXPORT GLDIrregularForm : public QWidget
 
 public:
     explicit GLDIrregularForm(QWidget *parent = 0);
-    explicit GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent = 0);
-
-    void setFlagAndAttribute();
+    explicit GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent = nullptr);
+    explicit GLDIrregularForm(const QString & irregularImgPath, QPushButton * btn, QWidget *parent = nullptr);
 
     ~GLDIrregularForm();
 
     QSize sizeHint() const;
 
+    void setFlagAndAttribute();
     void loadPixmap(const QString & pixmapPath);
     void setPixmap(const QPixmap & pm);
 
@@ -32,8 +32,9 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
 private:
+    QPushButton*     m_pPushBtn;
     GLDCustomButton* m_pCustomBtn;
-    QPixmap m_irregularFormPm;
+    QPixmap          m_irregularFormPm;
 };
 
 #endif // GLDIRREGULARFORM_H

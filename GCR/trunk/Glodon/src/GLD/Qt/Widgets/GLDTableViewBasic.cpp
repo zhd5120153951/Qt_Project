@@ -1484,6 +1484,9 @@ void GLDTableViewPrivate::calcFixedRowSuitHeight(const QList<int> &oNeedCalcHeig
     {
         int nCurLogicalRow = m_verticalHeader->logicalIndex(nRow);
 
+        if (nCurLogicalRow < 0)
+            return;
+
         if (q->isRowHidden(nCurLogicalRow))
             continue;
 
@@ -1512,6 +1515,9 @@ void GLDTableViewPrivate::calcNormalRowSuitHeight(const QList<int> &oNeedCalcHei
     while ((nTotalRowHeight <= viewport->height()) && (nCurVisualRow < nRowCount))
     {
         int nCurLogicalRow = m_verticalHeader->logicalIndex(nCurVisualRow);
+
+        if (nCurLogicalRow < 0)
+            return;
 
         if (q->isRowHidden(nCurLogicalRow))
         {
@@ -4413,6 +4419,12 @@ void GLDTableView::rowCountChanged(int oldCount, int newCount)
 {
     Q_D(GLDTableView);
 
+    GlodonMultiHeaderView *pMultiVertHeader = dynamic_cast<GlodonMultiHeaderView *>(verticalHeader());
+    if (NULL != pMultiVertHeader)
+    {
+        pMultiVertHeader->initTitles();
+    }
+
     //when removing rows, we need to disable updates for the header until the geometries have been
     //updated and the offset has been adjusted, or we risk calling paintSection for all the sections
     if (newCount < oldCount)
@@ -4443,6 +4455,12 @@ void GLDTableView::columnCountChanged(int oldCount, int newCount)
 
     d->fillSuitColWidthCols();
     d->fillSuitRowHeightCols();
+
+    GlodonMultiHeaderView *pMultiHoriHeader = dynamic_cast<GlodonMultiHeaderView *>(d->m_horizontalHeader);
+    if (NULL != pMultiHoriHeader)
+    {
+        pMultiHoriHeader->initTitles();
+    }
 
     updateGeometries();
 
@@ -4576,7 +4594,7 @@ int GLDTableView::calcSuitHeight(const QList<int> &oNeedCalcHeightCols, int nLog
 int GLDTableView::calcSuitWidth(int nLogicalCol)
 {
     Q_D(GLDTableView);
-    return d->calcSuitWidth(nLogicalCol, true);
+    return d->calcSuitWidth(nLogicalCol, d->m_bCalcAllRows);
 }
 
 int GLDTableView::rowViewportPosition(int row) const
@@ -7898,6 +7916,26 @@ void GLDTableView::dataChanged(const QModelIndex &topLeft, const QModelIndex &bo
     }
 }
 
+void GLDTableView::onHeaderDataChanged(Qt::Orientation orientation, int, int)
+{
+    if (orientation == Qt::Horizontal)
+    {
+        GlodonMultiHeaderView *pMultiHoriHeader = dynamic_cast<GlodonMultiHeaderView *>(horizontalHeader());
+        if (NULL != pMultiHoriHeader)
+        {
+            pMultiHoriHeader->initTitles();
+        }
+    }
+    else
+    {
+        GlodonMultiHeaderView *pMultiVertHeader = dynamic_cast<GlodonMultiHeaderView *>(verticalHeader());
+        if (NULL != pMultiVertHeader)
+        {
+            pMultiVertHeader->initTitles();
+        }
+    }
+}
+
 void GLDTableView::scrollVerticalTo(const QModelIndex &index, ScrollHint &hint, int nCellHeight)
 {
     Q_D(GLDTableView);
@@ -10329,7 +10367,11 @@ void GLDTableView::update(const QModelIndex &logicalIndex)
 void GLDTableView::updateCol(int col)
 {
     Q_D(GLDTableView);
-    d->viewport->update(columnVisualPosition(col), 0, columnWidth(col), d->m_verticalHeader->height());
+
+    QRect oUpdateRect = QRect(columnVisualPosition(col), 0,
+                              columnWidth(col), d->m_verticalHeader->height());
+    QRect oAdjustRect = oUpdateRect.adjusted(-3, -3, 3, 3);
+    d->viewport->update(oAdjustRect);
 
     if (GlodonMultiHeaderView *horizonHeader = dynamic_cast<GlodonMultiHeaderView *>(d->m_horizontalHeader))
     {
@@ -10344,7 +10386,10 @@ void GLDTableView::updateCol(int col)
 void GLDTableView::updateRow(int row)
 {
     Q_D(GLDTableView);
-    d->viewport->update(0, rowVisualPosition(row), d->m_horizontalHeader->width(), rowHeight(row));
+    QRect oUpdateRect = QRect(0, rowVisualPosition(row),
+                              d->m_horizontalHeader->width(), rowHeight(row));
+    QRect oAdjustRect = oUpdateRect.adjusted(-3, -3, 3, 3);
+    d->viewport->update(oAdjustRect);
 
     if (GlodonMultiHeaderView *verticalHeader = dynamic_cast<GlodonMultiHeaderView *>(d->m_verticalHeader))
     {

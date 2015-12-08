@@ -10,7 +10,6 @@
 
 GLDScrollStyle::GLDScrollStyle(QObject *parent, bool isSubControl):
     m_isShowArrow(false),
-    m_bFirstLoad(true),
     m_nSliderMinLength(60),
     m_nSliderSize(8),
     m_nArrowWidth(8),
@@ -25,7 +24,13 @@ GLDScrollStyle::GLDScrollStyle(QObject *parent, bool isSubControl):
     m_scrollBarHandleColor("#648dd8"),
     m_scrollBarHandleHoverColor("#7da6e4"),
     m_scrollBarTrackColor("#ffffff"),
-    m_scrollBarTrackHoverColor("#f4f4f4")
+    m_scrollBarTrackHoverColor("#f4f4f4"),
+    m_scrollBarHandleRadiusX(0),
+    m_scrollBarHandleRadiusY(0),
+    m_strLeftArrowIconPath(":/icons/scrollleftarrow.png"),
+    m_strRightArrowIconPath(":/icons/scrollrightarrow.png"),
+    m_strUpArrowIconPath(":/icons/scrolluparrow.png"),
+    m_strDownArrowIconPath(":/icons/scrolldownarrow.png")
 {
     setParent(parent); // 防止内存泄漏
     setIsShowArrow();
@@ -47,32 +52,36 @@ GLDScrollStyle::~GLDScrollStyle()
 
 void GLDScrollStyle::loadStyleIniFile(const QString &path)
 {
-    if (m_bFirstLoad)
+    if (!fileExists(path))
     {
-		if (!fileExists(path))
-		{
-			return;
-		}
-		QSettings settings(path, QSettings::IniFormat);
-
-        m_nSliderSize = settings.value("sliderSize").toInt();
-        m_nSliderMinLength = settings.value("sliderMinLength").toInt();
-        m_nSubSliderMinLength = settings.value("subSliderMinLength").toInt();
-        m_nArrowWidth = settings.value("arrowWidth").toInt();
-        m_nArrowHeight = settings.value("arrowHeight").toInt();
-        m_nSliderX = settings.value("sliderX").toInt();
-        m_nSliderY = settings.value("sliderY").toInt();
-        m_nArrowX = settings.value("arrowX").toInt();
-        m_nArrowY = settings.value("arrowY").toInt();
-        m_nSliderAddOffset = settings.value("sliderAddOffset").toInt();
-        m_nSliderSubOffset = settings.value("sliderSubOffset").toInt();
-
-        m_scrollBarHandleColor = QColor(settings.value("scrollBarHandleColor").toString());
-        m_scrollBarHandleHoverColor = QColor(settings.value("scrollBarHandleHoverColor").toString());
-        m_scrollBarTrackColor = QColor(settings.value("scrollBarTrackColor").toString());
-        m_scrollBarTrackHoverColor = QColor(settings.value("scrollBarTrackHoverColor").toString());
-        m_bFirstLoad = false;
+        return;
     }
+    QSettings settings(path, QSettings::IniFormat);
+
+    m_nSliderSize = settings.value("sliderSize").toInt();
+    m_nSliderMinLength = settings.value("sliderMinLength").toInt();
+    m_nSubSliderMinLength = settings.value("subSliderMinLength").toInt();
+    m_nArrowWidth = settings.value("arrowWidth").toInt();
+    m_nArrowHeight = settings.value("arrowHeight").toInt();
+    m_nSliderX = settings.value("sliderX").toInt();
+    m_nSliderY = settings.value("sliderY").toInt();
+    m_nArrowX = settings.value("arrowX").toInt();
+    m_nArrowY = settings.value("arrowY").toInt();
+    m_nSliderAddOffset = settings.value("sliderAddOffset").toInt();
+    m_nSliderSubOffset = settings.value("sliderSubOffset").toInt();
+
+    m_scrollBarHandleColor = QColor(settings.value("scrollBarHandleColor").toString());
+    m_scrollBarHandleHoverColor = QColor(settings.value("scrollBarHandleHoverColor").toString());
+    m_scrollBarTrackColor = QColor(settings.value("scrollBarTrackColor").toString());
+    m_scrollBarTrackHoverColor = QColor(settings.value("scrollBarTrackHoverColor").toString());
+
+    m_scrollBarHandleRadiusX = settings.value("xRadius", 0).toInt();
+    m_scrollBarHandleRadiusY = settings.value("yRadius", 0).toInt();
+
+    m_strLeftArrowIconPath = settings.value("leftArrowIconPath").toString();
+    m_strRightArrowIconPath = settings.value("rightArrowIconPath").toString();
+    m_strUpArrowIconPath = settings.value("upArrowIconPath").toString();
+    m_strDownArrowIconPath = settings.value("downArrowIconPath").toString();
 }
 
 void GLDScrollStyle::drawComplexControl(QStyle::ComplexControl control,
@@ -152,23 +161,23 @@ void GLDScrollStyle::drawArrows(
     }
     else
     {
-        drawRectSub.adjust(m_nArrowX, m_nArrowX, m_nArrowX, m_nArrowX);
         if (Direct == Qt::Horizontal)
         {
-            drawRectAdd.adjust(m_nArrowY, m_nArrowX, m_nArrowY, m_nArrowX);
+            drawRectSub.adjust(m_nArrowY, m_nArrowX, m_nArrowY, m_nArrowX);
+            drawRectAdd.adjust(-m_nArrowY, m_nArrowX, -m_nArrowY, m_nArrowX);
 
-            pixmapAdd.load(":/icons/scrollrightarrow.png");
-            pixmapSub.load(":/icons/scrollleftarrow.png");
+            pixmapAdd.load(m_strRightArrowIconPath);
+            pixmapSub.load(m_strLeftArrowIconPath);
         }
         else
         {
-            drawRectAdd.adjust(m_nArrowX, m_nArrowY, m_nArrowX, m_nArrowY);
+            drawRectSub.adjust(m_nArrowX, m_nArrowY, m_nArrowX, m_nArrowY);
+            drawRectAdd.adjust(m_nArrowX, -m_nArrowY, m_nArrowX, -m_nArrowY);
 
-            pixmapAdd.load(":/icons/scrolldownarrow.png");
-            pixmapSub.load(":/icons/scrolluparrow.png");
+            pixmapAdd.load(m_strDownArrowIconPath);
+            pixmapSub.load(m_strUpArrowIconPath);
         }
     }
-
     painter->drawPixmap(drawRectAdd, pixmapAdd);
     painter->drawPixmap(drawRectSub, pixmapSub);
 }
@@ -182,17 +191,18 @@ void GLDScrollStyle::drawSlider(QStyle::SubControls sc,
     QRect drawRect = subControlRect(CC_ScrollBar, option, SC_ScrollBarSlider, widget);
     if (bHorizontal)
     {
-        drawRect.adjust(0, m_nSliderY, 0, m_nSliderY);
+        //drawRect右边有多出的4个px
+        drawRect.adjust(m_nSliderY, m_nSliderX, -(m_nSliderY - 4), m_nSliderX);
         drawRect.setHeight(m_nSliderSize);
     }
     else
     {
-        drawRect.adjust(m_nSliderX, 0, m_nSliderX, 0);
+        drawRect.adjust(m_nSliderX, m_nSliderY, m_nSliderX, -(m_nSliderY - 4));
         drawRect.setWidth(m_nSliderSize);
     }
 
     QPainterPath painterPath;
-    painterPath.addRect(drawRect);
+    painterPath.addRoundedRect(drawRect, m_scrollBarHandleRadiusX, m_scrollBarHandleRadiusY);
     if (sc & SC_ScrollBarSlider)
     {
         painter->fillPath(painterPath, m_scrollBarHandleHoverColor); // 鼠标在滚动柄上时的颜色
@@ -356,16 +366,18 @@ void GLDScrollStyle::drawScrollbar(
         QRect drawRectSub = subControlRect(CC_ScrollBar, option, SC_ScrollBarSubLine, widget);
         if (bHorizontal)
         {
-            drawRectAdd.setWidth(m_nArrowHeight);
-            drawRectAdd.setHeight(m_nArrowWidth);
+            drawRectAdd = QRect(drawRectAdd.left() + drawRectAdd.width() - m_nArrowHeight, drawRectAdd.top(),
+                             m_nArrowHeight, m_nArrowWidth);
+
             drawRectSub.setWidth(m_nArrowHeight);
             drawRectSub.setHeight(m_nArrowWidth);
             drawArrows(painter, drawRectAdd, drawRectSub, Qt::Horizontal, bMouseOver);
         }
         else
         {
-            drawRectAdd.setWidth(m_nArrowWidth);
-            drawRectAdd.setHeight(m_nArrowHeight);
+            drawRectAdd = QRect(drawRectAdd.left(), drawRectAdd.top() + drawRectAdd.height() - m_nArrowHeight,
+                             m_nArrowWidth, m_nArrowHeight);
+
             drawRectSub.setWidth(m_nArrowWidth);
             drawRectSub.setHeight(m_nArrowHeight);
             drawArrows(painter, drawRectAdd, drawRectSub, Qt::Vertical, bMouseOver);

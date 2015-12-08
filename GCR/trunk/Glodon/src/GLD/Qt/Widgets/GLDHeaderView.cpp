@@ -1921,6 +1921,8 @@ void GlodonHeaderView::sectionsInserted(const QModelIndex &parent,
     d->hiddenSectionSize = newHiddenSectionSize;
 
     emit sectionCountChanged(nOldCount, count());
+
+    d->viewport->update();
 }
 
 void GlodonHeaderView::sectionsAboutToBeRemoved(const QModelIndex &parent,
@@ -4255,7 +4257,7 @@ void GlodonHeaderViewPrivate::doBatchResizeSection(const QMap<int, int> &logical
     {
         if (!isInHiddenSection && q->isSectionHidden(oSizeIte.key()))
         {
-            hiddenSectionSize.insert(oSizeIte.value(), oSizeIte.key());
+            hiddenSectionSize.insert(oSizeIte.key(), oSizeIte.value());
         }
         else
         {

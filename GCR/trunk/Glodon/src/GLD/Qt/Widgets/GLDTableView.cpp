@@ -149,7 +149,7 @@ void GlodonTableViewPrivate::doExpand(int item, bool emitSignal)
     q->afterExpandedChanged(item, true, emitSignal);
     // TODO wangdd-a: 展开折叠后，没必要刷整个界面，刷后面的格子就可以了
     q->refreshDisplayColRow();
-    // TODO chensf : 展开后，需要重新计算批注框的显示位置
+    //chensf : 展开后，需要重新计算批注框的显示位置
     q->resetCommentPosition();
 }
 
@@ -166,7 +166,7 @@ void GlodonTableViewPrivate::doCollapse(int item, bool emitSignal)
     m_drawInfo->collapseItem(item);
     q->afterExpandedChanged(item, false, emitSignal);
     q->refreshDisplayColRow();
-    // TODO chensf : 收起时，隐藏相应节点的批注框，同时重新计算批注框的显示位置
+    //chensf : 收起时，隐藏相应节点的批注框，同时重新计算批注框的显示位置
     hideCommentWhenCollapse();
     q->resetCommentPosition();
 }
@@ -1035,6 +1035,9 @@ void GlodonTableView::doSetModel(QAbstractItemModel *model)
                    this, SLOT(_q_updateSpanRemovedRows(QModelIndex, int, int)));
         disconnect(d->m_model, SIGNAL(columnsRemoved(QModelIndex, int, int)),
                    this, SLOT(_q_updateSpanRemovedColumns(QModelIndex, int, int)));
+        disconnect(d->m_model, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
+                   this, SLOT(onHeaderDataChanged(Qt::Orientation, int, int)));
+
         disconnect(d->m_verticalHeader, SIGNAL(scrolled(int)),
                    this, SLOT(onScrolled(int)));
         disconnect(d->m_horizontalHeader, SIGNAL(scrolled(int)),
@@ -1055,6 +1058,9 @@ void GlodonTableView::doSetModel(QAbstractItemModel *model)
                 this, SLOT(_q_updateSpanRemovedRows(QModelIndex, int, int)));
         connect(model, SIGNAL(columnsRemoved(QModelIndex, int, int)),
                 this, SLOT(_q_updateSpanRemovedColumns(QModelIndex, int, int)));
+        connect(model, SIGNAL(headerDataChanged(Qt::Orientation, int, int)),
+                   this, SLOT(onHeaderDataChanged(Qt::Orientation, int, int)));
+
         connect(d->m_verticalHeader, SIGNAL(scrolled(int)),
                 this, SLOT(onScrolled(int)));
         connect(d->m_horizontalHeader, SIGNAL(scrolled(int)),

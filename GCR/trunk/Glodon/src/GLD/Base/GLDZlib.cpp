@@ -154,7 +154,7 @@ int CGLDZlib::newCompress(GStream *inStream, GStream *outStream, bool hasZlibHea
     bool zlibHeaderFlag = hasZlibHeaderFlag;
     z_stream zcpr;
     const int c_DefMaxBufSize = 0x10000;
-    Bytef *compressPtr = (Bytef *)malloc(sizeof(c_DefMaxBufSize) * (c_DefMaxBufSize + 1));
+    Bytef *compressPtr = (Bytef *)gMalloc(sizeof(c_DefMaxBufSize) * (c_DefMaxBufSize + 1));
     unsigned long ninputSize = inStream->size();
     inStream->seek(0);
     /* allocate deflate state */
@@ -214,7 +214,7 @@ int CGLDZlib::newCompress(GStream *inStream, GStream *outStream, bool hasZlibHea
     {
         deflateEnd(&zcpr);
     }
-    freeAndNil(compressPtr);
+    freeAndNilByGFree(compressPtr);
     return nRet;
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +239,7 @@ bool CGLDZlib::unCompress(GStream *inStream, GStream *outStream, GByteArray zlib
     memset(&zcpr, 0, sizeof(z_stream));
     // ≥ı ºªØ
     inflateInit(&zcpr);
-    Bytef *unCompressPtr = (Bytef *)malloc(sizeof(c_DefMaxBufSize) * (c_DefMaxBufSize + 1));
+    Bytef *unCompressPtr = (Bytef *)gMalloc(sizeof(c_DefMaxBufSize) * (c_DefMaxBufSize + 1));
 
     if (zlibHeader.isEmpty())
     {

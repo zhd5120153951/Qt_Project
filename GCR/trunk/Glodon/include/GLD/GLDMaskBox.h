@@ -4,8 +4,9 @@
 #include "GLDMask_Global.h"
 #include "GLDIrregularForm.h"
 
-#include <QPoint>
 #include <QSettings>
+
+class QPushButton;
 
 namespace GLDCBB
 {
@@ -91,7 +92,7 @@ public:
     };
 
 public:
-    static GLDMaskBox* createMaskFor(QWidget* widget, const QString & tipInfoPath = "", const QString & btnInfoPath = "");
+    static GLDMaskBox* createMaskFor(QWidget* widget, QPushButton *btn = nullptr, const QString & tipInfoPath = "", const QString & btnInfoPath = "", const QString & iniPath = "");
 
     /**
      * @brief 设置蒙版颜色
@@ -117,14 +118,14 @@ public:
      */
     void openIniFile(const QString& filePath);
 
+    bool isShown(const QString & iniPath);
+
 private:
     void setMaskShow();
     bool getMaskShow(const QString& prefix, const QString& key);
 
     QString getValue(const QString& prefix, const QString& key);
     void setValue(const QString& prefix, const QString& key);
-
-    QPoint calcPosOfOwner();
 
     /**
      * @brief 计算提示信息位置
@@ -135,6 +136,7 @@ private:
 private:
     GLDMaskBox(QWidget *parent = nullptr);
     GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent = nullptr);
+    GLDMaskBox(GLDMaskBoxParam& param, QPushButton *btn = nullptr, QWidget * parent = nullptr);
     virtual ~GLDMaskBox();
 
 Q_SIGNALS:
@@ -172,6 +174,22 @@ private:
      * @param painter
      */
     void drawLeftBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
+
+    /**
+     * @brief 绘制指向右上角的箭头,即贝塞尔曲线
+     * @param ownerPoint    起点
+     * @param endPoint      终点
+     * @param painter
+     */
+    void drawTopRightArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
+
+    /**
+     * @brief 绘制指向右下的箭头,即贝塞尔曲线
+     * @param ownerPoint    起点
+     * @param endPoint      终点
+     * @param painter
+     */
+    void drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
 private:
     static GLDMaskBox*    m_pMaskBox;

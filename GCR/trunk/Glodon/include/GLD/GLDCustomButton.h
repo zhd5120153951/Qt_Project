@@ -13,11 +13,13 @@ public:
     explicit GLDCustomButton(QWidget* parent = nullptr);
     explicit GLDCustomButton(const QString &iconPath, QWidget* parent = nullptr);
 
-    void setPixmap(const QPixmap& pm);
     QSize sizeHint() const;
 
 protected:
     void paintEvent(QPaintEvent* e);
+
+private:
+    void setPixmap(const QPixmap& pm);
 
 private:
     QPixmap m_pixmap;

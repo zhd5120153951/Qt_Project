@@ -1058,6 +1058,7 @@ public Q_SLOTS:
 
 protected slots:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
+    void onHeaderDataChanged(Qt::Orientation orientation, int, int);
 
     void closeEditor(QWidget *editor, bool &canCloseEditor, GlodonDefaultItemDelegate::EndEditHint hint);
     void commitData(QWidget *editor, bool &canCloseEditor);
