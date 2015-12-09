@@ -152,7 +152,6 @@ public slots:
 protected:
     virtual void paintEvent(QPaintEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
-    bool eventFilter(QObject* watched, QEvent* event);
 
 private:
     /**
@@ -193,19 +192,8 @@ private:
      */
     void drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
-
-    HWND getHandle(QWidget *pWidget)
-    {
-        WId id = pWidget->winId();
-        HWND hwnd = (HWND)id;
-        while (!IsWindow(hwnd))
-        {
-            pWidget = (QWidget *)(pWidget->parent());
-            id = pWidget->winId();
-            hwnd = (HWND)id;
-        }
-        return hwnd;
-    }
+    
+    HWND getHandle(QWidget *pWidget);
 
 private:
     static GLDMaskBox*    m_pMaskBox;

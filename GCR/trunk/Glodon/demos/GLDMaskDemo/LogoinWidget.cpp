@@ -31,8 +31,7 @@ LogoinWidget::LogoinWidget(QWidget *parent)
     pwdLayout->addWidget(m_edtPwd);
 
     QHBoxLayout *btnLayout = new QHBoxLayout;
-    m_logoin = new TestButton(this);
-    m_logoin->setText("login");
+    m_logoin = new QPushButton(tr("login"), this);
     m_cancel = new QPushButton(tr("cancel"), this);
     btnLayout->addWidget(m_logoin);
     btnLayout->addWidget(m_cancel);
@@ -84,7 +83,3 @@ void LogoinWidget::showDialog()
     m_dialog->show();
 }
 
-//void LogoinWidget::mousePressEvent(QMouseEvent *event)
-//{
-//    qDebug() << "LoginWidget mousePressEvent";
-//}

@@ -337,6 +337,21 @@ void GLDMaskBox::drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPai
     painter.drawLine(line2);
 }
 
+HWND GLDMaskBox::getHandle(QWidget *pWidget)
+{
+    WId id = pWidget->winId();
+    HWND hwnd = (HWND)id;
+
+    while (!IsWindow(hwnd))
+    {
+        pWidget = (QWidget *)(pWidget->parent());
+        id = pWidget->winId();
+        hwnd = (HWND)id;
+    }
+
+    return hwnd;
+}
+
 void GLDMaskBox::mousePressEvent(QMouseEvent * event)
 {
     QPoint ptGlobalOwnerCenter = m_pClippedWgt->mapToParent(m_pClippedWgt->rect().topLeft());
@@ -346,54 +361,13 @@ void GLDMaskBox::mousePressEvent(QMouseEvent * event)
     if (rect.contains(event->pos()))
     {
         close();
-        //QPushButton* ptn = dynamic_cast<QPushButton*>(m_pClippedWgt);
-        //ptn->click();
-        //emit customClicked();
-        QCursor::setPos(QPoint(event->pos().x(), event->pos().y() + 20));
-
-        //QMouseEvent pressEvent(QEvent::MouseButtonPress, QPoint(event->pos().x(), event->pos().y() + 20), (Qt::MouseButton)0, 0, 0);
-        //QMouseEvent e(QEvent::MouseButtonRelease, QPoint(event->pos().x(), event->pos().y() + 20), (Qt::MouseButton)0, 0, 0);
-        //QApplication::sendEvent(m_pClippedWgt, &pressEvent);
-        //QApplication::sendEvent(m_pClippedWgt, &e);
 
         HWND hwnd = getHandle(m_pClippedWgt);
         QPoint point = m_pClippedWgt->mapFromGlobal(event->pos());
         SendMessage(hwnd, WM_LBUTTONDOWN, 0, MAKELPARAM(point.x(), point.y()));
-
     }
 
     QWidget::mousePressEvent(event);
-}
-
-bool GLDMaskBox::eventFilter(QObject* watched, QEvent* event)
-{
-    QPoint ptGlobalOwnerCenter = m_pClippedWgt->mapToParent(m_pClippedWgt->rect().topLeft());
-    QRect rect(ptGlobalOwnerCenter.rx(), ptGlobalOwnerCenter.ry(),
-        m_pClippedWgt->width(), m_pClippedWgt->height());
-
-    //if (m_pClippedWgt == watched)
-    {
-        qDebug() << event->type();
-        if (event->type() == QEvent::MouseButtonPress)
-        {
-            QMouseEvent* mouseevent = static_cast<QMouseEvent*>(event);
-            if (rect.contains(mouseevent->pos()))
-            {
-                //QPushButton* ptn = dynamic_cast<QPushButton*>(m_pClippedWgt);
-                //ptn->click();
-                return true;
-            }
-            else
-                return false;
-
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    return QWidget::eventFilter(watched, event);
 }
 
 void GLDMaskBox::openIniFile(const QString& filePath)
@@ -415,9 +389,10 @@ bool GLDMaskBox::canShow()
     if (!m_btnObjectName.isEmpty())
     {
         QSettings oInis(m_iniPath, QSettings::IniFormat);
-        int temp = oInis.value("GLDMask/next").toInt();
         return oInis.value(m_btnObjectName, 0).toInt() == 0;
     }
+
+    return false;
 }
 
 GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, QPushButton *btn, const QString & tipInfoPath, const QString & btnInfoPath, const QString & iniPath)
@@ -543,7 +518,7 @@ bool GLDMaskBox::getMaskShow(const QString &prefix, const QString &key)
     {
         if (strValue == "true")
         {
-            // 这个函数是在最终发布的时候打开，那么蒙版只会在第一次启动的时候被调用
+            // 这个函数是在最终发布的时候打开,那么蒙版只会在第一次启动的时候被调用
             // 暂时在测试功能中，先注掉，方便调试
             // setValue(prefix, key);
             return true;
