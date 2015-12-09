@@ -61,6 +61,7 @@ void Dialog::initUI()
     setLayout(gridLayout);
 
     QPushButton *btn = new QPushButton();
+    btn->setObjectName("next");
 
     QFont font = btn->font();
     font.setPointSize(15);
@@ -78,17 +79,17 @@ void Dialog::initUI()
     btn->setPalette(palette);
     btn->setFlat(true);
 
-    m_pMask = GLDMaskBox::createMaskFor(m_btn1, btn, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "config.ini");
+    m_pMask = GLDMaskBox::createMaskFor(m_btn1, btn, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
 
     connect(btn, &QPushButton::clicked, this, &Dialog::showMask);
 }
 
 void Dialog::showPosition()
 {
-    GLDMaskBox::createMaskFor(m_pNextButton, NULL, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "config.ini");
+    GLDMaskBox::createMaskFor(m_pNextButton, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
 }
 
 void Dialog::showMask()
 {
-    GLDMaskBox::createMaskFor(m_textEdt, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "config.ini");
+    GLDMaskBox::createMaskFor(m_textEdt, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
 }

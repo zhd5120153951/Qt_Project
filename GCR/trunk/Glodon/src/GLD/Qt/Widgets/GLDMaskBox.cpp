@@ -1,6 +1,8 @@
 #include "GLDMaskBox.h"
 
+#include <QDebug>
 #include <QPainter>
+#include <QPushButton>
 #include <QMouseEvent>
 #include <QApplication>
 #include <QDesktopWidget>
@@ -41,7 +43,7 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent)
     setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
 }
 
-GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, QPushButton *btn, QWidget *parent)
+GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, const QString & iniPath, QPushButton *btn, QWidget *parent)
     : QWidget(parent)
     , m_maskColor(GLDMaskBox::GrayColor)
     , m_pClippedWgt(nullptr)
@@ -50,6 +52,7 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, QPushButton *btn, QWidget *parent
     , m_bShowMask(false)
     , m_arrowColor(QColor(1, 169, 240))
     , m_arrowLineWidth(2)
+    , m_iniPath(iniPath)
 {
     m_oMaskBoxParam = param;
     m_pClippedWgt = param.m_maskWidget;
@@ -57,15 +60,18 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, QPushButton *btn, QWidget *parent
     if (!btn)
     {
         m_pTipBox = new GLDIrregularForm(param.m_strTipPath, param.m_strBtnPath, this);
-        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
     }
     else
     {
+        m_btnObjectName = btn->objectName();
         m_pTipBox = new GLDIrregularForm(param.m_strTipPath, btn, this);
-        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
     }
 
+    connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
+
     setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
+
+    m_pClippedWgt->installEventFilter(this);
 }
 
 GLDMaskBox::~GLDMaskBox()
@@ -114,7 +120,11 @@ void GLDMaskBox::paintEvent(QPaintEvent * event)
     rect -= pOwnerRect;
     painter.setClipRegion(rect);
 
+    m_pClippedWgt->setFocusPolicy(Qt::ClickFocus);
+
     drawMask(painter);
+
+    update();
 }
 
 void GLDMaskBox::drawMask(QPainter & painter)
@@ -336,10 +346,54 @@ void GLDMaskBox::mousePressEvent(QMouseEvent * event)
     if (rect.contains(event->pos()))
     {
         close();
-        emit customClicked();
+        //QPushButton* ptn = dynamic_cast<QPushButton*>(m_pClippedWgt);
+        //ptn->click();
+        //emit customClicked();
+        QCursor::setPos(QPoint(event->pos().x(), event->pos().y() + 20));
+
+        //QMouseEvent pressEvent(QEvent::MouseButtonPress, QPoint(event->pos().x(), event->pos().y() + 20), (Qt::MouseButton)0, 0, 0);
+        //QMouseEvent e(QEvent::MouseButtonRelease, QPoint(event->pos().x(), event->pos().y() + 20), (Qt::MouseButton)0, 0, 0);
+        //QApplication::sendEvent(m_pClippedWgt, &pressEvent);
+        //QApplication::sendEvent(m_pClippedWgt, &e);
+
+        HWND hwnd = getHandle(m_pClippedWgt);
+        QPoint point = m_pClippedWgt->mapFromGlobal(event->pos());
+        SendMessage(hwnd, WM_LBUTTONDOWN, 0, MAKELPARAM(point.x(), point.y()));
+
     }
 
     QWidget::mousePressEvent(event);
+}
+
+bool GLDMaskBox::eventFilter(QObject* watched, QEvent* event)
+{
+    QPoint ptGlobalOwnerCenter = m_pClippedWgt->mapToParent(m_pClippedWgt->rect().topLeft());
+    QRect rect(ptGlobalOwnerCenter.rx(), ptGlobalOwnerCenter.ry(),
+        m_pClippedWgt->width(), m_pClippedWgt->height());
+
+    //if (m_pClippedWgt == watched)
+    {
+        qDebug() << event->type();
+        if (event->type() == QEvent::MouseButtonPress)
+        {
+            QMouseEvent* mouseevent = static_cast<QMouseEvent*>(event);
+            if (rect.contains(mouseevent->pos()))
+            {
+                //QPushButton* ptn = dynamic_cast<QPushButton*>(m_pClippedWgt);
+                //ptn->click();
+                return true;
+            }
+            else
+                return false;
+
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return QWidget::eventFilter(watched, event);
 }
 
 void GLDMaskBox::openIniFile(const QString& filePath)
@@ -356,10 +410,14 @@ void GLDMaskBox::openIniFile(const QString& filePath)
     setMaskShow();
 }
 
-bool GLDMaskBox::isShown(const QString & iniPath)
+bool GLDMaskBox::canShow()
 {
-    QSettings oInis(iniPath, QSettings::IniFormat);
-    return oInis.value("GLDMask/MaskIsShown").toInt() == 0;
+    if (!m_btnObjectName.isEmpty())
+    {
+        QSettings oInis(m_iniPath, QSettings::IniFormat);
+        int temp = oInis.value("GLDMask/next").toInt();
+        return oInis.value(m_btnObjectName, 0).toInt() == 0;
+    }
 }
 
 GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, QPushButton *btn, const QString & tipInfoPath, const QString & btnInfoPath, const QString & iniPath)
@@ -379,12 +437,11 @@ GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, QPushButton *btn, const Q
         param.m_strBtnPath = btnInfoPath;
 
         QWidget* pWidget = GLDCBB::topParentWidget(widget);
-        pTip = new GLDMaskBox(param, btn, pWidget);
+        pTip = new GLDMaskBox(param, iniPath, btn, pWidget);
 
         m_pMaskBox = pTip;
 
-        //pTip->show();
-        if (pTip->isShown(iniPath))
+        if (pTip->canShow())
         {
             pTip->show();
         }
@@ -528,4 +585,10 @@ void GLDMaskBox::setValue(const QString &prefix, const QString &key)
 void GLDMaskBox::slotClose()
 {
     this->close();
+
+    if (!m_btnObjectName.isEmpty())
+    {
+        QSettings oInis(m_iniPath, QSettings::IniFormat);
+        oInis.setValue(m_btnObjectName, 1);
+    }
 }

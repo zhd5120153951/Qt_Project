@@ -3,6 +3,7 @@
 
 #include "GLDMask_Global.h"
 #include "GLDIrregularForm.h"
+#include <windows.h>
 
 #include <QSettings>
 
@@ -118,7 +119,7 @@ public:
      */
     void openIniFile(const QString& filePath);
 
-    bool isShown(const QString & iniPath);
+    bool canShow();
 
 private:
     void setMaskShow();
@@ -136,7 +137,7 @@ private:
 private:
     GLDMaskBox(QWidget *parent = nullptr);
     GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent = nullptr);
-    GLDMaskBox(GLDMaskBoxParam& param, QPushButton *btn = nullptr, QWidget * parent = nullptr);
+    GLDMaskBox(GLDMaskBoxParam& param, const QString & iniPath, QPushButton *btn = nullptr, QWidget * parent = nullptr);
     virtual ~GLDMaskBox();
 
 Q_SIGNALS:
@@ -151,6 +152,7 @@ public slots:
 protected:
     virtual void paintEvent(QPaintEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
+    bool eventFilter(QObject* watched, QEvent* event);
 
 private:
     /**
@@ -191,6 +193,20 @@ private:
      */
     void drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
+
+    HWND getHandle(QWidget *pWidget)
+    {
+        WId id = pWidget->winId();
+        HWND hwnd = (HWND)id;
+        while (!IsWindow(hwnd))
+        {
+            pWidget = (QWidget *)(pWidget->parent());
+            id = pWidget->winId();
+            hwnd = (HWND)id;
+        }
+        return hwnd;
+    }
+
 private:
     static GLDMaskBox*    m_pMaskBox;
 
@@ -206,6 +222,8 @@ private:
 
     QColor                m_arrowColor;
     int                   m_arrowLineWidth;
+    QString               m_iniPath;
+    QString               m_btnObjectName;
 };
 
 #endif // GLDMASK_H

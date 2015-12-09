@@ -31,7 +31,8 @@ LogoinWidget::LogoinWidget(QWidget *parent)
     pwdLayout->addWidget(m_edtPwd);
 
     QHBoxLayout *btnLayout = new QHBoxLayout;
-    m_logoin = new QPushButton(tr("login"), this);
+    m_logoin = new TestButton(this);
+    m_logoin->setText("login");
     m_cancel = new QPushButton(tr("cancel"), this);
     btnLayout->addWidget(m_logoin);
     btnLayout->addWidget(m_cancel);
@@ -46,6 +47,7 @@ LogoinWidget::LogoinWidget(QWidget *parent)
     resize(900, 600);
 
     QPushButton *pIKnow = new QPushButton();
+    pIKnow->setObjectName("Iknow");
 
     QFont font = pIKnow->font();
     font.setPointSize(15);
@@ -64,9 +66,9 @@ LogoinWidget::LogoinWidget(QWidget *parent)
     pIKnow->setFlat(true);
 
     pMask = GLDMaskBox::createMaskFor(m_logoin, pIKnow, exePath() + "/images/Msg/login.png", "", exePath() + "/config/config.ini");
-
     pMask->setArrowColor(QColor(Qt::red));
     pMask->setArrowLineWidth(2);
+
     connect(m_logoin, &QPushButton::clicked, this, &LogoinWidget::showDialog);
 }
 
@@ -77,6 +79,12 @@ LogoinWidget::~LogoinWidget()
 
 void LogoinWidget::showDialog()
 {
+    this->close();
     m_dialog = new Dialog(this);
     m_dialog->show();
 }
+
+//void LogoinWidget::mousePressEvent(QMouseEvent *event)
+//{
+//    qDebug() << "LoginWidget mousePressEvent";
+//}
