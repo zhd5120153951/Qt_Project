@@ -2,49 +2,54 @@
 
 #include <QPainter>
 
-GLDCustomButton::GLDCustomButton(QWidget *parent)
-    : QPushButton(parent)
-    , m_pixmap("")
+namespace GlodonMask
 {
-
-}
-
-GLDCustomButton::GLDCustomButton(const QString &iconPath, QWidget* parent)
-    : QPushButton(parent)
-    , m_pixmap("")
-{
-    if (iconPath != "")
+    GLDCustomButton::GLDCustomButton(QWidget *parent)
+        : QPushButton(parent)
+        , m_pixmap("")
     {
-        QPixmap btnPixmap;
-        btnPixmap.load(iconPath);
-        setPixmap(btnPixmap);
-    }
-}
 
-void GLDCustomButton::setPixmap(const QPixmap& pm)
-{
-    m_pixmap = pm;
-    update();
-}
-
-QSize GLDCustomButton::sizeHint() const
-{
-    if (!m_pixmap.isNull())
-    {
-        return m_pixmap.size();
     }
 
-    return QPushButton::sizeHint();
-}
-
-void GLDCustomButton::paintEvent(QPaintEvent* e)
-{
-    Q_UNUSED(e);
-
-    QPainter p(this);
-
-    if (!m_pixmap.isNull())
+    GLDCustomButton::GLDCustomButton(const QString &iconPath, QWidget* parent)
+        : QPushButton(parent)
+        , m_pixmap("")
     {
-        p.drawPixmap(0, 0, m_pixmap);
+        if (iconPath != "")
+        {
+            QPixmap btnPixmap;
+            btnPixmap.load(iconPath);
+            setPixmap(btnPixmap);
+        }
     }
+
+    void GLDCustomButton::setPixmap(const QPixmap& pm)
+    {
+        m_pixmap = pm;
+        update();
+    }
+
+    QSize GLDCustomButton::sizeHint() const
+    {
+        if (!m_pixmap.isNull())
+        {
+            return m_pixmap.size();
+        }
+
+        return QPushButton::sizeHint();
+    }
+
+    void GLDCustomButton::paintEvent(QPaintEvent* e)
+    {
+        Q_UNUSED(e);
+
+        QPainter p(this);
+
+        if (!m_pixmap.isNull())
+        {
+            p.drawPixmap(0, 0, m_pixmap);
+        }
+    }
+
 }
+

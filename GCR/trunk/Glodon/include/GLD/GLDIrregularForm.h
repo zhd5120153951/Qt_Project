@@ -8,47 +8,50 @@
 class QPushButton;
 class GLDCustomButton;
 
-class GLDMASKSHARED_EXPORT GLDIrregularForm : public QWidget
+namespace GlodonMask
 {
-    Q_OBJECT
+    class GLDMASKSHARED_EXPORT GLDIrregularForm : public QWidget
+    {
+        Q_OBJECT
 
-public:
-    explicit GLDIrregularForm(QWidget *parent = 0);
-    explicit GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent = nullptr);
-    explicit GLDIrregularForm(const QString & irregularImgPath, QPushButton * btn, QWidget *parent = nullptr);
+    public:
+        explicit GLDIrregularForm(QWidget *parent = 0);
+        explicit GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent = nullptr);
+        explicit GLDIrregularForm(const QString & irregularImgPath, QPushButton * btn, QWidget *parent = nullptr);
 
-    ~GLDIrregularForm();
+        ~GLDIrregularForm();
 
-    /*
-     * @brief è¿”å›çª—ä½“çš„å¤§å°
-     */
-    QSize sizeHint() const;
+        /*
+        * @brief ·µ»Ø´°ÌåµÄ´óĞ¡
+        */
+        QSize sizeHint() const;
 
-    /**
-    * @brief è®¾ç½®æ ‡å¿—å’Œå±æ€§
-    */
-    void setFlagAndAttribute();
+        /**
+        * @brief ÉèÖÃ±êÖ¾ºÍÊôĞÔ
+        */
+        void setFlagAndAttribute();
 
-    /**
-    * @brief åŠ è½½pixmap
-    */
-    void loadPixmap(const QString & pixmapPath);
+        /**
+        * @brief ¼ÓÔØpixmap
+        */
+        void loadPixmap(const QString & pixmapPath);
 
-    /**
-    * @brief è®¾ç½®pixmap
-    */
-    void setPixmap(const QPixmap & pm);
+        /**
+        * @brief ÉèÖÃpixmap
+        */
+        void setPixmap(const QPixmap & pm);
 
-Q_SIGNALS:
-    void irregularFormClicked();
+    Q_SIGNALS:
+        void irregularFormClicked();
 
-protected:
-    virtual void paintEvent(QPaintEvent *event);
+    protected:
+        virtual void paintEvent(QPaintEvent *event);
 
-private:
-    QPushButton*     m_pPushBtn;        // ç”¨æˆ·æŒ‰é’®
-    GLDCustomButton* m_pCustomBtn;      // è‡ªå®šä¹‰æŒ‰é’®
-    QPixmap          m_irregularFormPm; // éœ€è¦æ˜¾ç¤ºæç¤ºä¿¡æ¯çš„pixmap
-};
+    private:
+        QPushButton*     m_pPushBtn;        // ÓÃ»§°´Å¥
+        GLDCustomButton* m_pCustomBtn;      // ×Ô¶¨Òå°´Å¥
+        QPixmap          m_irregularFormPm; // ĞèÒªÏÔÊ¾ÌáÊ¾ĞÅÏ¢µÄpixmap
+    };
+}
 
 #endif // GLDIRREGULARFORM_H
