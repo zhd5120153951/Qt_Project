@@ -21,7 +21,7 @@ namespace GlodonMask
 
         ~GLDIrregularForm();
 
-        /*
+        /**
         * @brief 返回窗体的大小
         */
         QSize sizeHint() const;
