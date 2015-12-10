@@ -53,6 +53,7 @@ GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, const QString & iniPath, QPushBut
     , m_arrowColor(QColor(1, 169, 240))
     , m_arrowLineWidth(2)
     , m_iniPath(iniPath)
+    , m_btnObjectName("")
 {
     m_oMaskBoxParam = param;
     m_pClippedWgt = param.m_maskWidget;

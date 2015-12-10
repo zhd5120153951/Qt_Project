@@ -1,4 +1,4 @@
-#ifndef GLDMASK_H
+ï»¿#ifndef GLDMASK_H
 #define GLDMASK_H
 
 #include "GLDMask_Global.h"
@@ -74,9 +74,9 @@ public:
         return *this;
     }
 
-    QString  m_strTipPath;      // ÌáÊ¾ĞÅÏ¢
-    QString  m_strBtnPath;      // °´Å¥
-    QWidget* m_maskWidget;      // ĞèÒªÏÔÊ¾ÃÉ°æµÄwidget
+    QString  m_strTipPath;      // æç¤ºä¿¡æ¯è·¯å¾„
+    QString  m_strBtnPath;      // æŒ‰é’®è·¯å¾„
+    QWidget* m_maskWidget;      // éœ€è¦æ˜¾ç¤ºè’™ç‰ˆçš„widget
 };
 
 class GLDMASKSHARED_EXPORT GLDMaskBox : public QWidget
@@ -93,32 +93,40 @@ public:
     };
 
 public:
-    static GLDMaskBox* createMaskFor(QWidget* widget, QPushButton *btn = nullptr, const QString & tipInfoPath = "", const QString & btnInfoPath = "", const QString & iniPath = "");
+    static GLDMaskBox* createMaskFor(QWidget* widget,
+                                     QPushButton *btn = nullptr,
+                                     const QString & tipInfoPath = "",
+                                     const QString & btnInfoPath = "",
+                                     const QString & iniPath = "");
 
     /**
-     * @brief ÉèÖÃÃÉ°æÑÕÉ«
+     * @brief è®¾ç½®è’™ç‰ˆèƒŒæ™¯è‰²
      * @param maskColor
      */
     void setMaskColor(MASKCOLOR maskColor);
 
     /**
-     * @brief ÉèÖÃ¼ıÍ·ÑÕÉ«
+     * @brief è®¾ç½®ç®­å¤´é¢œè‰²
      * @param color
      */
     void setArrowColor(const QColor& color);
 
     /**
-     * @brief ÉèÖÃ¼ıÍ·ÇúÏß¿í¶È
+     * @brief è®¾ç½®ç®­å¤´çº¿æ¡ç²—ç»†
      * @param lineWidth
      */
     void setArrowLineWidth(const int lineWidth);
 
     /**
-     * @brief ¶ÁÈ¡iniÎÄ¼şÓÃÓÚÅĞ¶ÏÊÇ·ñĞèÒªÏÔÊ¾ÃÉ°æ
+     * @brief è¯»å–iniæ–‡ä»¶
      * @param filePath
      */
     void openIniFile(const QString& filePath);
 
+    /**
+    * @brief è¯»å–iniæ–‡ä»¶ç”¨æ¥åˆ¤æ–­æ˜¯å¦æ˜¾ç¤ºè’™ç‰ˆ
+    * @return
+    */
     bool canShow();
 
 private:
@@ -129,7 +137,7 @@ private:
     void setValue(const QString& prefix, const QString& key);
 
     /**
-     * @brief ¼ÆËãÌáÊ¾ĞÅÏ¢Î»ÖÃ
+     * @brief è®¡ç®—æç¤ºä¿¡æ¯ä½ç½®
      * @return
      */
     CoordinateParam calcPosOfTipInfo();
@@ -137,7 +145,8 @@ private:
 private:
     GLDMaskBox(QWidget *parent = nullptr);
     GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent = nullptr);
-    GLDMaskBox(GLDMaskBoxParam& param, const QString & iniPath, QPushButton *btn = nullptr, QWidget * parent = nullptr);
+    GLDMaskBox(GLDMaskBoxParam& param, const QString & iniPath,
+               QPushButton *btn = nullptr, QWidget * parent = nullptr);
     virtual ~GLDMaskBox();
 
 Q_SIGNALS:
@@ -145,7 +154,7 @@ Q_SIGNALS:
 
 public slots:
     /**
-     * @brief ¹Ø±ÕÃÉ°æ
+     * @brief å…³é—­è’™ç‰ˆ
      */
     void slotClose();
 
@@ -155,63 +164,66 @@ protected:
 
 private:
     /**
-     * @brief »æÖÆÃÉ°æ
+     * @brief ç»˜åˆ¶è’™ç‰ˆ
      * @param painter
      */
     void drawMask(QPainter & painter);
 
     /**
-     * @brief »æÖÆÖ¸Ïò×óÉÏ½ÇµÄ¼ıÍ·,¼´±´Èû¶ûÇúÏß
-     * @param ownerPoint    Æğµã
-     * @param endPoint      ÖÕµã
+     * @brief ç»˜åˆ¶æŒ‡å‘å·¦ä¸Šè§’çš„ç®­å¤´
+     * @param startPoint    èµ·ç‚¹
+     * @param endPoint      ç»ˆç‚¹
      * @param painter
      */
     void drawLeftTopArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
     /**
-     * @brief »æÖÆÖ¸Ïò×óÏÂ½ÇµÄ¼ıÍ·,¼´±´Èû¶ûÇúÏß
-     * @param ownerPoint    Æğµã
-     * @param endPoint      ÖÕµã
+     * @brief ç»˜åˆ¶æŒ‡å‘å·¦ä¸‹è§’çš„ç®­å¤´
+     * @param startPoint    èµ·ç‚¹
+     * @param endPoint      ç»ˆç‚¹
      * @param painter
      */
     void drawLeftBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
     /**
-     * @brief »æÖÆÖ¸ÏòÓÒÉÏ½ÇµÄ¼ıÍ·,¼´±´Èû¶ûÇúÏß
-     * @param ownerPoint    Æğµã
-     * @param endPoint      ÖÕµã
+     * @brief ç»˜åˆ¶æŒ‡å‘å³ä¸Šè§’çš„ç®­å¤´
+     * @param startPoint    èµ·ç‚¹
+     * @param endPoint      ç»ˆç‚¹
      * @param painter
      */
     void drawTopRightArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
     /**
-     * @brief »æÖÆÖ¸ÏòÓÒÏÂµÄ¼ıÍ·,¼´±´Èû¶ûÇúÏß
-     * @param ownerPoint    Æğµã
-     * @param endPoint      ÖÕµã
+     * @brief ç»˜åˆ¶æŒ‡å‘å³ä¸‹è§’çš„ç®­å¤´
+     * @param startPoint    èµ·ç‚¹
+     * @param endPoint      ç»ˆç‚¹
      * @param painter
      */
     void drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
-    
+    /**
+     * @brief è·å–widgetçš„é¡¶çº§çˆ¶çª—å£çš„å¥æŸ„
+     * @param pWidget
+     */
     HWND getHandle(QWidget *pWidget);
 
 private:
-    static GLDMaskBox*    m_pMaskBox;
+    static GLDMaskBox*    m_pMaskBox;       // è’™ç‰ˆwidget
 
-    GLDMaskBox::MASKCOLOR m_maskColor;
+    GLDMaskBox::MASKCOLOR m_maskColor;      // è’™ç‰ˆèƒŒæ™¯è‰²
 
-    GLDMaskBoxParam       m_oMaskBoxParam;
+    GLDMaskBoxParam       m_oMaskBoxParam;  // è’™ç‰ˆå‚æ•°
 
-    QWidget*              m_pClippedWgt;
-    QSettings*            m_pSettings;
-    GLDIrregularForm*     m_pTipBox;
+    QWidget*              m_pClippedWgt;    // éœ€è¦æ˜¾ç¤ºè’™ç‰ˆçš„widget
+    QSettings*            m_pSettings;      // iniæ–‡ä»¶è®¾ç½®
+    GLDIrregularForm*     m_pTipBox;        // æç¤ºä¿¡æ¯
 
-    bool                  m_bShowMask;
+    bool                  m_bShowMask;      // æ˜¯å¦æ˜¾ç¤ºè’™ç‰ˆ
 
-    QColor                m_arrowColor;
-    int                   m_arrowLineWidth;
-    QString               m_iniPath;
-    QString               m_btnObjectName;
+    QColor                m_arrowColor;     // ç®­å¤´é¢œè‰²
+    int                   m_arrowLineWidth; // ç®­å¤´çº¿æ¡ç²—ç»†
+    QString               m_iniPath;        // iniæ–‡ä»¶è·¯å¾„
+    QString               m_btnObjectName;  // è‡ªå®šä¹‰æŒ‰é’®å¯¹è±¡å
 };
 
 #endif // GLDMASK_H

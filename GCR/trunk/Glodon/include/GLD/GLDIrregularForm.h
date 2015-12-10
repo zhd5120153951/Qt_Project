@@ -19,10 +19,24 @@ public:
 
     ~GLDIrregularForm();
 
+    /*
+     * @brief 返回窗体的大小
+     */
     QSize sizeHint() const;
 
+    /**
+    * @brief 设置标志和属性
+    */
     void setFlagAndAttribute();
+
+    /**
+    * @brief 加载pixmap
+    */
     void loadPixmap(const QString & pixmapPath);
+
+    /**
+    * @brief 设置pixmap
+    */
     void setPixmap(const QPixmap & pm);
 
 Q_SIGNALS:
@@ -32,9 +46,9 @@ protected:
     virtual void paintEvent(QPaintEvent *event);
 
 private:
-    QPushButton*     m_pPushBtn;
-    GLDCustomButton* m_pCustomBtn;
-    QPixmap          m_irregularFormPm;
+    QPushButton*     m_pPushBtn;        // 用户按钮
+    GLDCustomButton* m_pCustomBtn;      // 自定义按钮
+    QPixmap          m_irregularFormPm; // 需要显示提示信息的pixmap
 };
 
 #endif // GLDIRREGULARFORM_H
