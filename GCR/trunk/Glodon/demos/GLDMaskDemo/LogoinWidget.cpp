@@ -77,7 +77,7 @@ LogoinWidget::~LogoinWidget()
 
 void LogoinWidget::showDialog()
 {
-    this->close();
+    //this->close();
     m_dialog = new CustomDialog(this);
     m_dialog->show();
 }

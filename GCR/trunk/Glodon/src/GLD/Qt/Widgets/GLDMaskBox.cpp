@@ -74,6 +74,8 @@ namespace GlodonMask
         connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
 
         setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
+
+        m_pClippedWgt->installEventFilter(this);
     }
 
     GLDMaskBox::~GLDMaskBox()
@@ -338,22 +340,23 @@ namespace GlodonMask
         return hwnd;
     }
 
-    void GLDMaskBox::mousePressEvent(QMouseEvent * event)
+    bool GLDMaskBox::eventFilter(QObject *watched, QEvent *event)
     {
-        QPoint ptGlobalOwnerCenter = m_pClippedWgt->mapToParent(m_pClippedWgt->rect().topLeft());
-        QRect rect(ptGlobalOwnerCenter.rx(), ptGlobalOwnerCenter.ry(),
-            m_pClippedWgt->width(), m_pClippedWgt->height());
-
-        if (rect.contains(event->pos()))
+        if (watched == m_pClippedWgt && event->type() == QEvent::MouseButtonPress)
         {
-            close();
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent*>(event);
 
-            //HWND hwnd = getHandle(m_pClippedWgt);
-            //QPoint point = m_pClippedWgt->mapFromGlobal(event->pos());
-            //SendMessage(hwnd, WM_LBUTTONDOWN, 0, MAKELPARAM(point.x(), point.y()));
+            if (mouseEvent->button() == Qt::LeftButton)
+            {
+                close();
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        QWidget::mousePressEvent(event);
+        return QWidget::eventFilter(watched, event);
     }
 
     void GLDMaskBox::openIniFile(const QString& filePath)

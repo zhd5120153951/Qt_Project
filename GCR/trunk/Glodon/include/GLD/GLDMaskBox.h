@@ -160,7 +160,7 @@ namespace GlodonMask
 
     protected:
         virtual void paintEvent(QPaintEvent *event);
-        virtual void mousePressEvent(QMouseEvent *event);
+        virtual bool eventFilter(QObject *watched, QEvent *event);
 
     private:
         /**
