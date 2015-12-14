@@ -15,8 +15,10 @@ TEMPLATE = app
 
 greaterThan(QT_MAJOR_VERSION, 4): DEFINES += NOMINMAX
 
-include(E:/repository/qt demo/GCR/trunk/Glodon/shared/GLD.pri)
-include(E:/repository/qt demo/GCR/trunk/Glodon/shared/GLDMask.pri)
+INCLUDEPATH += ../../include/GLD
+
+include($(GLDRS)/Glodon/shared/GLDCommon.pri)
+include($(GLDRS)/Glodon/shared/GLDMask.pri)
 include($(GLDRS)/Glodon/shared/VLD.pri)
 
 SOURCES += main.cpp\

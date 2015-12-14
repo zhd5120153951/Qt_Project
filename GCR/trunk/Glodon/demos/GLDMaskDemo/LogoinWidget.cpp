@@ -4,7 +4,6 @@
 #include <QVBoxLayout>
 
 #include "GLDFileUtils.h"
-#include "GLDMaskBox.h"
 #include "LogoinWidget.h"
 #include "CustomDialog.h"
 
@@ -79,7 +78,7 @@ LogoinWidget::~LogoinWidget()
 void LogoinWidget::showDialog()
 {
     this->close();
-    m_dialog = new Dialog(this);
+    m_dialog = new CustomDialog(this);
     m_dialog->show();
 }
 

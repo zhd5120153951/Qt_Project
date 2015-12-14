@@ -7,8 +7,11 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-class Dialog;
-class GLDMaskBox;
+#include "GLDMaskBox.h"
+
+using namespace GlodonMask;
+
+class CustomDialog;
 
 class LogoinWidget : public QWidget
 {
@@ -33,7 +36,7 @@ private:
     QPushButton* m_logoin;
     QPushButton* m_cancel;
 
-    Dialog*      m_dialog;
+    CustomDialog*      m_dialog;
 
     GLDMaskBox*  pMask;
 };

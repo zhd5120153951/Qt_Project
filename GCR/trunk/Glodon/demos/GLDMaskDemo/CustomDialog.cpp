@@ -1,4 +1,3 @@
-#include "GLDMaskBox.h"
 #include "CustomDialog.h"
 #include "GLDFileUtils.h"
 
@@ -10,7 +9,7 @@
 #include <QTextEdit>
 
 
-Dialog::Dialog(QWidget *parent, Qt::WindowFlags flags)
+CustomDialog::CustomDialog(QWidget *parent, Qt::WindowFlags flags)
     : QDialog(parent, flags)
 {
     initUI();
@@ -19,12 +18,12 @@ Dialog::Dialog(QWidget *parent, Qt::WindowFlags flags)
     setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 }
 
-Dialog::~Dialog()
+CustomDialog::~CustomDialog()
 {
 
 }
 
-void Dialog::initUI()
+void CustomDialog::initUI()
 {
     QGridLayout *gridLayout = new QGridLayout(this);
     gridLayout->setColumnStretch(0, 1);
@@ -81,15 +80,15 @@ void Dialog::initUI()
 
     m_pMask = GLDMaskBox::createMaskFor(m_btn1, btn, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
 
-    connect(btn, &QPushButton::clicked, this, &Dialog::showMask);
+    connect(btn, &QPushButton::clicked, this, &CustomDialog::showMask);
 }
 
-void Dialog::showPosition()
+void CustomDialog::showPosition()
 {
     GLDMaskBox::createMaskFor(m_pNextButton, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
 }
 
-void Dialog::showMask()
+void CustomDialog::showMask()
 {
     GLDMaskBox::createMaskFor(m_textEdt, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
 }

@@ -5,15 +5,17 @@
 
 #include <QDialog>
 
+using namespace GlodonMask;
+
 class QTextEdit;
 
-class Dialog : public QDialog
+class CustomDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit Dialog(QWidget *parent = 0, Qt::WindowFlags flags = 0);
-    ~Dialog();
+    explicit CustomDialog(QWidget *parent = 0, Qt::WindowFlags flags = 0);
+    ~CustomDialog();
 
 protected:
     void initUI();
