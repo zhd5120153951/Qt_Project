@@ -1,5 +1,5 @@
-#ifndef GLDMASK_H
-#define GLDMASK_H
+#ifndef GLDMASKBOX_H
+#define GLDMASKBOX_H
 
 #include "GLDMask_Global.h"
 #include "GLDIrregularForm.h"
@@ -226,4 +226,4 @@ namespace GlodonMask
         QString               m_btnObjectName;  // 自定义按钮对象名
     };
 }
-#endif // GLDMASK_H
+#endif // GLDMASKBOX_H

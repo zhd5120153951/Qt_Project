@@ -74,8 +74,6 @@ namespace GlodonMask
         connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
 
         setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
-
-        m_pClippedWgt->installEventFilter(this);
     }
 
     GLDMaskBox::~GLDMaskBox()
@@ -122,9 +120,7 @@ namespace GlodonMask
 
         QRegion rect = this->rect();
         rect -= pOwnerRect;
-        painter.setClipRegion(rect);
-
-        m_pClippedWgt->setFocusPolicy(Qt::ClickFocus);
+        setMask(rect);
 
         drawMask(painter);
 
@@ -133,8 +129,8 @@ namespace GlodonMask
 
     void GLDMaskBox::drawMask(QPainter & painter)
     {
-        int w = topParentWidget(m_pClippedWgt)->size().width();
-        int h = topParentWidget(m_pClippedWgt)->size().height();
+        const int topWidgetWidth = topParentWidget(m_pClippedWgt)->size().width();
+        const int topWidgetHeight = topParentWidget(m_pClippedWgt)->size().height();
 
         QColor color;
 
@@ -163,21 +159,7 @@ namespace GlodonMask
         painter.setRenderHints(QPainter::SmoothPixmapTransform | QPainter::Antialiasing);
         painter.setPen(QPen(color));
         painter.setBrush(color);
-        painter.drawRect(1, 1, w - 2, h - 2);
-
-        painter.setBrush(color);
-        QPainter::CompositionMode mode = painter.compositionMode();
-        painter.setCompositionMode(QPainter::CompositionMode_Xor);
-
-        int clippedWgtWidth = m_pClippedWgt->size().width();
-        int clippedWgtHeight = m_pClippedWgt->size().height();
-        QPoint globalTopLeft = m_pClippedWgt->mapToParent(m_pClippedWgt->rect().topLeft());
-        painter.drawRect(globalTopLeft.x(), globalTopLeft.y(), clippedWgtWidth, clippedWgtHeight);
-
-        painter.setCompositionMode(mode);
-        painter.setBrush(Qt::NoBrush);
-        painter.setPen(QPen(color, 1));
-        painter.drawRect(globalTopLeft.x(), globalTopLeft.y(), clippedWgtWidth, clippedWgtHeight);
+        painter.drawRect(1, 1, topWidgetWidth - 1, topWidgetHeight - 1);
     }
 
     void GLDMaskBox::drawLeftTopArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter)
@@ -366,9 +348,9 @@ namespace GlodonMask
         {
             close();
 
-            HWND hwnd = getHandle(m_pClippedWgt);
-            QPoint point = m_pClippedWgt->mapFromGlobal(event->pos());
-            SendMessage(hwnd, WM_LBUTTONDOWN, 0, MAKELPARAM(point.x(), point.y()));
+            //HWND hwnd = getHandle(m_pClippedWgt);
+            //QPoint point = m_pClippedWgt->mapFromGlobal(event->pos());
+            //SendMessage(hwnd, WM_LBUTTONDOWN, 0, MAKELPARAM(point.x(), point.y()));
         }
 
         QWidget::mousePressEvent(event);
@@ -459,6 +441,11 @@ namespace GlodonMask
 
     void GLDMaskBox::setArrowLineWidth(const int lineWidth)
     {
+        if (m_arrowLineWidth == lineWidth)
+        {
+            return;
+        }
+
         m_arrowLineWidth = lineWidth;
     }
 
