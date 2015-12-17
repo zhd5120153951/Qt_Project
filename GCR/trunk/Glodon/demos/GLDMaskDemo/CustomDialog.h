@@ -30,6 +30,8 @@ private:
 
     QTextEdit*   m_textEdt;
     GLDMaskBox*  m_pMask;
+    QWidget *m_prevWidget;
+    QWidget *m_nextWidget;
 };
 
 #endif // DIALOG_H

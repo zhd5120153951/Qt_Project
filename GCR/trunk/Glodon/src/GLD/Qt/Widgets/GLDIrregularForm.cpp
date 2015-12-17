@@ -13,6 +13,8 @@ namespace GlodonMask
         , m_pPushBtn(nullptr)
         , m_pCustomBtn(nullptr)
         , m_irregularFormPm("")
+        , m_xPosition(0)
+        , m_yPosition(0)
     {
         setFlagAndAttribute();
     }
@@ -22,6 +24,8 @@ namespace GlodonMask
         , m_pPushBtn(nullptr)
         , m_pCustomBtn(new GLDCustomButton(btnImgPath, this))
         , m_irregularFormPm("")
+        , m_xPosition(0)
+        , m_yPosition(0)
     {
         setFlagAndAttribute();
 
@@ -35,6 +39,8 @@ namespace GlodonMask
         , m_pPushBtn(btn)
         , m_pCustomBtn(nullptr)
         , m_irregularFormPm("")
+        , m_xPosition(0)
+        , m_yPosition(0)
     {
         setFlagAndAttribute();
 
@@ -88,17 +94,23 @@ namespace GlodonMask
         update();
     }
 
+    void GLDIrregularForm::setBtnPos(QAbstractButton* pBtn, const int x, const int y)
+    {
+        m_xPosition = x;
+        m_yPosition = y;
+    }
+
     void GLDIrregularForm::paintEvent(QPaintEvent *event)
     {
         QPainter painter(this);
 
         if (m_pPushBtn)
         {
-            m_pPushBtn->move(this->rect().topRight().x() - m_pPushBtn->width(), this->rect().topRight().y());
+            m_pPushBtn->move(m_xPosition, m_yPosition);
         }
         else
         {
-            m_pCustomBtn->move(this->rect().topRight().x() - m_pCustomBtn->width(), this->rect().topRight().y());
+            m_pCustomBtn->move(m_xPosition, m_yPosition);
         }
 
         painter.drawPixmap(0, 0, m_irregularFormPm);

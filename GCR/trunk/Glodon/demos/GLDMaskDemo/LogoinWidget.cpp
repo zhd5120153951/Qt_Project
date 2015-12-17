@@ -6,6 +6,7 @@
 #include "GLDFileUtils.h"
 #include "LogoinWidget.h"
 #include "CustomDialog.h"
+#include "GLDMaskBoxManger.h"
 
 LogoinWidget::LogoinWidget(QWidget *parent)
     : QWidget(parent)
@@ -44,28 +45,11 @@ LogoinWidget::LogoinWidget(QWidget *parent)
 
     resize(900, 600);
 
-    QPushButton *pIKnow = new QPushButton();
-    pIKnow->setObjectName("Iknow");
+    QList<QWidget *> widgetLst;
+    widgetLst.append(m_logoin);
+    widgetLst.append(m_cancel);
 
-    QFont font = pIKnow->font();
-    font.setPointSize(15);
-    font.setBold(true);
-    font.setFamily(QStringLiteral("华文宋体"));
-    pIKnow->setFont(font);
-
-    pIKnow->setText(QStringLiteral("我知道了"));
-    pIKnow->setFixedSize(128, 40);
-
-    pIKnow->setAutoFillBackground(true);
-    QPalette palette = pIKnow->palette();
-    palette.setColor(QPalette::ButtonText, QColor(Qt::white));
-    palette.setColor(QPalette::Button, QColor(1, 169, 240));
-    pIKnow->setPalette(palette);
-    pIKnow->setFlat(true);
-
-    pMask = GLDMaskBox::createMaskFor(m_logoin, pIKnow, exePath() + "/images/Msg/login.png", "", exePath() + "/config/config.ini");
-    pMask->setArrowColor(QColor(Qt::red));
-    pMask->setArrowLineWidth(2);
+    GLDMaskBoxManger * pManger = new GLDMaskBoxManger(widgetLst, exePath() + "/config/GuideInfo.xml", this);
 
     connect(m_logoin, &QPushButton::clicked, this, &LogoinWidget::showDialog);
 }
@@ -77,7 +61,6 @@ LogoinWidget::~LogoinWidget()
 
 void LogoinWidget::showDialog()
 {
-    //this->close();
     m_dialog = new CustomDialog(this);
     m_dialog->show();
 }

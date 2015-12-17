@@ -4,6 +4,7 @@
 #include "GLDMask_Global.h"
 
 #include <QWidget>
+#include <QAbstractButton>
 
 class QPushButton;
 class GLDCustomButton;
@@ -41,6 +42,11 @@ namespace GlodonMask
         */
         void setPixmap(const QPixmap & pm);
 
+        /**
+        * @brief 设置按钮位置
+        */
+        void setBtnPos(QAbstractButton* pBtn, const int x, const int y);
+
     Q_SIGNALS:
         void irregularFormClicked();
 
@@ -51,6 +57,8 @@ namespace GlodonMask
         QPushButton*     m_pPushBtn;        // 用户按钮
         GLDCustomButton* m_pCustomBtn;      // 自定义按钮
         QPixmap          m_irregularFormPm; // 提示信息pixmap
+        int              m_xPosition;
+        int              m_yPosition;
     };
 }
 

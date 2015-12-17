@@ -21,8 +21,6 @@ public:
     explicit LogoinWidget(QWidget *parent = 0);
     ~LogoinWidget();
 
-signals:
-
 public slots:
     void showDialog();
 

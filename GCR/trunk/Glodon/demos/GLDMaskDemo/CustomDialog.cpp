@@ -58,37 +58,15 @@ void CustomDialog::initUI()
     gridLayout->addWidget(m_textEdt, 3, 0, 2, 5);
 
     setLayout(gridLayout);
-
-    QPushButton *btn = new QPushButton();
-    btn->setObjectName("next");
-
-    QFont font = btn->font();
-    font.setPointSize(15);
-    font.setBold(true);
-    font.setFamily(QStringLiteral("华文宋体"));
-    btn->setFont(font);
-
-    btn->setText(QStringLiteral("下一步"));
-    btn->setFixedSize(128, 40);
-
-    btn->setAutoFillBackground(true);
-    QPalette palette = btn->palette();
-    palette.setColor(QPalette::ButtonText, QColor(Qt::white));
-    palette.setColor(QPalette::Button, QColor(1, 169, 240));
-    btn->setPalette(palette);
-    btn->setFlat(true);
-
-    m_pMask = GLDMaskBox::createMaskFor(m_btn1, btn, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
-
-    connect(btn, &QPushButton::clicked, this, &CustomDialog::showMask);
 }
 
 void CustomDialog::showPosition()
 {
-    GLDMaskBox::createMaskFor(m_pNextButton, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
+    //GLDMaskBox::createMaskFor(m_pNextButton, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/GuideInfo.xml");
 }
 
 void CustomDialog::showMask()
 {
-    GLDMaskBox::createMaskFor(m_textEdt, nullptr, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/config.ini");
+    //GLDMaskBox::createMaskFor(m_textEdt, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/GuideInfo.xml");
 }
+

@@ -1,6 +1,7 @@
 #include "GLDMaskBox.h"
 
 #include <QDebug>
+#include <assert.h>
 #include <QPainter>
 #include <QPushButton>
 #include <QMouseEvent>
@@ -9,73 +10,21 @@
 
 namespace GlodonMask
 {
-    GLDMaskBox* GLDMaskBox::m_pMaskBox = nullptr;
-
-    GLDMaskBox::GLDMaskBox(QWidget *parent)
-        : QWidget(parent)
-        , m_maskColor(GLDMaskBox::GrayColor)
-        , m_pClippedWgt(nullptr)
-        , m_pTipBox(nullptr)
-        , m_pSettings(nullptr)
-        , m_bShowMask(false)
-    {
-        m_pTipBox = new GLDIrregularForm("", "", this);
-
-        setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
-
-        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
-    }
-
     GLDMaskBox::GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent)
-        : QWidget(parent)
-        , m_maskColor(GLDMaskBox::GrayColor)
-        , m_pClippedWgt(nullptr)
-        , m_pTipBox(nullptr)
-        , m_pSettings(nullptr)
-        , m_bShowMask(false)
+        //: QWidget(parent)
+        : m_maskColor(GLDMaskBox::GrayColor)
+        , m_oMaskBoxParam(param)
+        , m_pClippedWgt(param.m_maskWidget)
+        , m_pTipWidget(param.m_pTipWgt)
         , m_arrowColor(QColor(1, 169, 240))
         , m_arrowLineWidth(2)
     {
-        m_oMaskBoxParam = param;
-        m_pClippedWgt = param.m_maskWidget;
-
-        m_pTipBox = new GLDIrregularForm(param.m_strTipPath, param.m_strBtnPath, this);
-        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
-
-        setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
-    }
-
-    GLDMaskBox::GLDMaskBox(GLDMaskBoxParam &param, const QString & iniPath,
-                           QPushButton *btn, QWidget *parent)
-        : QWidget(parent)
-        , m_maskColor(GLDMaskBox::GrayColor)
-        , m_pClippedWgt(nullptr)
-        , m_pTipBox(nullptr)
-        , m_pSettings(nullptr)
-        , m_bShowMask(false)
-        , m_arrowColor(QColor(1, 169, 240))
-        , m_arrowLineWidth(2)
-        , m_iniPath(iniPath)
-        , m_btnObjectName("")
-    {
-        m_oMaskBoxParam = param;
-        m_pClippedWgt = param.m_maskWidget;
-
-        if (!btn)
-        {
-            m_pTipBox = new GLDIrregularForm(param.m_strTipPath, param.m_strBtnPath, this);
-        }
-        else
-        {
-            m_btnObjectName = btn->objectName();
-            m_pTipBox = new GLDIrregularForm(param.m_strTipPath, btn, this);
-        }
-
-        connect(m_pTipBox, &GLDIrregularForm::irregularFormClicked, this, &GLDMaskBox::slotClose);
-
         setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
 
         m_pClippedWgt->installEventFilter(this);
+
+        connect(m_pTipWidget, &GLDTipWidget::tipWidgetClicked, this, &GLDMaskBox::slotClose);
+        connect(m_pTipWidget, &GLDTipWidget::currentBtnClicked, this, &GLDMaskBox::nextBtnClicked);
     }
 
     GLDMaskBox::~GLDMaskBox()
@@ -99,25 +48,26 @@ namespace GlodonMask
         QPoint clippedWgtTopRight = m_pClippedWgt->rect().topRight();
         QPoint ptGlobalTopRight = m_pClippedWgt->mapToParent(clippedWgtTopRight);
 
-        int w = topParentWidget(m_pClippedWgt)->width();
+        int topWidgetWidth = topParentWidget(m_pClippedWgt)->width();
 
         CoordinateParam param = calcPosOfTipInfo();
 
         if (param.m_quadrant == CoordinateParam::Third || param.m_quadrant == CoordinateParam::Fourth)
         {
-            // if(w - ptGlobalTopRight.x() > m_pTipBox->width() && ptGlobalTopRight.y() > m_pTipBox->height())
+            // if(topWidgetWidth - ptGlobalTopRight.x() > m_pTipBox->width() && ptGlobalTopRight.y() > m_pTipBox->height())
             {
                 QPoint endPoint;
                 drawLeftBottomArrow(param.m_point, endPoint, painter);
-                endPoint += QPoint(0, -m_pTipBox->height());
-                m_pTipBox->move(endPoint);
+
+                endPoint += QPoint(0, -m_pTipWidget->height());
+                m_pTipWidget->move(endPoint);
             }
         }
         else if (param.m_quadrant == CoordinateParam::First || param.m_quadrant == CoordinateParam::Second)
         {
             QPoint endPoint;
             drawLeftTopArrow(param.m_point, endPoint, painter);
-            m_pTipBox->move(endPoint);
+            m_pTipWidget->move(endPoint);
         }
 
         QRegion rect = this->rect();
@@ -151,7 +101,7 @@ namespace GlodonMask
             break;
 
         case GLDMaskBox::CreamColor:      // 233, 241, 246
-            color = QColor(233, 241, 246);
+            color = QColor(20, 20, 20);
             break;
 
         default:
@@ -325,21 +275,6 @@ namespace GlodonMask
         painter.drawLine(line2);
     }
 
-    HWND GLDMaskBox::getHandle(QWidget *pWidget)
-    {
-        WId id = pWidget->winId();
-        HWND hwnd = (HWND)id;
-
-        while (!IsWindow(hwnd))
-        {
-            pWidget = (QWidget *)(pWidget->parent());
-            id = pWidget->winId();
-            hwnd = (HWND)id;
-        }
-
-        return hwnd;
-    }
-
     bool GLDMaskBox::eventFilter(QObject *watched, QEvent *event)
     {
         if (watched == m_pClippedWgt && event->type() == QEvent::MouseButtonPress)
@@ -362,15 +297,6 @@ namespace GlodonMask
     void GLDMaskBox::openIniFile(const QString& filePath)
     {
         Q_ASSERT(!filePath.isEmpty());
-
-        m_pSettings = new QSettings(filePath, QSettings::IniFormat, this);
-
-        Q_ASSERT(m_pSettings->status() == QSettings::NoError);
-
-        m_pSettings->sync();
-        m_pSettings->setFallbacksEnabled(true);
-
-        setMaskShow();
     }
 
     bool GLDMaskBox::canShow()
@@ -384,42 +310,9 @@ namespace GlodonMask
         return false;
     }
 
-    GLDMaskBox* GLDMaskBox::createMaskFor(QWidget* widget, QPushButton *btn,
-                                          const QString & tipInfoPath,
-                                          const QString & btnInfoPath,
-                                          const QString & iniPath)
+    GlodonMask::GLDMaskBoxParam GLDMaskBox::getMaskBoxParam()
     {
-        GLDMaskBox* pTip = nullptr;
-
-        do
-        {
-            if (!widget)
-            {
-                break;
-            }
-
-            GLDMaskBoxParam param;
-            param.m_maskWidget = widget;
-            param.m_strTipPath = tipInfoPath;
-            param.m_strBtnPath = btnInfoPath;
-
-            QWidget* pWidget = topParentWidget(widget);
-            pTip = new GLDMaskBox(param, iniPath, btn, pWidget);
-
-            m_pMaskBox = pTip;
-
-            if (pTip->canShow())
-            {
-                pTip->show();
-            }
-            else
-            {
-                pTip->hide();
-            }
-
-        } while (0);
-
-        return pTip;
+        return m_oMaskBoxParam;
     }
 
     void GLDMaskBox::setMaskColor(MASKCOLOR maskColor)
@@ -504,60 +397,6 @@ namespace GlodonMask
         } while (0);
 
         return coordinateParam;
-    }
-
-    void GLDMaskBox::setMaskShow()
-    {
-        m_bShowMask = getMaskShow(tr("GLDMask"), tr("MaskIsShow"));
-    }
-
-    bool GLDMaskBox::getMaskShow(const QString &prefix, const QString &key)
-    {
-        Q_ASSERT(m_pSettings != NULL);
-
-        QString strValue = getValue(prefix, key);
-
-        if (!strValue.isEmpty())
-        {
-            if (strValue == "true")
-            {
-                // 这个函数是在最终发布的时候打开,那么蒙版只会在第一次启动的时候被调用
-                // 暂时在测试功能中,先注掉,方便调试
-                // setValue(prefix, key);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    QString GLDMaskBox::getValue(const QString &prefix, const QString &key)
-    {
-        Q_ASSERT(m_pSettings != NULL);
-
-        QString strValue;
-        m_pSettings->beginGroup(prefix);
-        QVariant value = m_pSettings->value(key);
-
-        if (value.isValid() && value.type() == QVariant::String)
-        {
-            strValue = value.toString();
-        }
-
-        m_pSettings->endGroup();
-
-        return strValue;
-    }
-
-    void GLDMaskBox::setValue(const QString &prefix, const QString &key)
-    {
-        Q_ASSERT(m_pSettings != NULL);
-
-        m_pSettings->beginGroup(prefix);
-
-        m_pSettings->setValue(key, "fasle");
-
-        m_pSettings->endGroup();
     }
 
     void GLDMaskBox::slotClose()

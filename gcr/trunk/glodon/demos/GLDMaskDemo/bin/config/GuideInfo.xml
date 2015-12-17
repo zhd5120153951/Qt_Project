@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<guideinfos>
+    <guideinfo>
+        <mask  name="mask"  width="305"  height="511" normalimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/target.png" hoverimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/target.png" 
+pressedimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/target.png" leftXpos="24" leftYpos="86"/>
+        <close name="close" width="30"   height="30"  normalimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/close-normal.png" hoverimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/close-hover.png" 
+pressedimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/close-pressed.png" leftXpos="255" leftYpos="255"/>
+        <next  name="next"  width="128"  height="38"  normalimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/next-normal.png" hoverimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/next-hover.png" 
+pressedimage=":/bin/images/next-pressed.png" leftXpos="89" leftYpos="445"/>
+    </guideinfo>
+    <guideinfo>
+        <mask   name="mask" width="507"   height="511" normalimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/next.png" hoverimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/next.png" 
+pressedimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/next.png" leftXpos="600" leftYpos="180"/>
+        <close  name="close" width="30"   height="30"  normalimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/close-normal.png" hoverimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/close-hover.png" 
+pressedimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/close-pressed.png" leftXpos="455" leftYpos="255"/>
+        <next   name="next"  width="128"  height="38"  normalimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/try-normal.png" hoverimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/try-hover.png" 
+pressedimage="E:/repository/qt demo/gcr/trunk/glodon/demos/gldmaskdemo/bin/images/try-pressed.png" leftXpos="295" leftYpos="446"/>
+    </guideinfo>
+</guideinfos>

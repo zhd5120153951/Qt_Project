@@ -1,11 +1,13 @@
 #ifndef GLDMASKBOX_H
 #define GLDMASKBOX_H
 
+#include "GLDTipWidget.h"
 #include "GLDMask_Global.h"
 #include "GLDIrregularForm.h"
-#include <windows.h>
 
+#include <QList>
 #include <QSettings>
+#include <QtXml/QDomElement>
 
 class QPushButton;
 
@@ -31,7 +33,6 @@ namespace GlodonMask
         return widget;
     }
 
-
     struct CoordinateParam
     {
     public:
@@ -55,28 +56,25 @@ namespace GlodonMask
         CoordinateParam::Quadrant  m_quadrant;
     };
 
-    class GLDMaskBoxParam
+    struct GLDMaskBoxParam
     {
     public:
         GLDMaskBoxParam()
-            : m_strTipPath("")
-            , m_strBtnPath("")
-            , m_maskWidget(nullptr)
+            : m_maskWidget(nullptr)
+            , m_pTipWgt(nullptr)
         {
 
         }
 
         GLDMaskBoxParam& operator=(GLDMaskBoxParam& param)
         {
-            m_strTipPath = param.m_strTipPath;
-            m_strBtnPath = param.m_strBtnPath;
             m_maskWidget = param.m_maskWidget;
+            m_pTipWgt = param.m_pTipWgt;
             return *this;
         }
 
-        QString  m_strTipPath;      // 提示信息路径
-        QString  m_strBtnPath;      // 按钮路径
-        QWidget* m_maskWidget;      // 需要显示蒙版的widget
+        QWidget*      m_maskWidget;      // 需要显示蒙版的widget
+        GLDTipWidget* m_pTipWgt;         // 提示信息窗体
     };
 
     class GLDMASKSHARED_EXPORT GLDMaskBox : public QWidget
@@ -89,15 +87,26 @@ namespace GlodonMask
             GrayColor,      // 128, 128, 128
             GlassColor,     // 201, 120, 12
             CalaeattaColor, // 252, 239, 232
-            CreamColor      // 233, 241, 246
+            CreamColor      // 20, 20, 20
         };
 
     public:
-        static GLDMaskBox* createMaskFor(QWidget* widget,
-            QPushButton *btn = nullptr,
-            const QString & tipInfoPath = "",
-            const QString & btnInfoPath = "",
-            const QString & iniPath = "");
+        explicit GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent = nullptr);
+        explicit GLDMaskBox(QList<QWidget *> wgtList, const QString & iniPath, QWidget * parent = nullptr);
+
+        virtual ~GLDMaskBox();
+
+        /**
+        * @brief 初始化蒙版列表
+        * @param widget
+        */
+        void initMaskList();
+
+        /**
+        * @brief 初始化蒙版参数列表
+        * @param wgtList
+        */
+        void initMaskParamList(QList<QWidget*> wgtList);
 
         /**
          * @brief 设置蒙版背景色
@@ -129,30 +138,24 @@ namespace GlodonMask
         */
         bool canShow();
 
+        /**
+         * @brief 获取蒙版参数
+         * @return
+         */
+        GLDMaskBoxParam getMaskBoxParam();
+
     private:
-        void setMaskShow();
-        bool getMaskShow(const QString& prefix, const QString& key);
-
-        QString getValue(const QString& prefix, const QString& key);
-        void setValue(const QString& prefix, const QString& key);
-
         /**
          * @brief 计算提示信息位置
          * @return
          */
         CoordinateParam calcPosOfTipInfo();
 
-    private:
-        GLDMaskBox(QWidget *parent = nullptr);
-        GLDMaskBox(GLDMaskBoxParam& param, QWidget * parent = nullptr);
-        GLDMaskBox(GLDMaskBoxParam& param, const QString & iniPath,
-            QPushButton *btn = nullptr, QWidget * parent = nullptr);
-        virtual ~GLDMaskBox();
-
     Q_SIGNALS:
         void customClicked();
+        void nextBtnClicked();
 
-        public slots:
+    public slots:
         /**
          * @brief 关闭蒙版
          */
@@ -201,29 +204,23 @@ namespace GlodonMask
          */
         void drawRightBottomArrow(QPoint &startPoint, QPoint &endPoint, QPainter &painter);
 
-        /**
-         * @brief 获取widget的顶级父窗口的句柄
-         * @param pWidget
-         */
-        HWND getHandle(QWidget *pWidget);
-
     private:
-        static GLDMaskBox*    m_pMaskBox;       // 蒙版widget
+        MASKCOLOR               m_maskColor;      // 蒙版背景色
 
-        GLDMaskBox::MASKCOLOR m_maskColor;      // 蒙版背景色
+        GLDMaskBoxParam         m_oMaskBoxParam;  // 蒙版参数
 
-        GLDMaskBoxParam       m_oMaskBoxParam;  // 蒙版参数
+        QWidget*                m_pClippedWgt;    // 需要显示蒙版的widget
+        GLDTipWidget*           m_pTipWidget;     // 提示信息窗体
 
-        QWidget*              m_pClippedWgt;    // 需要显示蒙版的widget
-        QSettings*            m_pSettings;      // ini文件设置
-        GLDIrregularForm*     m_pTipBox;        // 提示信息
-
-        bool                  m_bShowMask;      // 是否显示蒙版
-
-        QColor                m_arrowColor;     // 箭头颜色
-        int                   m_arrowLineWidth; // 箭头线条粗细
-        QString               m_iniPath;        // ini文件路径
-        QString               m_btnObjectName;  // 自定义按钮对象名
+        QColor                  m_arrowColor;     // 箭头颜色
+        int                     m_arrowLineWidth; // 箭头线条粗细
+        QString                 m_iniPath;        // ini文件路径
+        QString                 m_btnObjectName;  // 自定义按钮对象名
+        QList<GLDTipWidget*>    m_tipInfoList;    // 提示信息列表
+        QList<GLDGuideInfo>     m_guideInfoList;  // 向导信息列表
+        QList<GLDMaskBox*>      m_maskBoxList;    // 蒙版列表
+        QList<GLDMaskBoxParam>  m_maskParamList;  // 蒙版参数列表
+        int                     m_step;
     };
 }
 #endif // GLDMASKBOX_H
