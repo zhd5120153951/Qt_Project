@@ -2,7 +2,6 @@
 #include <assert.h>
 
 #include <QFile>
-#include <QDebug>
 
 namespace GlodonMask
 {
@@ -27,20 +26,14 @@ namespace GlodonMask
 
     }
 
-    void GLDMaskBoxManger::onNextBtnClicked()
+    GLDMaskBox* GLDMaskBoxManger::get(const int index)
     {
-        m_maskBoxList[m_step]->close();
+        return m_maskBoxList[index];
+    }
 
-        m_step++;
-
-        if (m_step >= m_maskBoxList.size())
-        {
-            return;
-        }
-
-        m_maskBoxList[m_step]->setParent(topParentWidget(m_maskBoxList[m_step]->getMaskBoxParam().m_maskWidget));
-        m_maskBoxList[m_step]->getMaskBoxParam().m_pTipWgt->setParent(m_maskBoxList[m_step]);
-        m_maskBoxList[m_step]->show();
+    size_t GLDMaskBoxManger::size()
+    {
+        return m_maskBoxList.size();
     }
 
     void GLDMaskBoxManger::initMaskList()
@@ -120,7 +113,7 @@ namespace GlodonMask
         }
 
         QDomElement root = document.documentElement();
-        GString elementTagName = root.firstChildElement().tagName();
+        QString elementTagName = root.firstChildElement().tagName();
         QDomNodeList nodeList = root.elementsByTagName(elementTagName);
 
         for (int i = 0; i < nodeList.size(); ++i)
@@ -156,7 +149,7 @@ namespace GlodonMask
     GLDGuideInfoItem GLDMaskBoxManger::parseNodeItem(QDomElement &element)
     {
         int width, height, leftXpos, leftYpos;
-        GString normalImage, hoverImage, pressedImage;
+        QString normalImage, hoverImage, pressedImage;
 
         if (element.hasAttribute("width"))
         {
@@ -196,5 +189,20 @@ namespace GlodonMask
         return GLDGuideInfoItem(width, height, leftXpos, leftYpos, normalImage, hoverImage, pressedImage);
     }
 
-}
+    void GLDMaskBoxManger::onNextBtnClicked()
+    {
+        m_maskBoxList[m_step]->close();
 
+        m_step++;
+
+        if (m_step >= m_maskBoxList.size())
+        {
+            return;
+        }
+
+        m_maskBoxList[m_step]->setParent(topParentWidget(m_maskBoxList[m_step]->getMaskBoxParam().m_maskWidget));
+        m_maskBoxList[m_step]->getMaskBoxParam().m_pTipWgt->setParent(m_maskBoxList[m_step]);
+        m_maskBoxList[m_step]->show();
+    }
+
+}

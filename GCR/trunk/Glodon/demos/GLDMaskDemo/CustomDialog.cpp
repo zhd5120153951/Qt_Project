@@ -62,11 +62,11 @@ void CustomDialog::initUI()
 
 void CustomDialog::showPosition()
 {
-    //GLDMaskBox::createMaskFor(m_pNextButton, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/GuideInfo.xml");
+
 }
 
 void CustomDialog::showMask()
 {
-    //GLDMaskBox::createMaskFor(m_textEdt, exePath() + "/images/Msg/login.png", exePath() + "/images/Msg/know.png", exePath() + "/config/GuideInfo.xml");
+
 }
 

@@ -25,18 +25,16 @@ public slots:
     void showDialog();
 
 private:
-    QLabel*      m_name;
-    QLabel*      m_password;
+    QLabel*        m_name;
+    QLabel*        m_password;
 
-    QLineEdit*   m_edtName;
-    QLineEdit*   m_edtPwd;
+    QLineEdit*     m_edtName;
+    QLineEdit*     m_edtPwd;
 
-    QPushButton* m_logoin;
-    QPushButton* m_cancel;
+    QPushButton*   m_logoin;
+    QPushButton*   m_cancel;
 
-    CustomDialog*      m_dialog;
-
-    GLDMaskBox*  pMask;
+    CustomDialog*  m_dialog;
 };
 
 #endif // LOGOINWIDGET_H

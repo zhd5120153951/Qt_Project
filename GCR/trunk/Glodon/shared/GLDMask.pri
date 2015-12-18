@@ -21,8 +21,8 @@ CONFIG(debug, debug|release) {
         LIBS += -L$$Glodon/bin/Debug/X86
     }
 
-    win32:LIBS += -lGLDMaskd
-    unix:LIBS += -lGLDMask_debug
+    win32:LIBS += -lGLDMaskBoxd
+    unix:LIBS += -lGLDMaskBox_debug
 }
 
 CONFIG(release, debug|release) {
@@ -33,7 +33,7 @@ CONFIG(release, debug|release) {
         LIBS += -L$$Glodon/bin/Release/X86
     }
 
-    LIBS += -lGLDMask
+    LIBS += -lGLDMaskBox
 
 }
 

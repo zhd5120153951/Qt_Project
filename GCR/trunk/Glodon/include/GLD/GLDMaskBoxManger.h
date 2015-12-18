@@ -5,7 +5,6 @@
 
 namespace GlodonMask
 {
-
     class GLDMASKSHARED_EXPORT GLDMaskBoxManger : public QWidget
     {
     public:
@@ -13,7 +12,18 @@ namespace GlodonMask
 
         virtual ~GLDMaskBoxManger();
 
-        void onNextBtnClicked();
+        /**
+         * @brief 获取第index个蒙版
+         * @param index
+         * @return
+         */
+        GLDMaskBox* get(const int index);
+
+        /**
+         * @brief 返回蒙版个数
+         * @return
+         */
+        size_t size();
 
     private:
 
@@ -46,6 +56,12 @@ namespace GlodonMask
         * @return
         */
         GLDGuideInfoItem parseNodeItem(QDomElement &element);
+
+        /**
+        * @brief TipWidget上下一个按钮被点击触发的操作
+        * @return
+        */
+        void onNextBtnClicked();
 
     private:
         QList<QWidget *>        m_wgtList;        // 需要设置蒙版的widget列表

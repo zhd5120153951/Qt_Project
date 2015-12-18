@@ -152,7 +152,6 @@ namespace GlodonMask
         CoordinateParam calcPosOfTipInfo();
 
     Q_SIGNALS:
-        void customClicked();
         void nextBtnClicked();
 
     public slots:
@@ -216,11 +215,7 @@ namespace GlodonMask
         int                     m_arrowLineWidth; // 箭头线条粗细
         QString                 m_iniPath;        // ini文件路径
         QString                 m_btnObjectName;  // 自定义按钮对象名
-        QList<GLDTipWidget*>    m_tipInfoList;    // 提示信息列表
-        QList<GLDGuideInfo>     m_guideInfoList;  // 向导信息列表
-        QList<GLDMaskBox*>      m_maskBoxList;    // 蒙版列表
-        QList<GLDMaskBoxParam>  m_maskParamList;  // 蒙版参数列表
-        int                     m_step;
+
     };
 }
 #endif // GLDMASKBOX_H

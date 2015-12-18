@@ -19,12 +19,13 @@ namespace GlodonMask
         , m_arrowColor(QColor(1, 169, 240))
         , m_arrowLineWidth(2)
     {
+        Q_UNUSED(parent);
+
         setFixedSize(QApplication::desktop()->width(), QApplication::desktop()->height());
 
         m_pClippedWgt->installEventFilter(this);
 
         connect(m_pTipWidget, &GLDTipWidget::tipWidgetClicked, this, &GLDMaskBox::slotClose);
-        connect(m_pTipWidget, &GLDTipWidget::currentBtnClicked, this, &GLDMaskBox::nextBtnClicked);
     }
 
     GLDMaskBox::~GLDMaskBox()
@@ -49,6 +50,9 @@ namespace GlodonMask
         QPoint ptGlobalTopRight = m_pClippedWgt->mapToParent(clippedWgtTopRight);
 
         int topWidgetWidth = topParentWidget(m_pClippedWgt)->width();
+
+        Q_UNUSED(ptGlobalTopRight);
+        Q_UNUSED(topWidgetWidth);
 
         CoordinateParam param = calcPosOfTipInfo();
 

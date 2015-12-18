@@ -13,22 +13,15 @@
 namespace GlodonMask
 {
 
-    GLDTipWidget::GLDTipWidget(QWidget *parent)
-        : QWidget(parent)
-        , m_step(0)
-        , m_pMaskTitle(nullptr)
-        , m_pNextButton(nullptr)
-        , m_pCloseButton(nullptr)
+    GLDMaskTitle::GLDMaskTitle(QWidget *parent)
+        : QLabel(parent)
     {
-        setAttribute(Qt::WA_NoSystemBackground);
-        setAttribute(Qt::WA_TranslucentBackground);
-        setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
 
-        initMaskTitle();
+    }
 
-        initNextButton();
+    GLDMaskTitle::~GLDMaskTitle()
+    {
 
-        initCloseButton();
     }
 
     GLDTipWidget::GLDTipWidget(const GLDGuideInfo & guideInfo, NEXTCALLBACK goCallBack, QWidget * parent)
@@ -226,14 +219,4 @@ namespace GlodonMask
         emit tipWidgetClicked();
     }
 
-    GLDMaskTitle::GLDMaskTitle(QWidget *parent)
-        : QLabel(parent)
-    {
-
-    }
-
-    GLDMaskTitle::~GLDMaskTitle()
-    {
-
-    }
 }

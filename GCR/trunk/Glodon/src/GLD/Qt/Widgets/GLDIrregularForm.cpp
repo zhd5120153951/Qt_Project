@@ -2,9 +2,6 @@
 #include "GLDIrregularForm.h"
 
 #include <QPainter>
-#include <QMouseEvent>
-#include <QApplication>
-#include <QDesktopWidget>
 
 namespace GlodonMask
 {
@@ -34,36 +31,11 @@ namespace GlodonMask
         connect(m_pCustomBtn, &QPushButton::clicked, this, &GLDIrregularForm::irregularFormClicked);
     }
 
-    GLDIrregularForm::GLDIrregularForm(const QString &irregularImgPath, QPushButton *btn, QWidget *parent)
-        : QWidget(parent)
-        , m_pPushBtn(btn)
-        , m_pCustomBtn(nullptr)
-        , m_irregularFormPm("")
-        , m_xPosition(0)
-        , m_yPosition(0)
-    {
-        setFlagAndAttribute();
-
-        btn->setParent(this);
-
-        loadPixmap(irregularImgPath);
-
-        if (m_pPushBtn)
-        {
-            connect(m_pPushBtn, &QPushButton::clicked, this, &GLDIrregularForm::irregularFormClicked);
-        }
-        else
-        {
-            connect(m_pCustomBtn, &QPushButton::clicked, this, &GLDIrregularForm::irregularFormClicked);
-        }
-    }
-
     void GLDIrregularForm::setFlagAndAttribute()
     {
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_TranslucentBackground);
         setWindowFlags(windowFlags() | Qt::FramelessWindowHint);
-        setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     }
 
     GLDIrregularForm::~GLDIrregularForm()
@@ -94,8 +66,10 @@ namespace GlodonMask
         update();
     }
 
-    void GLDIrregularForm::setBtnPos(QAbstractButton* pBtn, const int x, const int y)
+    void GLDIrregularForm::setBtnPos(QPushButton *pBtn, const int x, const int y)
     {
+        Q_UNUSED(pBtn);
+
         m_xPosition = x;
         m_yPosition = y;
     }

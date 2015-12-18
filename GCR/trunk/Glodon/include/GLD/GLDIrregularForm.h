@@ -4,7 +4,6 @@
 #include "GLDMask_Global.h"
 
 #include <QWidget>
-#include <QAbstractButton>
 
 class QPushButton;
 class GLDCustomButton;
@@ -18,7 +17,6 @@ namespace GlodonMask
     public:
         explicit GLDIrregularForm(QWidget *parent = 0);
         explicit GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent = nullptr);
-        explicit GLDIrregularForm(const QString & irregularImgPath, QPushButton * btn, QWidget *parent = nullptr);
 
         ~GLDIrregularForm();
 
@@ -45,7 +43,7 @@ namespace GlodonMask
         /**
         * @brief …Ë÷√∞¥≈•Œª÷√
         */
-        void setBtnPos(QAbstractButton* pBtn, const int x, const int y);
+        void setBtnPos(QPushButton* pBtn, const int x, const int y);
 
     Q_SIGNALS:
         void irregularFormClicked();

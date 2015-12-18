@@ -1,12 +1,10 @@
 #ifndef GLDMASKWIDGET_H
 #define GLDMASKWIDGET_H
 
-#include "GLDString.h"
 #include "GLDMask_Global.h"
 
 #include <QLabel>
 #include <QDialog>
-
 #include <functional>
 
 namespace GlodonMask
@@ -16,7 +14,7 @@ namespace GlodonMask
     struct GLDGuideInfoItem
     {
         GLDGuideInfoItem(int width = -1, int height = -1, int leftXPos = -1, int leftYPos = -1,
-                         GString normalImage = "", GString hoverImage = "", GString pressedImage = "")
+                         QString normalImage = "", QString hoverImage = "", QString pressedImage = "")
             : m_width(width)
             , m_height(height)
             , m_leftXPos(leftXPos)
@@ -28,14 +26,14 @@ namespace GlodonMask
 
         }
 
-        int m_width;               // 蒙版图的背景
-        int m_height;              // 蒙版图的背景
+        int m_width;               // 图片宽度
+        int m_height;              // 图片高度
         int m_leftXPos;            // 左上角X坐标
         int m_leftYPos;            // 左上角Y坐标
 
-        GString m_normalImage;     // 正常情况下图片
-        GString m_hoverImage;      // 鼠标划过时效果
-        GString m_pressedImage;    // 鼠标按下时效果
+        QString m_normalImage;     // 正常情况下图片
+        QString m_hoverImage;      // 鼠标划过时效果
+        QString m_pressedImage;    // 鼠标按下时效果
     };
 
     struct GLDGuideInfo
@@ -76,7 +74,6 @@ namespace GlodonMask
         Q_OBJECT
 
     public:
-        explicit GLDTipWidget(QWidget *parent = 0);
         explicit GLDTipWidget(const GLDGuideInfo & guideInfo, NEXTCALLBACK goCallBack = nullptr, QWidget * parent = 0);
         ~GLDTipWidget();
 
@@ -102,10 +99,6 @@ namespace GlodonMask
         QPushButton* nextBtn();
 
     private:
-        /**
-         * @brief 设置当前蒙版页面
-         */
-        void setCurrentGuidePage();
 
         /**
          * @brief 设置蒙版样式
@@ -130,24 +123,23 @@ namespace GlodonMask
          * @param guideInfo    当前蒙版页信息
          * @return
          */
-        GString maskStyleSheet(const GLDGuideInfo &guideInfo);
+        QString maskStyleSheet(const GLDGuideInfo &guideInfo);
 
         /**
          * @brief 获取关闭按钮样式
          * @param guideInfo    当前蒙版页信息
          * @return
          */
-        GString closeStyleSheet(const GLDGuideInfo &guideInfo);
+        QString closeStyleSheet(const GLDGuideInfo &guideInfo);
 
         /**
          * @brief 获取下一步按钮样式
          * @param guideInfo    当前蒙版页信息
          * @return
          */
-        GString nextStyleSheet(const GLDGuideInfo &guideInfo);
+        QString nextStyleSheet(const GLDGuideInfo &guideInfo);
 
     signals:
-        void currentBtnClicked(/*int step*/);
         void tipWidgetClicked();
 
     private slots:
@@ -162,7 +154,6 @@ namespace GlodonMask
         void nextButtonClicked();
 
     private:
-        int                 m_step;                // 当前步数
         GLDMaskTitle*       m_pMaskTitle;          // 蒙版图片
         QPushButton*        m_pNextButton;         // 下一步按钮
         QPushButton*        m_pCloseButton;        // 关闭按钮

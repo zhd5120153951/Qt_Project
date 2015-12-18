@@ -5,14 +5,12 @@
 #-------------------------------------------------
 greaterThan(QT_MAJOR_VERSION, 4): QT += core-private widgets xml
 
-TARGET = GLDMask
+TARGET = GLDMaskBox
 TEMPLATE = lib
 
 CONFIG +=  debug_and_release
 
 unix:QMAKE_CXXFLAGS += -std=c++11
-
-CONFIG += c++11
 
 CONFIG(debug, debug|release){
     contains(QMAKE_HOST.arch, x86_64) {

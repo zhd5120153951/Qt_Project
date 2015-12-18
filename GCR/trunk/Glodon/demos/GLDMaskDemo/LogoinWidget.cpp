@@ -46,10 +46,11 @@ LogoinWidget::LogoinWidget(QWidget *parent)
     resize(900, 600);
 
     QList<QWidget *> widgetLst;
-    widgetLst.append(m_logoin);
+    widgetLst.append(m_edtName);
     widgetLst.append(m_cancel);
 
     GLDMaskBoxManger * pManger = new GLDMaskBoxManger(widgetLst, exePath() + "/config/GuideInfo.xml", this);
+    pManger->get(1)->setArrowColor(Qt::red);
 
     connect(m_logoin, &QPushButton::clicked, this, &LogoinWidget::showDialog);
 }
