@@ -7,7 +7,6 @@ namespace GlodonMask
 {
     GLDIrregularForm::GLDIrregularForm(QWidget *parent)
         : QWidget(parent)
-        , m_pPushBtn(nullptr)
         , m_pCustomBtn(nullptr)
         , m_irregularFormPm("")
         , m_xPosition(0)
@@ -18,7 +17,6 @@ namespace GlodonMask
 
     GLDIrregularForm::GLDIrregularForm(const QString & irregularImgPath, const QString & btnImgPath, QWidget *parent)
         : QWidget(parent)
-        , m_pPushBtn(nullptr)
         , m_pCustomBtn(new GLDCustomButton(btnImgPath, this))
         , m_irregularFormPm("")
         , m_xPosition(0)
@@ -78,14 +76,7 @@ namespace GlodonMask
     {
         QPainter painter(this);
 
-        if (m_pPushBtn)
-        {
-            m_pPushBtn->move(m_xPosition, m_yPosition);
-        }
-        else
-        {
-            m_pCustomBtn->move(m_xPosition, m_yPosition);
-        }
+        m_pCustomBtn->move(m_xPosition, m_yPosition);
 
         painter.drawPixmap(0, 0, m_irregularFormPm);
 

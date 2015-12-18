@@ -24,7 +24,7 @@ namespace GlodonMask
 
     }
 
-    GLDTipWidget::GLDTipWidget(const GLDGuideInfo & guideInfo, NEXTCALLBACK goCallBack, QWidget * parent)
+    GLDTipWidget::GLDTipWidget(const GLDGuideInfo & guideInfo, NEXTCLICKEDCALLBACK goCallBack, QWidget * parent)
         : QWidget(parent)
         , m_pMaskTitle(nullptr)
         , m_pNextButton(nullptr)
@@ -42,7 +42,7 @@ namespace GlodonMask
 
         initCloseButton();
 
-        // 蒙版
+        // 高亮区域界面
         setMaskWidgetStyle(guideInfo);
 
         // 关闭按钮

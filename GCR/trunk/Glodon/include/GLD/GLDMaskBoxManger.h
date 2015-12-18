@@ -5,7 +5,7 @@
 
 namespace GlodonMask
 {
-    class GLDMASKSHARED_EXPORT GLDMaskBoxManger : public QWidget
+    class GLDMASKBOXSHARED_EXPORT GLDMaskBoxManger : public QWidget
     {
     public:
         explicit GLDMaskBoxManger(QList<QWidget *> wgtList, const QString & iniPath, QWidget* parent = nullptr);
@@ -62,6 +62,12 @@ namespace GlodonMask
         * @return
         */
         void onNextBtnClicked();
+
+        /**
+         * @brief canShow
+         * @return
+         */
+        bool canShow();
 
     private:
         QList<QWidget *>        m_wgtList;        // 需要设置蒙版的widget列表

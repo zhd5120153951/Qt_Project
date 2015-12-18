@@ -1,6 +1,8 @@
 #include "GLDMaskBoxManger.h"
 #include <assert.h>
 
+#include "GLDFileUtils.h"
+
 #include <QFile>
 
 namespace GlodonMask
@@ -12,13 +14,17 @@ namespace GlodonMask
         , m_wgtList(wgtList)
         , m_iniPath(iniPath)
     {
+
+
         initTipInfo(m_iniPath);
         initMaskParamList(m_wgtList);
         initMaskList();
 
-        m_maskBoxList[m_step]->getMaskBoxParam().m_pTipWgt->setParent(m_maskBoxList[m_step]);
-        m_maskBoxList[m_step]->setParent(topParentWidget(m_maskBoxList[m_step]->getMaskBoxParam().m_maskWidget));
-
+        if(!canShow())
+        {
+            m_maskBoxList[m_step]->getMaskBoxParam().m_pTipWgt->setParent(m_maskBoxList[m_step]);
+            m_maskBoxList[m_step]->setParent(topParentWidget(m_maskBoxList[m_step]->getMaskBoxParam().m_maskWidget));
+        }
     }
 
     GLDMaskBoxManger::~GLDMaskBoxManger()
@@ -79,7 +85,7 @@ namespace GlodonMask
 
         foreach(GLDGuideInfo guideInfo, m_guideInfoList)
         {
-            NEXTCALLBACK next = std::bind(&GLDMaskBoxManger::onNextBtnClicked, this);
+            NEXTCLICKEDCALLBACK next = std::bind(&GLDMaskBoxManger::onNextBtnClicked, this);
             pTipWgt = new GLDTipWidget(guideInfo, next);
             m_tipInfoList.append(pTipWgt);
         }
@@ -191,6 +197,9 @@ namespace GlodonMask
 
     void GLDMaskBoxManger::onNextBtnClicked()
     {
+        QSettings oInis(exePath() + "/config/config.ini", QSettings::IniFormat);
+        oInis.setValue("GLDMaskBox", 1);
+
         m_maskBoxList[m_step]->close();
 
         m_step++;
@@ -203,6 +212,13 @@ namespace GlodonMask
         m_maskBoxList[m_step]->setParent(topParentWidget(m_maskBoxList[m_step]->getMaskBoxParam().m_maskWidget));
         m_maskBoxList[m_step]->getMaskBoxParam().m_pTipWgt->setParent(m_maskBoxList[m_step]);
         m_maskBoxList[m_step]->show();
+    }
+
+    bool GLDMaskBoxManger::canShow()
+    {
+        QSettings oInis(exePath() + "/config/config.ini", QSettings::IniFormat);
+
+        return oInis.value("GLDMaskBox").toInt();
     }
 
 }

@@ -77,7 +77,7 @@ namespace GlodonMask
         GLDTipWidget* m_pTipWgt;         // 提示信息窗体
     };
 
-    class GLDMASKSHARED_EXPORT GLDMaskBox : public QWidget
+    class GLDMASKBOXSHARED_EXPORT GLDMaskBox : public QWidget
     {
         Q_OBJECT
 

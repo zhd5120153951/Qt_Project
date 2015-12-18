@@ -9,7 +9,7 @@
 
 namespace GlodonMask
 {
-    typedef std::function<void()> NEXTCALLBACK;
+    typedef std::function<void()> NEXTCLICKEDCALLBACK;
 
     struct GLDGuideInfoItem
     {
@@ -69,12 +69,12 @@ namespace GlodonMask
 
     typedef QList<GLDGuideInfo> GLDGuideInfoList;
 
-    class GLDMASKSHARED_EXPORT GLDTipWidget : public QWidget
+    class GLDMASKBOXSHARED_EXPORT GLDTipWidget : public QWidget
     {
         Q_OBJECT
 
     public:
-        explicit GLDTipWidget(const GLDGuideInfo & guideInfo, NEXTCALLBACK goCallBack = nullptr, QWidget * parent = 0);
+        explicit GLDTipWidget(const GLDGuideInfo & guideInfo, NEXTCLICKEDCALLBACK goCallBack = nullptr, QWidget * parent = 0);
         ~GLDTipWidget();
 
         /**
@@ -157,7 +157,7 @@ namespace GlodonMask
         GLDMaskTitle*       m_pMaskTitle;          // 蒙版图片
         QPushButton*        m_pNextButton;         // 下一步按钮
         QPushButton*        m_pCloseButton;        // 关闭按钮
-        NEXTCALLBACK        m_goCallBack;
+        NEXTCLICKEDCALLBACK m_goCallBack;
     };
 }
 

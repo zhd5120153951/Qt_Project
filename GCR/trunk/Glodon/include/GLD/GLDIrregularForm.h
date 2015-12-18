@@ -10,7 +10,7 @@ class GLDCustomButton;
 
 namespace GlodonMask
 {
-    class GLDMASKSHARED_EXPORT GLDIrregularForm : public QWidget
+    class GLDMASKBOXSHARED_EXPORT GLDIrregularForm : public QWidget
     {
         Q_OBJECT
 
@@ -52,7 +52,6 @@ namespace GlodonMask
         virtual void paintEvent(QPaintEvent *event);
 
     private:
-        QPushButton*     m_pPushBtn;        // 用户按钮
         GLDCustomButton* m_pCustomBtn;      // 自定义按钮
         QPixmap          m_irregularFormPm; // 提示信息pixmap
         int              m_xPosition;

@@ -7,7 +7,7 @@
 
 namespace GlodonMask
 {
-    class GLDMASKSHARED_EXPORT GLDCustomButton : public QPushButton
+    class GLDMASKBOXSHARED_EXPORT GLDCustomButton : public QPushButton
     {
         Q_OBJECT
 

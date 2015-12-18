@@ -14,7 +14,7 @@ CustomDialog::CustomDialog(QWidget *parent, Qt::WindowFlags flags)
 {
     initUI();
     setObjectName("Dialog");
-    resize(1400, 800);
+    resize(1200, 800);
     setWindowFlags(windowFlags() | Qt::WindowMinMaxButtonsHint);
 }
 
