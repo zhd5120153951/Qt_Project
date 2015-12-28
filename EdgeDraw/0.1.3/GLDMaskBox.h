@@ -1,8 +1,7 @@
 #ifndef DONUT_H
 #define DONUT_H
 
-#include "GMaskDef.h"
-#include "irregularform.h"
+#include "IrregularForm.h"
 
 #include <QLabel>
 #include <QSettings>

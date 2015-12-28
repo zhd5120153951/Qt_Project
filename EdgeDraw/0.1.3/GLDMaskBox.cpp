@@ -1,5 +1,4 @@
 #include "GLDMaskBox.h"
-#include "GLDMaskBox_p.h"
 #include "GLDFileUtils.h"
 
 #include <QRect>

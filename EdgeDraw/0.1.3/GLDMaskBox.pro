@@ -14,6 +14,7 @@ TARGET = GLDMaskBox
 TEMPLATE = app
 
 greaterThan(QT_MAJOR_VERSION, 4): DEFINES += NOMINMAX
+
 include($(GLDRS)/Glodon/shared/GLD.pri)
 include($(GLDRS)/Glodon/shared/VLD.pri)
 
@@ -28,7 +29,6 @@ HEADERS += GLDMaskBox.h \
            CustomDialog.h \
            CommonUtil.h \
            IrregularForm.h \
-           GMaskDef.h \
            LogoinWidget.h \
            CustomButton.h
 
