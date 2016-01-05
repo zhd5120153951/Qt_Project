@@ -21,3 +21,6 @@ HEADERS  += imgprocessor.h \
     showwidget.h
 
 FORMS    += imgprocessor.ui
+
+RESOURCES += \
+    res.qrc

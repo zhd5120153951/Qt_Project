@@ -27,9 +27,9 @@ public:
     explicit ImgProcessor(QWidget *parent = 0);
     ~ImgProcessor();
 
-    void createActions();                        	//创建动作
-    void createMenus();                           	//创建菜单
-    void createToolBars();                      	//创建工具栏
+    void createActions();                           //创建动作
+    void createMenus();                             //创建菜单
+    void createToolBars();                          //创建工具栏
 
     void loadFile(QString filename);
     void mergeFormat(QTextCharFormat);
@@ -37,7 +37,7 @@ public:
 private:
     Ui::ImgProcessor *ui;
 
-    QMenu *fileMenu;                           		//各项菜单栏
+    QMenu *fileMenu;                                //各项菜单栏
     QMenu *zoomMenu;
     QMenu *rotateMenu;
     QMenu *mirrorMenu;
@@ -46,30 +46,30 @@ private:
     QString fileName;
     ShowWidget *showWidget;
 
-    QAction *openFileAction;                     	//文件菜单项
+    QAction *openFileAction;                        //文件菜单项
     QAction *NewFileAction;
     QAction *PrintTextAction;
     QAction *PrintImageAction;
     QAction *exitAction;
 
-    QAction *copyAction;                          	//编辑菜单项
+    QAction *copyAction;                            //编辑菜单项
     QAction *cutAction;
     QAction *pasteAction;
     QAction *aboutAction;
     QAction *zoomInAction;
     QAction *zoomOutAction;
 
-    QAction *rotate90Action;                     	//旋转菜单项
+    QAction *rotate90Action;                        //旋转菜单项
     QAction *rotate180Action;
     QAction *rotate270Action;
 
-    QAction *mirrorVerticalAction;              	//镜像菜单项
+    QAction *mirrorVerticalAction;                  //镜像菜单项
     QAction *mirrorHorizontalAction;
 
     QAction *undoAction;
     QAction *redoAction;
 
-    QToolBar *fileTool;                          	//工具栏
+    QToolBar *fileTool;                             //工具栏
     QToolBar *zoomTool;
     QToolBar *rotateTool;
     QToolBar *mirrorTool;
