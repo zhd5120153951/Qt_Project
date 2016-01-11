@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/inis">
-        <file>scrollstyle.ini</file>
-        <file>GColorListEx.ini</file>
-    </qresource>
-</RCC>

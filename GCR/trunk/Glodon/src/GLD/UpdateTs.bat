@@ -1,1 +1,0 @@
-lupdate -verbose -no-obsolete ./GLD.pro

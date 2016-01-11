@@ -1,7 +1,0 @@
-GLDPlainTextEditEx
-{
-    padding-left: 5px;
-    background-color: white;
-    selection-background-color:#a1c3ee;
-    selection-color:#455059;
-}
