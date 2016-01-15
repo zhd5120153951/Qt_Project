@@ -17,12 +17,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     GLDProcessUtils.cpp \
-    GLDSysInfoUtils.h.cpp \
     GLDDiskInfoUtils.cpp \
-    GLDMemoryInfoUtils.cpp
+    GLDMemoryInfoUtils.cpp \
+    GLDCpuInfoUtils.h.cpp
 
 HEADERS += \
     GLDProcessUtils.h \
-    GLDSysInfoUtils.h \
     GLDDiskInfoUtils.h \
-    GLDMemoryInfoUtils.h
+    GLDMemoryInfoUtils.h \
+    GLDCpuInfoUtils.h

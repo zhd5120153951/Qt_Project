@@ -3,12 +3,8 @@
 
 #include <qt_windows.h>
 #include <bitset>
-#include <iostream>
-#include <algorithm>
 #include <utility>
 #include <Winioctl.h>
-#include <string>
-#include <map>
 #include <QVector>
 #include <QString>
 #include <QHash>
@@ -75,11 +71,18 @@ namespace GLDDISKINFO
          */
         QString getDriverTypeItem(const QString& dir);
 
+        /**
+         * @brief 获取分区可用空间
+         * @param dir                      分区名
+         * @param ri64FreeBytesToCaller    可用空间
+         * @param ri64TotalBytes           分区总空间
+         * @return
+         */
+        bool getFreeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes);
         bool getLastVolumeInfo(DiskInfomation &diskInfo);
         bool getDiskSize(quint64 &llOfSectors, ulong dwDiskNum = 0);
         bool getDiskSize2(quint64 &llOfSectors, ulong dwDiskNum = 0);
         bool getVolumeSize(quint64 &llOfSectors, string volName);
-        bool getFreeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes);
 
     private:
         bool getAllDriverName(ulong dwDrvNum, QVector<QString> & driveNameVct);

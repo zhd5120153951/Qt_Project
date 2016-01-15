@@ -1,5 +1,5 @@
 #include <QCoreApplication>
-#include "GLDSysInfoUtils.h"
+#include "GLDCpuInfoUtils.h"
 #include "GLDDiskInfoUtils.h"
 
 using namespace GLDDISKINFO;

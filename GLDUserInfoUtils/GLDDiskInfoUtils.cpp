@@ -245,7 +245,7 @@ namespace GLDDISKINFO
 
         if (pGetDiskFreeSpaceEx)
         {
-            fResult = pGetDiskFreeSpaceEx (dir.toStdString().c_str(), (PULARGE_INTEGER)&ri64FreeBytesToCaller,
+            fResult = pGetDiskFreeSpaceEx(dir.toStdString().c_str(), (PULARGE_INTEGER)&ri64FreeBytesToCaller,
                 (PULARGE_INTEGER)&ri64TotalBytes, (PULARGE_INTEGER)&i64FreeBytes);
 
             return fResult;
