@@ -24,7 +24,7 @@ namespace GLDCpuInfo
 
     ulong getCpuSpeed();
 
-    int getCpuCount();
+    ulong getCpuCount();
 
     CoreCount getCpuCoreCount();
 

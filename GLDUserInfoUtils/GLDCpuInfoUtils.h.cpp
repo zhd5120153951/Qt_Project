@@ -76,7 +76,7 @@ namespace GLDCpuInfo
         return dwMHz;
     }
 
-    int getCpuCount()
+    ulong getCpuCount()
     {
         SYSTEM_INFO systemInfo;
         GetSystemInfo(&systemInfo);
