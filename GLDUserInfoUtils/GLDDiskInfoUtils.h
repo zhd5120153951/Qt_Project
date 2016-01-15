@@ -3,7 +3,6 @@
 
 #include <qt_windows.h>
 #include <bitset>
-#include <utility>
 #include <Winioctl.h>
 #include <QVector>
 #include <QString>
@@ -39,23 +38,36 @@ namespace GLDDISKINFO
     class GLDDiskInfo
     {
     public:
+
+        /**
+         * @brief 获取系统盘符
+         * @return
+         */
+        QString getSystemVolumeName();
+
+        /**
+         * @brief 获取当前盘符
+         * @return
+         */
+        QString getCurrentVolumeName();
+
         /**
          * @brief 获取硬盘序列号
          * @return
          */
-        QString getDiskSerialNo();
+        QString getPhysicalDriveSerialNumber();
 
         /**
          * @brief 获取分区个数
          * @return
          */
-        ulong getDriverNum();
+        ulong getVolumeNum();
 
         /**
          * @brief 获取所有分区信息
          * @return
          */
-        QVector<DiskInfomation> getAllDriversInfo();
+        QVector<DiskInfomation> getAllVolumeInfo();
 
         /**
          * @brief 获取分区格式
@@ -69,25 +81,21 @@ namespace GLDDISKINFO
          * @param dir   分区名
          * @return
          */
-        QString getDriverTypeItem(const QString& dir);
+        QString getVolumeTypeItem(const QString& dir);
 
         /**
-         * @brief 获取分区可用空间
+         * @brief 获取分区空间信息
          * @param dir                      分区名
          * @param ri64FreeBytesToCaller    可用空间
          * @param ri64TotalBytes           分区总空间
          * @return
          */
-        bool getFreeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes);
-        bool getLastVolumeInfo(DiskInfomation &diskInfo);
+        bool getVolumeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes);
         bool getDiskSize(quint64 &llOfSectors, ulong dwDiskNum = 0);
-        bool getDiskSize2(quint64 &llOfSectors, ulong dwDiskNum = 0);
         bool getVolumeSize(quint64 &llOfSectors, string volName);
 
     private:
         bool getAllDriverName(ulong dwDrvNum, QVector<QString> & driveNameVct);
-        void toLittleEndian(PUSHORT pWords, int nFirstIndex, int nLastIndex, LPTSTR pBuf);
-        void trimStart(LPTSTR pBuf);
     };
 }
 

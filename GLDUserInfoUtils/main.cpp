@@ -12,7 +12,6 @@ int main(int argc, char *argv[])
     GLDDiskInfo disk;
 
     DiskInfomation diskInfo;
-    disk.getLastVolumeInfo(diskInfo);
 
     disk.getFileSystemType("C:\\");
 
@@ -23,5 +22,13 @@ int main(int argc, char *argv[])
 
     disk.getVolumeSize(llOfSectors, "C:\\");
 
+    disk.getFileSystemType("C:\\");
+    QString no = disk.getPhysicalDriveSerialNumber();
+    QString name1 = disk.getVolumeTypeItem("C:\\");
+
+    QString name = disk.getSystemVolumeName();
+    qDebug() << "system disk name is" << name;
+    QString diskname = disk.getCurrentVolumeName();
+    qDebug() << "current disk name is" << diskname;
     return a.exec();
 }

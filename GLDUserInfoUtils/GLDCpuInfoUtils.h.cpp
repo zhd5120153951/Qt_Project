@@ -45,7 +45,7 @@ namespace GLDCpuInfo
     {
         wchar_t Buffer[_MAX_PATH];
         DWORD BufSize = _MAX_PATH;
-        DWORD dwMHz = _MAX_PATH;
+        ulong dwMHz = _MAX_PATH;
         HKEY hKey;
 
         // open the key where the proc speed is hidden:

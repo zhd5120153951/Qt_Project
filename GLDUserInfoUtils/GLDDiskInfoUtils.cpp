@@ -1,46 +1,108 @@
 #include "GLDDiskInfoUtils.h"
+#include <atlstr.h>
 
 namespace GLDDISKINFO
 {
-    QString GLDDiskInfo::getDiskSerialNo()
-    {
-        TCHAR  szSerialNo[24];
-        BYTE IdentifyResult[sizeof(SENDCMDOUTPARAMS) + IDENTIFY_BUFFER_SIZE - 1];
-        DWORD dwBytesReturned;
-        GETVERSIONINPARAMS get_version;
-        SENDCMDINPARAMS send_cmd = { 0 };
 
-        HANDLE hFile = CreateFile(L"\\\\.\\PHYSICALDRIVE0", GENERIC_READ | GENERIC_WRITE,
-                                  FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL);
-        if(hFile == INVALID_HANDLE_VALUE)
+    QString GLDDiskInfo::getSystemVolumeName()
+    {
+        WCHAR str[MAX_PATH];
+        char sysDiskName[MAX_PATH * 2 + 1];
+        GetSystemDirectory(str, MAX_PATH);
+        WideCharToMultiByte(CP_ACP, 0, str, -1, sysDiskName, sizeof(sysDiskName), NULL, NULL);
+        return QString(sysDiskName[0]);
+    }
+
+    QString GLDDiskInfo::getCurrentVolumeName()
+    {
+        /* Path of Module */
+        WCHAR szModulePath[MAX_PATH];
+        char curDiskName[MAX_PATH * 2 + 1];
+        // Get current module handle
+        HMODULE module = GetModuleHandle(0);
+        // Get current file path
+        GetModuleFileName(module, szModulePath, sizeof(szModulePath));
+        WideCharToMultiByte(CP_ACP, 0, szModulePath, -1, curDiskName, sizeof(curDiskName), NULL, NULL);
+        return QString(curDiskName[0]);
+    }
+
+    QString GLDDiskInfo::getPhysicalDriveSerialNumber()
+    {
+        DWORD dwResult = NO_ERROR;
+        UINT nDriveNumber = 0;
+        CString strSerialNumber;
+        strSerialNumber.Empty();
+
+        // Format physical drive path (may be '\\.\PhysicalDrive0', '\\.\PhysicalDrive1' and so on).
+        CString strDrivePath;
+        strDrivePath.Format(_T("\\\\.\\PhysicalDrive%u"), nDriveNumber);
+
+        // call CreateFile to get a handle to physical drive
+        HANDLE hDevice = ::CreateFile(strDrivePath, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
+            NULL, OPEN_EXISTING, 0, NULL);
+
+        if (INVALID_HANDLE_VALUE == hDevice)
+            return "";
+
+        // set the input STORAGE_PROPERTY_QUERY data structure
+        STORAGE_PROPERTY_QUERY storagePropertyQuery;
+        ZeroMemory(&storagePropertyQuery, sizeof(STORAGE_PROPERTY_QUERY));
+        storagePropertyQuery.PropertyId = StorageDeviceProperty;
+        storagePropertyQuery.QueryType = PropertyStandardQuery;
+
+        // get the necessary output buffer size
+        STORAGE_DESCRIPTOR_HEADER storageDescriptorHeader = { 0 };
+        DWORD dwBytesReturned = 0;
+        if (!::DeviceIoControl(hDevice, IOCTL_STORAGE_QUERY_PROPERTY,
+            &storagePropertyQuery, sizeof(STORAGE_PROPERTY_QUERY),
+            &storageDescriptorHeader, sizeof(STORAGE_DESCRIPTOR_HEADER),
+            &dwBytesReturned, NULL))
         {
+            dwResult = ::GetLastError();
+            ::CloseHandle(hDevice);
             return "";
         }
 
-        //get version
-        DeviceIoControl(hFile, SMART_GET_VERSION, NULL, 0,
-                        &get_version, sizeof(get_version), &dwBytesReturned, NULL);
+        // allocate the necessary memory for the output buffer
+        const DWORD dwOutBufferSize = storageDescriptorHeader.Size;
+        BYTE* pOutBuffer = new BYTE[dwOutBufferSize];
+        ZeroMemory(pOutBuffer, dwOutBufferSize);
 
-        //identify device
-        send_cmd.irDriveRegs.bCommandReg = (get_version.bIDEDeviceMap & 0x10)? ID_CMD : ID_CMD;
-        DeviceIoControl(hFile, SMART_RCV_DRIVE_DATA, &send_cmd, sizeof(SENDCMDINPARAMS) - 1,
-                        IdentifyResult, sizeof(IdentifyResult), &dwBytesReturned, NULL);
-        CloseHandle(hFile);
+        // get the storage device descriptor
+        if (!::DeviceIoControl(hDevice, IOCTL_STORAGE_QUERY_PROPERTY,
+            &storagePropertyQuery, sizeof(STORAGE_PROPERTY_QUERY),
+            pOutBuffer, dwOutBufferSize,
+            &dwBytesReturned, NULL))
+        {
+            dwResult = ::GetLastError();
+            delete[]pOutBuffer;
+            ::CloseHandle(hDevice);
+            return "";
+        }
 
-        //获取结果
-        PUSHORT pWords = (USHORT*)(((SENDCMDOUTPARAMS*)IdentifyResult)->bBuffer);
+        // Now, the output buffer points to a STORAGE_DEVICE_DESCRIPTOR structure
+        // followed by additional info like vendor ID, product ID, serial number, and so on.
+        STORAGE_DEVICE_DESCRIPTOR* pDeviceDescriptor = (STORAGE_DEVICE_DESCRIPTOR*)pOutBuffer;
+        const DWORD dwSerialNumberOffset = pDeviceDescriptor->SerialNumberOffset;
+        if (dwSerialNumberOffset != 0)
+        {
+            // finally, get the serial number
+            strSerialNumber = CString(pOutBuffer + dwSerialNumberOffset);
+        }
 
-        toLittleEndian(pWords, 10, 19, szSerialNo);
-        trimStart(szSerialNo);
+        // perform cleanup and return
+        delete[] pOutBuffer;
+        ::CloseHandle(hDevice);
 
-        return QString::fromWCharArray(szSerialNo);;
+        std::basic_string<TCHAR> intermediate((LPCTSTR)strSerialNumber);
+        return QString::fromStdWString(intermediate);
     }
 
-    QVector<DiskInfomation> GLDDiskInfo::getAllDriversInfo()
+    QVector<DiskInfomation> GLDDiskInfo::getAllVolumeInfo()
     {
         QVector<DiskInfomation> diskInfoVect;
         QVector<QString> drvNameVct;
-        qulonglong dwDrvNum = getDriverNum();
+        qulonglong dwDrvNum = getVolumeNum();
 
         if (getAllDriverName(dwDrvNum, drvNameVct))
         {
@@ -52,7 +114,7 @@ namespace GLDDISKINFO
                 //add disk name
                 dskinf.m_strDiskName = *iter;
                 //add disk type
-                dskinf.m_strTypeName = getDriverTypeItem(*iter);
+                dskinf.m_strTypeName = getVolumeTypeItem(*iter);
                 //add filesystem type
                 switch (getFileSystemType(*iter))
                 {
@@ -72,7 +134,7 @@ namespace GLDDISKINFO
                     qint64 i64TotalBytes = 0;
                     qint64 i64FreeBytes = 0;
 
-                    if (getFreeSpace(*iter, i64FreeBytes, i64TotalBytes))
+                    if (getVolumeSpace(*iter, i64FreeBytes, i64TotalBytes))
                     {
                         dskinf.m_dwFreeMBytes = DWORD(i64FreeBytes / 1024 / 1024);
                         dskinf.m_dwTotalMBytes = DWORD(i64TotalBytes / 1024 / 1024);
@@ -91,7 +153,7 @@ namespace GLDDISKINFO
         return diskInfoVect;
     }
 
-    ulong GLDDiskInfo::getDriverNum()
+    ulong GLDDiskInfo::getVolumeNum()
     {
         ulong diskCount = 0;
         DWORD DiskInfo = GetLogicalDrives();
@@ -137,48 +199,7 @@ namespace GLDDISKINFO
         return true;
     }
 
-    void GLDDiskInfo::toLittleEndian(PUSHORT pWords, int nFirstIndex, int nLastIndex, LPTSTR pBuf)
-    {
-        LPTSTR pDest = pBuf;
-        for(int index = nFirstIndex; index <= nLastIndex; ++index)
-        {
-            pDest[0] = pWords[index] >> 8;
-            pDest[1] = pWords[index] & 0xFF;
-            pDest += 2;
-        }
-        *pDest = 0;
-
-        //trim space at the endof string; 0x20: _T(' ')
-        --pDest;
-        while(*pDest == 0x20)
-        {
-            *pDest = 0;
-            --pDest;
-        }
-    }
-
-    void GLDDiskInfo::trimStart(LPTSTR pBuf)
-    {
-        if(*pBuf != 0x20)
-        {
-            return;
-        }
-
-        LPTSTR pDest = pBuf;
-        LPTSTR pSrc = pBuf + 1;
-        while(*pSrc == 0x20)
-            ++pSrc;
-
-        while(*pSrc)
-        {
-            *pDest = *pSrc;
-            ++pDest;
-            ++pSrc;
-        }
-        *pDest = 0;
-    }
-
-    QString GLDDiskInfo::getDriverTypeItem(const QString& dir)
+    QString GLDDiskInfo::getVolumeTypeItem(const QString& dir)
     {
         UINT uiType = GetDriveTypeA(dir.toStdString().c_str());
         switch (uiType)
@@ -229,7 +250,7 @@ namespace GLDDISKINFO
         }
     }
 
-    bool GLDDiskInfo::getFreeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes)
+    bool GLDDiskInfo::getVolumeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes)
     {
         typedef bool (WINAPI *PGETDISKFREESPACEEX)(LPCSTR,
             PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
@@ -254,69 +275,6 @@ namespace GLDDISKINFO
         return fResult;
     }
 
-    bool GLDDiskInfo::getLastVolumeInfo(DiskInfomation &diskInfo)
-    {
-        QHash<qint64, QString> mapVolumeByStartAddress;
-        QVector<DiskInfomation> diskInfoVec = getAllDriversInfo();
-        QVector<DiskInfomation>::const_iterator cit = diskInfoVec.begin();
-        for (; cit != diskInfoVec.end(); ++cit)
-        {
-            //such as "\\.\C"
-            QString volName = cit->m_strDiskName;
-
-            volName = volName[0];
-            volName += ":";
-            volName = "\\\\.\\" + volName;
-
-            HANDLE hVolum = CreateFileA(volName.toStdString().c_str(), GENERIC_READ | GENERIC_WRITE,
-                FILE_SHARE_READ | FILE_SHARE_WRITE , NULL, OPEN_EXISTING,
-                0, NULL);
-            if (INVALID_HANDLE_VALUE == hVolum)
-            {
-                return false;
-            }
-
-            bool bIsOk;
-            DWORD dwReturnBytes = 0;
-            VOLUME_DISK_EXTENTS vde;
-
-            bIsOk = DeviceIoControl(hVolum, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS , NULL, 0,
-                &vde, sizeof(vde), &dwReturnBytes, NULL);
-            if (bIsOk)
-            {
-                mapVolumeByStartAddress.insert(vde.Extents[0].StartingOffset.QuadPart, cit->m_strDiskName);
-            }
-            else if (GetLastError() == ERROR_MORE_DATA)
-            {
-                mapVolumeByStartAddress.insert(vde.Extents[0].StartingOffset.QuadPart, cit->m_strDiskName);
-            }
-            else
-            {
-                if (hVolum != INVALID_HANDLE_VALUE)
-                {
-                    CloseHandle(hVolum);
-                }
-
-                return false;
-            }
-
-            if (hVolum != INVALID_HANDLE_VALUE)
-            {
-                CloseHandle(hVolum);
-            }
-        }
-
-        for (cit = diskInfoVec.begin(); cit != diskInfoVec.end(); ++cit)
-        {
-            if (mapVolumeByStartAddress.values().contains(cit->m_strDiskName))
-            {
-                diskInfo = *cit;
-            }
-        }
-
-        return true;
-    }
-
     bool GLDDiskInfo::getDiskSize(quint64 &llOfSectors, ulong dwDiskNum/* = */)
     {
         string strDiskName = "\\\\.\\PHYSICALDRIVE";
@@ -324,7 +282,7 @@ namespace GLDDISKINFO
         _itoa_s(dwDiskNum, szindx, 2, 10);
         strDiskName += szindx;
 
-        HANDLE hDisk = CreateFileA(strDiskName.c_str(), GENERIC_READ | GENERIC_WRITE,
+        HANDLE hDisk = CreateFileA(strDiskName.c_str(), /*GENERIC_READ | GENERIC_WRITE*/0,
             FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
             OPEN_EXISTING, NULL, NULL);
         if (INVALID_HANDLE_VALUE == hDisk)
@@ -349,48 +307,6 @@ namespace GLDDISKINFO
         }
 
         llOfSectors = gli.Length.QuadPart / 512;
-
-        if (INVALID_HANDLE_VALUE != hDisk)
-        {
-            CloseHandle(hDisk);
-        }
-        return true;
-    }
-
-    bool GLDDiskInfo::getDiskSize2(quint64 &llOfSectors, ulong dwDiskNum /* = 0 */)
-    {
-        string strDiskName = "\\\\.\\PHYSICALDRIVE";
-        char szindx[2] = {'\0', '\0'};
-        _itoa_s(dwDiskNum, szindx, 2, 10);
-        strDiskName += szindx;
-
-        HANDLE hDisk = CreateFileA(strDiskName.c_str(), GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-            OPEN_EXISTING, NULL, NULL);
-        if (INVALID_HANDLE_VALUE == hDisk)
-        {
-            GetLastError();
-            return false;
-        }
-
-        bool bIsOk;
-        DWORD dwReturnBytes = 0;
-        DISK_GEOMETRY_EX dge;
-
-        bIsOk = DeviceIoControl(hDisk, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, NULL, 0, &dge, sizeof(dge), &dwReturnBytes, NULL);
-        if (!bIsOk)
-        {
-            if (GetLastError() != ERROR_MORE_DATA)
-            {
-                if (INVALID_HANDLE_VALUE != hDisk)
-                {
-                    CloseHandle(hDisk);
-                }
-                return false;
-            }
-        }
-
-        llOfSectors = dge.DiskSize.QuadPart / 512;
 
         if (INVALID_HANDLE_VALUE != hDisk)
         {
