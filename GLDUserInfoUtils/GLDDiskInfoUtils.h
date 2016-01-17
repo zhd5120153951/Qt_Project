@@ -95,7 +95,7 @@ namespace GLDDISKINFO
         bool getVolumeSize(quint64 &llOfSectors, string volName);
 
     private:
-        bool getAllDriverName(ulong dwDrvNum, QVector<QString> & driveNameVct);
+        bool getAllVolumeName(ulong dwDrvNum, QVector<QString> & driveNameVct);
     };
 }
 

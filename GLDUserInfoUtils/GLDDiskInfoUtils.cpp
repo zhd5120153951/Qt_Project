@@ -95,7 +95,7 @@ namespace GLDDISKINFO
         ::CloseHandle(hDevice);
 
         std::basic_string<TCHAR> intermediate((LPCTSTR)strSerialNumber);
-        return QString::fromStdWString(intermediate);
+        return QString::fromStdWString(intermediate).trimmed();
     }
 
     QVector<DiskInfomation> GLDDiskInfo::getAllVolumeInfo()
@@ -104,7 +104,7 @@ namespace GLDDISKINFO
         QVector<QString> drvNameVct;
         qulonglong dwDrvNum = getVolumeNum();
 
-        if (getAllDriverName(dwDrvNum, drvNameVct))
+        if (getAllVolumeName(dwDrvNum, drvNameVct))
         {
             QVector<QString>::const_iterator iter = drvNameVct.begin();
             for (; iter != drvNameVct.end(); ++iter)
@@ -172,7 +172,7 @@ namespace GLDDISKINFO
     }
 
     //n个driver，以A：\null的形式存放的话，需4n个字符的数组，猜想，实际获得4n＋1个字符的数组，可见末尾是以nullnull结束字符数组
-    bool GLDDiskInfo::getAllDriverName(ulong dwDrvNum, QVector<QString> & driveNameVct)
+    bool GLDDiskInfo::getAllVolumeName(ulong dwDrvNum, QVector<QString> & driveNameVct)
     {
         //通过GetLogicalDriveStrings()函数获取所有驱动器字符串信息长度。
         DWORD dwLength = GetLogicalDriveStringsA(0,NULL);

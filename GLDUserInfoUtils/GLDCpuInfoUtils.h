@@ -29,8 +29,6 @@ namespace GLDCpuInfo
     CoreCount getCpuCoreCount();
 
     CpuInfo getCpuInfo();
-
-    int getCpuUsage();
 }
 
 #endif // GLDCPUINFOUTILS_H

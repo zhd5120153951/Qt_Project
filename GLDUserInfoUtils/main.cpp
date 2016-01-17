@@ -24,6 +24,7 @@ int main(int argc, char *argv[])
 
     disk.getFileSystemType("C:\\");
     QString no = disk.getPhysicalDriveSerialNumber();
+    qDebug() << "disk Serial Number is" << no;
     QString name1 = disk.getVolumeTypeItem("C:\\");
 
     QString name = disk.getSystemVolumeName();

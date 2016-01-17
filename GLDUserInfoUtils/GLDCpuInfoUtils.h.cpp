@@ -187,11 +187,6 @@ namespace GLDCpuInfo
         cpuInfo.m_processSpeed = getCpuSpeed();
         return cpuInfo;
     }
-
-    int getCpuUsage()
-    {
-        return 0;
-    }
 }
 
 
