@@ -8,7 +8,7 @@
 #include <QString>
 #include <QStringList>
 
-namespace GLDProcessInfo
+namespace GlodonProcessInfo
 {
     class GLDProcessFunc
     {

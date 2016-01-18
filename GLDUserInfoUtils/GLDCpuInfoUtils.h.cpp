@@ -6,7 +6,7 @@
 #pragma comment(lib, "Advapi32.lib")
 #pragma comment(lib, "User32.lib")
 
-namespace GLDCpuInfo
+namespace GlodonCpuInfo
 {
     typedef BOOL(WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
@@ -153,18 +153,25 @@ namespace GLDCpuInfo
 
         while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
         {
-            switch (ptr->Relationship)
+            //switch (ptr->Relationship)
+            //{
+            //case RelationProcessorCore:
+            //    processorCoreCount++;
+
+            //    // A hyperthreaded core supplies more than one logical processor.
+            //    logicalProcessorCount += countSetBits(ptr->ProcessorMask);
+            //    break;
+
+            //default:
+            //    _tprintf("\nError: Unsupported LOGICAL_PROCESSOR_RELATIONSHIP value.\n");
+            //    break;
+            //}
+            if (RelationProcessorCore == ptr->Relationship)
             {
-            case RelationProcessorCore:
                 processorCoreCount++;
 
                 // A hyperthreaded core supplies more than one logical processor.
                 logicalProcessorCount += countSetBits(ptr->ProcessorMask);
-                break;
-
-            default:
-                _tprintf("\nError: Unsupported LOGICAL_PROCESSOR_RELATIONSHIP value.\n");
-                break;
             }
 
             byteOffset += sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);

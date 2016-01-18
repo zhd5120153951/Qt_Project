@@ -1,6 +1,6 @@
 #include "GLDMemoryInfoUtils.h"
 
-namespace GLDMemoryInfo
+namespace GlodonMemoryInfo
 {
     PhysMemInfo getPhysMemInfo()
     {

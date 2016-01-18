@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <QString>
 
-namespace GLDCpuInfo
+namespace GlodonCpuInfo
 {
     typedef struct CpuCoreCount
     {

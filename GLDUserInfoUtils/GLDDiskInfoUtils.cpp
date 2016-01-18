@@ -1,7 +1,7 @@
 #include "GLDDiskInfoUtils.h"
 #include <atlstr.h>
 
-namespace GLDDISKINFO
+namespace GlodonDiskInfo
 {
 
     QString GLDDiskInfo::getSystemVolumeName()
@@ -296,6 +296,8 @@ namespace GLDDISKINFO
 
     bool GLDDiskInfo::getDiskSpaceInfo(qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
     {
+        ri64FreeBytesToCaller = 0;
+        ri64TotalBytes = 0;
         QVector<DiskInfomation> diskInfoVct = getAllVolumeInfo();
         if (0 == diskInfoVct.size())
         {

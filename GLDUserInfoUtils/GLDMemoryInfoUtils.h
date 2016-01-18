@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <qglobal.h>
 
-namespace GLDMemoryInfo
+namespace GlodonMemoryInfo
 {
     typedef struct PhysicalMemoryInfo
     {

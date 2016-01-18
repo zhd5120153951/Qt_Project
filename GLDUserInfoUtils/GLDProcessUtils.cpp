@@ -14,7 +14,7 @@
 #pragma comment(lib, "Shell32.lib")
 #pragma comment(lib, "Advapi32.lib")
 
-namespace GLDProcessInfo
+namespace GlodonProcessInfo
 {
     BOOL setPrivilege(HANDLE hProcess, LPCTSTR lpszPrivilege, BOOL bEnablePrivilege)
     {

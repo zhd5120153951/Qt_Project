@@ -6,11 +6,10 @@
 #include <Winioctl.h>
 #include <QVector>
 #include <QString>
-#include <QHash>
 
 using namespace std;
 
-namespace GLDDISKINFO
+namespace GlodonDiskInfo
 {
     enum FS
     {
