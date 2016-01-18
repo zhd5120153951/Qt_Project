@@ -4,7 +4,7 @@
 namespace GlodonDiskInfo
 {
 
-    QString GLDDiskInfo::getSystemVolumeName()
+    QString getSystemVolumeName()
     {
         WCHAR str[MAX_PATH];
         char sysDiskName[MAX_PATH * 2 + 1];
@@ -13,7 +13,7 @@ namespace GlodonDiskInfo
         return QString(sysDiskName[0]);
     }
 
-    QString GLDDiskInfo::getCurrentVolumeName()
+    QString getCurrentVolumeName()
     {
         /* Path of Module */
         WCHAR szModulePath[MAX_PATH];
@@ -26,7 +26,7 @@ namespace GlodonDiskInfo
         return QString(curDiskName[0]);
     }
 
-    QString GLDDiskInfo::getPhysicalDriveSerialNumber()
+    QString getPhysicalDriveSerialNumber()
     {
         DWORD dwResult = NO_ERROR;
         UINT nDriveNumber = 0;
@@ -98,13 +98,12 @@ namespace GlodonDiskInfo
         return QString::fromStdWString(intermediate).trimmed();
     }
 
-    QVector<DiskInfomation> GLDDiskInfo::getAllVolumeInfo()
+    QVector<DiskInfomation> getAllVolumeInfo()
     {
         QVector<DiskInfomation> diskInfoVect;
         QVector<QString> drvNameVct;
-        qulonglong dwDrvNum = getVolumeNum();
 
-        if (getAllVolumeName(dwDrvNum, drvNameVct))
+        if (getAllVolumeName(drvNameVct))
         {
             QVector<QString>::const_iterator iter = drvNameVct.begin();
             for (; iter != drvNameVct.end(); ++iter)
@@ -153,7 +152,7 @@ namespace GlodonDiskInfo
         return diskInfoVect;
     }
 
-    ulong GLDDiskInfo::getVolumeNum()
+    ulong getVolumeNum()
     {
         ulong diskCount = 0;
         DWORD DiskInfo = GetLogicalDrives();
@@ -172,8 +171,10 @@ namespace GlodonDiskInfo
     }
 
     //n个driver，以A：\null的形式存放的话，需4n个字符的数组，猜想，实际获得4n＋1个字符的数组，可见末尾是以nullnull结束字符数组
-    bool GLDDiskInfo::getAllVolumeName(ulong dwDrvNum, QVector<QString> & volumeNameVct)
+    bool getAllVolumeName(QVector<QString> & volumeNameVct)
     {
+        ulong dwDrvNum = getVolumeNum();
+
         //通过GetLogicalDriveStrings()函数获取所有驱动器字符串信息长度。
         DWORD dwLength = GetLogicalDriveStringsA(0,NULL);
 
@@ -199,7 +200,7 @@ namespace GlodonDiskInfo
         return true;
     }
 
-    QString GLDDiskInfo::getVolumeTypeItem(const QString& dir)
+    QString getVolumeTypeItem(const QString& dir)
     {
         UINT uiType = GetDriveTypeA(dir.toStdString().c_str());
         switch (uiType)
@@ -221,7 +222,7 @@ namespace GlodonDiskInfo
         }
     }
 
-    FS GLDDiskInfo::getFileSystemType(const QString &dir)
+    FS getFileSystemType(const QString &dir)
     {
         //对于光驱信息的需排除之
         QString temp = dir[0];
@@ -250,7 +251,7 @@ namespace GlodonDiskInfo
         }
     }
 
-    bool GLDDiskInfo::getVolumeSpace(const QString& dir, qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
+    bool getVolumeSpace(const QString& dir, qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
     {
         typedef bool (WINAPI *PGETDISKFREESPACEEX)(LPCSTR,
             PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
@@ -294,7 +295,7 @@ namespace GlodonDiskInfo
         return fResult;
     }
 
-    bool GLDDiskInfo::getDiskSpaceInfo(qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
+    bool getDiskSpaceInfo(qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
     {
         ri64FreeBytesToCaller = 0;
         ri64TotalBytes = 0;

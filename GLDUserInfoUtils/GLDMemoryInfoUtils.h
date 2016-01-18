@@ -19,8 +19,16 @@ namespace GlodonMemoryInfo
         qint64     m_availVirtual;  // 可用虚拟内存数,单位M
     } VirMemInfo;
 
+    /**
+     * @brief 获取物理内存信息
+     * @return
+     */
     PhysMemInfo getPhysMemInfo();
 
+    /**
+     * @brief 获取虚拟内存信息
+     * @return
+     */
     VirMemInfo getVirMemInfo();
 }
 

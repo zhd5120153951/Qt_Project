@@ -1,9 +1,11 @@
 #include <QCoreApplication>
 #include "GLDCpuInfoUtils.h"
 #include "GLDDiskInfoUtils.h"
+#include "GLDMemoryInfoUtils.h"
 
 using namespace GlodonDiskInfo;
 using namespace GlodonCpuInfo;
+using namespace GlodonMemoryInfo;
 
 #include <QDebug>
 
@@ -33,40 +35,39 @@ int main(int argc, char *argv[])
     qDebug() << "cpuInfo is" << cpuInfo.m_processSpeed;
 
 
-    GLDDiskInfo disk;
     DiskInfomation diskInfo;
 
-    FS fileSystem = disk.getFileSystemType("C:\\");
+    FS fileSystem = getFileSystemType("C:\\");
     qDebug() << "FS is" << fileSystem;
 
-    QString voluName = disk.getSystemVolumeName();
+    QString voluName = getSystemVolumeName();
     qDebug() << "system volume name is" << voluName;
 
-    QString currentVolName = disk.getCurrentVolumeName();
+    QString currentVolName = getCurrentVolumeName();
     qDebug() << "current volume name is" << currentVolName;
 
-    QString serialNumber = disk.getPhysicalDriveSerialNumber();
+    QString serialNumber = getPhysicalDriveSerialNumber();
     qDebug() << "serialNumber is" << serialNumber;
 
-    ulong volNumber = disk.getVolumeNum();
+    ulong volNumber = getVolumeNum();
     qDebug() << "volNumber is" << volNumber;
 
-    QString volType = disk.getVolumeTypeItem("D:\\");
+    QString volType = getVolumeTypeItem("D:\\");
     qDebug() << "volType is" << volType;
 
     qulonglong ri64FreeBytesToCaller;
     qulonglong ri64TotalBytes;
-    disk.getVolumeSpace("E:\\", ri64FreeBytesToCaller, ri64TotalBytes);
+    getVolumeSpace("E:\\", ri64FreeBytesToCaller, ri64TotalBytes);
     qDebug() << "E volume's free space is" << ri64FreeBytesToCaller;
     qDebug() << "E volume's totle space is" << ri64TotalBytes;
 
     qulonglong diskFreeBytesToCaller;
     qulonglong diskTotalBytes;
-    disk.getDiskSpaceInfo(diskFreeBytesToCaller, diskTotalBytes);
+    getDiskSpaceInfo(diskFreeBytesToCaller, diskTotalBytes);
     qDebug() << "Disk free space is" << diskFreeBytesToCaller;
     qDebug() << "Disk totle space is" << diskTotalBytes;
 
-    QVector<DiskInfomation> diskInfoVet = disk.getAllVolumeInfo();
+    QVector<DiskInfomation> diskInfoVet = getAllVolumeInfo();
     foreach(DiskInfomation disk , diskInfoVet)
     {
         qDebug() << "disk name is" << disk.m_strDiskName;
@@ -76,6 +77,15 @@ int main(int argc, char *argv[])
         qDebug() << "totle space is" << disk.m_dwTotalMBytes;
         qDebug() << "free space is" << disk.m_dwFreeMBytes;
     }
+
+    PhysMemInfo memInfo = getPhysMemInfo();
+    qDebug() << "memInfo's m_totalPhys is" << memInfo.m_totalPhys;
+    qDebug() << "memInfo's m_availPhys is " << memInfo.m_availPhys;
+    qDebug() << "memInfo's m_usedPhys is " << memInfo.m_usedPhys;
+
+    VirMemInfo virMemInfo = getVirMemInfo();
+    qDebug() << "virMemInfo's m_totalVirtual is" << virMemInfo.m_totalVirtual;
+    qDebug() << "virMemInfo's m_availVirtual is " << virMemInfo.m_availVirtual;
 
     return a.exec();
 }

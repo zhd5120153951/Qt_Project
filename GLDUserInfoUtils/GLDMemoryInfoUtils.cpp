@@ -5,7 +5,7 @@ namespace GlodonMemoryInfo
     PhysMemInfo getPhysMemInfo()
     {
         PhysMemInfo memInfo;
-        MEMORYSTATUSEX                  mymem;
+        MEMORYSTATUSEX mymem;
         mymem.dwLength = sizeof(MEMORYSTATUSEX);
         GlobalMemoryStatusEx(&mymem);
         memset(&memInfo, 0, sizeof(memInfo));
@@ -18,7 +18,7 @@ namespace GlodonMemoryInfo
     VirMemInfo getVirMemInfo()
     {
         VirMemInfo memInfo;
-        MEMORYSTATUSEX                  mymem;
+        MEMORYSTATUSEX mymem;
         mymem.dwLength = sizeof(MEMORYSTATUSEX);
         GlobalMemoryStatusEx(&mymem);
         memset(&memInfo, 0, sizeof(memInfo));
