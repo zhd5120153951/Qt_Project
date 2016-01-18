@@ -265,13 +265,30 @@ namespace GLDDISKINFO
 
         if (pGetDiskFreeSpaceEx)
         {
-            fResult = pGetDiskFreeSpaceEx(dir.toStdString().c_str(), (PULARGE_INTEGER)&ri64FreeBytesToCaller,
-                (PULARGE_INTEGER)&ri64TotalBytes, (PULARGE_INTEGER)&i64FreeBytes);
+            fResult = pGetDiskFreeSpaceEx(dir.toStdString().c_str(),
+                                          (PULARGE_INTEGER)&ri64FreeBytesToCaller,
+                                          (PULARGE_INTEGER)&ri64TotalBytes,
+                                          (PULARGE_INTEGER)&i64FreeBytes);
 
-            ri64FreeBytesToCaller = (DWORD)(ri64FreeBytesToCaller / 1024 / 1024);
-            ri64TotalBytes = (DWORD)(ri64TotalBytes / 1024 / 1024);
-
-            return fResult;
+            if (fResult)
+            {
+                ri64FreeBytesToCaller = (DWORD)(ri64FreeBytesToCaller / 1024 / 1024);
+                ri64TotalBytes = (DWORD)(ri64TotalBytes / 1024 / 1024);
+            }
+        }
+        else
+        {
+            DWORD dwSectPerClust, dwBytesPerSect, dwFreeClusters, dwTotalClusters;
+            fResult = GetDiskFreeSpaceA(dir.toStdString().c_str(),
+                                        &dwSectPerClust,
+                                        &dwBytesPerSect,
+                                        &dwFreeClusters,
+                                        &dwTotalClusters);
+            if (fResult)
+            {
+                ri64TotalBytes = (qulonglong)(dwTotalClusters * dwSectPerClust * dwBytesPerSect /(1024 * 1024));
+                ri64FreeBytesToCaller = (qulonglong)(dwFreeClusters * dwSectPerClust * dwBytesPerSect / (1024 * 1024));
+            }
         }
 
         return fResult;
