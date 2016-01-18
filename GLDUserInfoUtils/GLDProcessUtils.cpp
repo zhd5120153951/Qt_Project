@@ -10,9 +10,9 @@
 #include <QProcess>
 #include <QFileInfo>
 
-#pragma comment(lib, "Advapi32.lib")
 #pragma comment(lib, "Psapi.lib")
 #pragma comment(lib, "Shell32.lib")
+#pragma comment(lib, "Advapi32.lib")
 
 namespace GLDProcessInfo
 {

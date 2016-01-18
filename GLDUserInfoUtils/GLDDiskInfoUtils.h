@@ -19,19 +19,19 @@ namespace GLDDISKINFO
         NTFS         = 2
     };
 
-    typedef struct SDiskInfomation
+    typedef struct DiskInfomation
     {
-        SDiskInfomation()
+        DiskInfomation()
         {
             m_dwFreeMBytes = 0;
             m_dwTotalMBytes = 0;
         }
 
-        QString m_strDiskName;   // 分区名(盘符)
-        QString m_strTypeName;   // 分区类型
-        QString m_strFileSystem; // 分区格式
-        ulong   m_dwTotalMBytes; // 总空间
-        ulong   m_dwFreeMBytes;  // 可用空间
+        QString      m_strDiskName;   // 分区名(盘符)
+        QString      m_strTypeName;   // 分区类型
+        QString      m_strFileSystem; // 分区格式
+        qulonglong   m_dwTotalMBytes; // 总空间
+        qulonglong   m_dwFreeMBytes;  // 可用空间
 
     }DiskInfomation;
 
@@ -90,12 +90,18 @@ namespace GLDDISKINFO
          * @param ri64TotalBytes           分区总空间
          * @return
          */
-        bool getVolumeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes);
-        bool getDiskSize(quint64 &llOfSectors, ulong dwDiskNum = 0);
-        bool getVolumeSize(quint64 &llOfSectors, string volName);
+        bool getVolumeSpace(const QString& dir, qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes);
+
+        /**
+        * @brief 获取硬盘空间信息
+        * @param ri64FreeBytesToCaller    硬盘可用空间
+        * @param ri64TotalBytes           硬盘总空间
+        * @return
+        */
+        bool getDiskSpaceInfo(qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes);
 
     private:
-        bool getAllVolumeName(ulong dwDrvNum, QVector<QString> & driveNameVct);
+        bool getAllVolumeName(ulong dwDrvNum, QVector<QString> & volumeNameVct);
     };
 }
 

@@ -14,13 +14,11 @@ int main(int argc, char *argv[])
     DiskInfomation diskInfo;
 
     disk.getFileSystemType("C:\\");
+    //disk.getAllVolumeInfo();
 
-    ULONGLONG llOfSectors;
-    DWORD dwDiskNum = 2;
-    disk.getDiskSize(llOfSectors, dwDiskNum);
-
-
-    disk.getVolumeSize(llOfSectors, "C:\\");
+    qulonglong i64TotalBytes = 0;
+    qulonglong i64FreeBytes = 0;
+    disk.getVolumeSpace("C:\\", i64FreeBytes, i64TotalBytes);
 
     disk.getFileSystemType("C:\\");
     QString no = disk.getPhysicalDriveSerialNumber();

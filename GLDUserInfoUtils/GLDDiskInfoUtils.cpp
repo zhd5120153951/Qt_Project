@@ -131,20 +131,20 @@ namespace GLDDISKINFO
                 //add space information
                 if (dskinf.m_strTypeName == QStringLiteral("磁盘分区") && dskinf.m_strFileSystem != "OTHER_FORMAT")
                 {
-                    qint64 i64TotalBytes = 0;
-                    qint64 i64FreeBytes = 0;
+                    qulonglong i64TotalBytes = 0;
+                    qulonglong i64FreeBytes = 0;
 
                     if (getVolumeSpace(*iter, i64FreeBytes, i64TotalBytes))
                     {
-                        dskinf.m_dwFreeMBytes = DWORD(i64FreeBytes / 1024 / 1024);
-                        dskinf.m_dwTotalMBytes = DWORD(i64TotalBytes / 1024 / 1024);
+                        dskinf.m_dwFreeMBytes = i64FreeBytes;
+                        dskinf.m_dwTotalMBytes = i64TotalBytes;
                     }
                     else
                     {
                         dskinf.m_dwFreeMBytes = 0;
                         dskinf.m_dwTotalMBytes = 0;
                     }
-                    //make vector data
+
                     diskInfoVect.push_back(dskinf);
                 }
             }
@@ -172,7 +172,7 @@ namespace GLDDISKINFO
     }
 
     //n个driver，以A：\null的形式存放的话，需4n个字符的数组，猜想，实际获得4n＋1个字符的数组，可见末尾是以nullnull结束字符数组
-    bool GLDDiskInfo::getAllVolumeName(ulong dwDrvNum, QVector<QString> & driveNameVct)
+    bool GLDDiskInfo::getAllVolumeName(ulong dwDrvNum, QVector<QString> & volumeNameVct)
     {
         //通过GetLogicalDriveStrings()函数获取所有驱动器字符串信息长度。
         DWORD dwLength = GetLogicalDriveStringsA(0,NULL);
@@ -191,7 +191,7 @@ namespace GLDDISKINFO
         while (dwIndex < dwDrvNum)
         {
             QString tmp(DStr + 4 * dwIndex);
-            driveNameVct.push_back(tmp);
+            volumeNameVct.push_back(tmp);
             dwIndex++;
         }
 
@@ -250,14 +250,13 @@ namespace GLDDISKINFO
         }
     }
 
-    bool GLDDiskInfo::getVolumeSpace(const QString& dir, qint64& ri64FreeBytesToCaller, qint64& ri64TotalBytes)
+    bool GLDDiskInfo::getVolumeSpace(const QString& dir, qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
     {
         typedef bool (WINAPI *PGETDISKFREESPACEEX)(LPCSTR,
             PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
 
         PGETDISKFREESPACEEX pGetDiskFreeSpaceEx = NULL;
-        qint64 i64FreeBytes;
-
+        qulonglong i64FreeBytes;
         bool fResult = false;
 
         pGetDiskFreeSpaceEx = (PGETDISKFREESPACEEX) GetProcAddress(
@@ -269,89 +268,29 @@ namespace GLDDISKINFO
             fResult = pGetDiskFreeSpaceEx(dir.toStdString().c_str(), (PULARGE_INTEGER)&ri64FreeBytesToCaller,
                 (PULARGE_INTEGER)&ri64TotalBytes, (PULARGE_INTEGER)&i64FreeBytes);
 
+            ri64FreeBytesToCaller = (DWORD)(ri64FreeBytesToCaller / 1024 / 1024);
+            ri64TotalBytes = (DWORD)(ri64TotalBytes / 1024 / 1024);
+
             return fResult;
         }
 
         return fResult;
     }
 
-    bool GLDDiskInfo::getDiskSize(quint64 &llOfSectors, ulong dwDiskNum/* = */)
+    bool GLDDiskInfo::getDiskSpaceInfo(qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes)
     {
-        string strDiskName = "\\\\.\\PHYSICALDRIVE";
-        char szindx[2] = {'\0', '\0'};
-        _itoa_s(dwDiskNum, szindx, 2, 10);
-        strDiskName += szindx;
-
-        HANDLE hDisk = CreateFileA(strDiskName.c_str(), /*GENERIC_READ | GENERIC_WRITE*/0,
-            FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-            OPEN_EXISTING, NULL, NULL);
-        if (INVALID_HANDLE_VALUE == hDisk)
+        QVector<DiskInfomation> diskInfoVct = getAllVolumeInfo();
+        if (0 == diskInfoVct.size())
         {
-            GetLastError();
             return false;
         }
 
-        bool bIsOk;
-        DWORD dwReturnBytes = 0;
-        GET_LENGTH_INFORMATION gli;
-
-        bIsOk = DeviceIoControl(hDisk, IOCTL_DISK_GET_LENGTH_INFO, NULL, 0, &gli, sizeof(gli), &dwReturnBytes, NULL);
-        if (!bIsOk)
+        foreach(DiskInfomation diskInfo, diskInfoVct)
         {
-            GetLastError();
-            if (INVALID_HANDLE_VALUE != hDisk)
-            {
-                CloseHandle(hDisk);
-            }
-            return false;
+            ri64FreeBytesToCaller += diskInfo.m_dwFreeMBytes;
+            ri64TotalBytes += diskInfo.m_dwTotalMBytes;
         }
 
-        llOfSectors = gli.Length.QuadPart / 512;
-
-        if (INVALID_HANDLE_VALUE != hDisk)
-        {
-            CloseHandle(hDisk);
-        }
-        return true;
-    }
-
-    bool GLDDiskInfo::getVolumeSize(quint64 &llOfSectors, string volName)
-    {
-        char szchar[2] = {volName[0], '\0'};
-        string strVolumeName = szchar;
-        strVolumeName = "\\\\.\\" + strVolumeName;
-        strVolumeName += ":";
-
-        HANDLE hVolume = CreateFileA(strVolumeName.c_str(), GENERIC_READ | GENERIC_WRITE,
-            FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-            OPEN_EXISTING, NULL, NULL);
-        if (INVALID_HANDLE_VALUE == hVolume)
-        {
-            GetLastError();
-            return false;
-        }
-
-        bool bIsOk;
-        DWORD dwReturnBytes = 0;
-        GET_LENGTH_INFORMATION gli;
-
-        bIsOk = DeviceIoControl(hVolume, IOCTL_DISK_GET_LENGTH_INFO, NULL, 0, &gli, sizeof(gli),&dwReturnBytes, NULL);
-        if (!bIsOk)
-        {
-            GetLastError();
-            if (INVALID_HANDLE_VALUE != hVolume)
-            {
-                CloseHandle(hVolume);
-            }
-            return false;
-        }
-
-        llOfSectors = gli.Length.QuadPart / 512;
-
-        if (INVALID_HANDLE_VALUE != hVolume)
-        {
-            CloseHandle(hVolume);
-        }
         return true;
     }
 }
