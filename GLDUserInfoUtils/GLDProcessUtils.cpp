@@ -221,9 +221,9 @@ namespace GlodonProcessInfo
         return cpu.getUsageEx();
     }
 
-    ULONGLONG GLDProcessFunc::getMemoryInfo(const QString &processName)
+    SIZE_T GLDProcessFunc::getMemoryInfo(const QString &processName)
     {
-        DWORD handle = GLDProcessFunc::getIDByName(processName);
+        HANDLE handle = GLDProcessFunc::getHandleByName(processName);
 
         if (handle != 0)
         {
@@ -233,16 +233,22 @@ namespace GlodonProcessInfo
         return 0;
     }
 
-    ULONGLONG GLDProcessFunc::getMemoryInfo(DWORD processID)
+    SIZE_T GLDProcessFunc::getMemoryInfo(HANDLE processID)
     {
         PROCESS_MEMORY_COUNTERS pmc;
-        GetProcessMemoryInfo((HANDLE)processID, &pmc, sizeof(pmc));
-        return pmc.PagefileUsage / 1024;
+        GetProcessMemoryInfo(processID, &pmc, sizeof(pmc));
+        return pmc.WorkingSetSize / 1024;
+    }
+
+    SIZE_T GLDProcessFunc::getMemoryInfo(DWORD processID)
+    {
+        HANDLE processHandle = getHandleByID(processID);
+        return getMemoryInfo(processHandle);
     }
 
     DWORD GLDProcessFunc::getIDByName(const QString &processName)
     {
-        PROCESSENTRY32 pe = {sizeof(PROCESSENTRY32)};
+        PROCESSENTRY32 pe = { sizeof(PROCESSENTRY32) };
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
 
         if (hSnapshot != INVALID_HANDLE_VALUE)
@@ -278,7 +284,7 @@ namespace GlodonProcessInfo
 
             if (pathDelim != std::string::npos)
             {
-                return QString(processName.substr(pathDelim + 1).c_str());
+                return QString::fromStdString(processName.substr(pathDelim + 1));
             }
 
             return "";
@@ -287,6 +293,63 @@ namespace GlodonProcessInfo
         return "";
 
     }
+
+    HANDLE GLDProcessFunc::getHandleByName(const QString &processName)
+    {
+        HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+        if (INVALID_HANDLE_VALUE == hSnapshot)
+        {
+            return NULL;
+        }
+
+        PROCESSENTRY32 pe = { sizeof(pe) };
+        BOOL fOk;
+        for (fOk = Process32First(hSnapshot, &pe); fOk; fOk = Process32Next(hSnapshot, &pe))
+        {
+            if (!wcscmp(pe.szExeFile, processName.toStdWString().c_str()))
+            {
+                CloseHandle(hSnapshot);
+                return OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe.th32ProcessID);
+            }
+        }
+
+        return NULL;
+    }
+
+    HANDLE GLDProcessFunc::getHandleByID(DWORD processId)
+    {
+        HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+        if (INVALID_HANDLE_VALUE == hSnapshot)
+        {
+            return NULL;
+        }
+
+        PROCESSENTRY32 pe = { sizeof(pe) };
+        //BOOL fOk;
+        //for (fOk = Process32First(hSnapshot, &pe); fOk; fOk = Process32Next(hSnapshot, &pe))
+        //{
+        //    if (pe.th32ProcessID == processId)
+        //    {
+        //        CloseHandle(hSnapshot);
+        //        return OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe.th32ProcessID);
+        //    }
+        //}
+
+        if (Process32First(hSnapshot, &pe))
+        {
+            do
+            {
+                if (pe.th32ProcessID == processId)
+                {
+                    CloseHandle(hSnapshot);
+                    return OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe.th32ProcessID);
+                }
+            } while (Process32Next(hSnapshot, &pe));
+        }
+
+        return NULL;
+    }
+
 
     bool GLDProcessFunc::killProcess(const QString &lpProcessName)
     {

@@ -17,12 +17,19 @@ namespace GlodonProcessInfo
         static ULONGLONG getCpuUsage(const QString &processName);
 
         //当前指定进程的占用的内存KB为单元
-        static ULONGLONG getMemoryInfo(DWORD processID);
-        static ULONGLONG getMemoryInfo(const QString &processName);
+        static SIZE_T getMemoryInfo(DWORD processID);
+        static SIZE_T getMemoryInfo(const QString &processName);
+
+        static SIZE_T getMemoryInfo(HANDLE processID);
 
         static DWORD getIDByName(const QString &processName);
         static QString getNameByID(DWORD processID);
 
+    private:
+        static HANDLE getHandleByName(const QString &processName);
+        static HANDLE getHandleByID(DWORD processId);
+
+    public:
         static bool isProcessRunning(TCHAR *szEXEName);
         static bool isProcessRunning(const QStringList &exeNameList);
         static bool isProcessRunning(const QString &processName);

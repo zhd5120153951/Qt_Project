@@ -2,10 +2,14 @@
 #include "GLDCpuInfoUtils.h"
 #include "GLDDiskInfoUtils.h"
 #include "GLDMemoryInfoUtils.h"
+#include "GLDProcessUtils.h"
+#include <windows.h>
+#include <Psapi.h>
 
 using namespace GlodonDiskInfo;
 using namespace GlodonCpuInfo;
 using namespace GlodonMemoryInfo;
+using namespace GlodonProcessInfo;
 
 #include <QDebug>
 
@@ -87,5 +91,13 @@ int main(int argc, char *argv[])
     qDebug() << "virMemInfo's m_totalVirtual is" << virMemInfo.m_totalVirtual;
     qDebug() << "virMemInfo's m_availVirtual is " << virMemInfo.m_availVirtual;
 
+
+    QString processName = "notepad++.exe";
+    SIZE_T cpuUsage = GLDProcessFunc::getMemoryInfo(processName);
+    SIZE_T cpuUsageById = GLDProcessFunc::getMemoryInfo(23856);
+
+
+    QString process = GLDProcessFunc::getNameByID(8048);
+    qDebug() << "process's name is " << process;
     return a.exec();
 }
