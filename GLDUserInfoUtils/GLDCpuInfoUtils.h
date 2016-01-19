@@ -1,11 +1,13 @@
 #ifndef GLDCPUINFOUTILS_H
 #define GLDCPUINFOUTILS_H
 
+#include "CBBNameSpace.h"
+
 #include <windows.h>
 #include <QString>
 
-namespace GlodonCpuInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+
     typedef struct CpuCoreCount
     {
         CpuCoreCount()
@@ -56,6 +58,6 @@ namespace GlodonCpuInfo
      * @return
      */
     CpuInfo getCpuInfo();
-}
 
+CBB_GLODON_END_NAMESPACE
 #endif // GLDCPUINFOUTILS_H

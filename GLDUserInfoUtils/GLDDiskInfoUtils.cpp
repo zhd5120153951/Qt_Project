@@ -1,12 +1,14 @@
 #include "GLDDiskInfoUtils.h"
 #include <atlstr.h>
 
-namespace GlodonDiskInfo
-{
+#include <memory>
+
+CBB_GLODON_BEGIN_NAMESPACE
+
     QString getSystemVolumeName()
     {
-        WCHAR str[MAX_PATH];
-        char sysDiskName[MAX_PATH * 2 + 1];
+        WCHAR str[MAX_PATH] = {0};
+        char sysDiskName[MAX_PATH * 2 + 1] = {0};
         GetSystemDirectory(str, MAX_PATH);
         WideCharToMultiByte(CP_ACP,
                             0,
@@ -22,9 +24,9 @@ namespace GlodonDiskInfo
     QString getCurrentVolumeName()
     {
         /* Path of Module */
-        WCHAR szModulePath[MAX_PATH];
+        WCHAR szModulePath[MAX_PATH] = { 0 };
 
-        char curDiskName[MAX_PATH * 2 + 1];
+        char curDiskName[MAX_PATH * 2 + 1] = { 0 };
 
         // Get current module handle
         HMODULE module = GetModuleHandle(0);
@@ -66,6 +68,8 @@ namespace GlodonDiskInfo
                                       0,
                                       NULL);
 
+        std::shared_ptr<HANDLE> spHandle(hDevice, CloseHandle);
+
         if (INVALID_HANDLE_VALUE == hDevice)
         {
             return "";
@@ -86,7 +90,6 @@ namespace GlodonDiskInfo
             &dwBytesReturned, NULL))
         {
             dwResult = ::GetLastError();
-            ::CloseHandle(hDevice);
             return "";
         }
 
@@ -103,7 +106,6 @@ namespace GlodonDiskInfo
         {
             dwResult = ::GetLastError();
             delete[]pOutBuffer;
-            ::CloseHandle(hDevice);
             return "";
         }
 
@@ -119,7 +121,6 @@ namespace GlodonDiskInfo
 
         // perform cleanup and return
         delete[] pOutBuffer;
-        ::CloseHandle(hDevice);
 
         std::basic_string<TCHAR> intermediate((LPCTSTR)strSerialNumber);
         return QString::fromStdWString(intermediate).trimmed();
@@ -227,25 +228,25 @@ namespace GlodonDiskInfo
         return true;
     }
 
-    QString getVolumeTypeItem(const QString& dir)
+    VOLUMETYPE getVolumeTypeItem(const QString& dir)
     {
         UINT uiType = GetDriveTypeA(dir.toStdString().c_str());
         switch (uiType)
         {
         case DRIVE_UNKNOWN:
-            return QStringLiteral("未知设备");
+            return UNKNOWNDEVICE;
         case DRIVE_REMOVABLE:
-            return QStringLiteral("可移动设备");
+            return REMOVABLEDEVICE;
         case DRIVE_FIXED:
-            return QStringLiteral("磁盘分区");
+            return FIXEDDEVICE;
         case DRIVE_REMOTE:
-            return QStringLiteral("网络磁盘");
+            return REMOTEDEVICE;
         case DRIVE_CDROM:
-            return QStringLiteral("光驱");
+            return CDROMDEVICE;
         case DRIVE_RAMDISK:
-            return QStringLiteral("虚拟磁盘");
+            return RAMDISKDEVICE;
         default:
-            return QStringLiteral("无效路径");
+            return INVALIDPATH;
         }
     }
 
@@ -340,6 +341,7 @@ namespace GlodonDiskInfo
 
         return true;
     }
-}
+
+CBB_GLODON_END_NAMESPACE
 
 

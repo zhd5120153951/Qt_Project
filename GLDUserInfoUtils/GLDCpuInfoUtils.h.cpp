@@ -6,8 +6,8 @@
 #pragma comment(lib, "Advapi32.lib")
 #pragma comment(lib, "User32.lib")
 
-namespace GlodonCpuInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+    // todo
     const LPCWSTR proSpeed = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
     typedef BOOL(WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
@@ -149,7 +149,7 @@ namespace GlodonCpuInfo
                 done = TRUE;
             }
         }
-
+        // todo  Õ∑≈
         ptr = buffer;
 
         while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
@@ -181,6 +181,7 @@ namespace GlodonCpuInfo
         cpuInfo.m_processSpeed = getCpuSpeed();
         return cpuInfo;
     }
-}
+
+CBB_GLODON_END_NAMESPACE
 
 

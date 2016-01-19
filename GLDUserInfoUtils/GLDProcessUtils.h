@@ -1,6 +1,8 @@
 #ifndef GLDPROCESSFUNC_H
 #define GLDPROCESSFUNC_H
 
+#include "CBBNameSpace.h"
+
 #include <qt_windows.h>
 #include <WinNT.h>
 
@@ -8,8 +10,8 @@
 #include <QString>
 #include <QStringList>
 
-namespace GlodonProcessInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+
     /**
      * @brief 获取某个进程的CPU使用率
      * @param processID  进程PID
@@ -127,7 +129,8 @@ namespace GlodonProcessInfo
      * @return
      */
     HANDLE getCurrentID();
-}
+
+CBB_GLODON_END_NAMESPACE
 
 
 #endif // GLDPROCESSFUNC_H

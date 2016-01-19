@@ -1,7 +1,7 @@
 #include "GLDMemoryInfoUtils.h"
 
-namespace GlodonMemoryInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+
     PhysMemInfo getPhysMemInfo()
     {
         PhysMemInfo memInfo;
@@ -26,4 +26,5 @@ namespace GlodonMemoryInfo
         memInfo.m_availVirtual = (mymem.ullAvailVirtual) / 1024 / 1024;
         return memInfo;
     }
-}
+
+CBB_GLODON_END_NAMESPACE

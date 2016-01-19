@@ -1,6 +1,8 @@
 #ifndef GLDDISKINFOUTILS_H
 #define GLDDISKINFOUTILS_H
 
+#include "CBBNameSpace.h"
+
 #include <windows.h>
 #include <Winioctl.h>
 
@@ -10,13 +12,24 @@
 
 using namespace std;
 
-namespace GlodonDiskInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+
     enum FS
     {
         OTHER_FORMAT = 0,
         FAT32        = 1,
         NTFS         = 2
+    };
+
+    enum VOLUMETYPE
+    {
+        UNKNOWNDEVICE,   // 未知设备
+        REMOVABLEDEVICE, // 可移动设备
+        FIXEDDEVICE,     // 磁盘分区
+        REMOTEDEVICE,    // 网络磁盘
+        CDROMDEVICE,     // 光驱
+        RAMDISKDEVICE,   // 虚拟磁盘
+        INVALIDPATH      // 无效路径
     };
 
     typedef struct DiskInfomation
@@ -76,7 +89,7 @@ namespace GlodonDiskInfo
      * @param dir   分区名
      * @return
      */
-    QString getVolumeTypeItem(const QString& dir);
+    VOLUMETYPE getVolumeTypeItem(const QString& dir);
 
     /**
      * @brief 获取分区空间信息
@@ -101,6 +114,7 @@ namespace GlodonDiskInfo
     * @return
     */
     bool getAllVolumeName(QVector<QString> & volumeNameVct);
-}
+
+CBB_GLODON_END_NAMESPACE
 
 #endif // GLDDISKINFOUTILS_H

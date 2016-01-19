@@ -1,11 +1,13 @@
 #ifndef GLDMEMORYINFOUTILS_H
 #define GLDMEMORYINFOUTILS_H
 
+#include "CBBNameSpace.h"
+
 #include <windows.h>
 #include <qglobal.h>
 
-namespace GlodonMemoryInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+
     typedef struct PhysicalMemoryInfo
     {
         qint64     m_totalPhys;     // 总内存数,单位M
@@ -30,6 +32,7 @@ namespace GlodonMemoryInfo
      * @return
      */
     VirMemInfo getVirMemInfo();
-}
+
+CBB_GLODON_END_NAMESPACE
 
 #endif // GLDMEMORYINFOUTILS_H

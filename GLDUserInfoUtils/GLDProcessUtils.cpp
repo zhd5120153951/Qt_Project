@@ -6,17 +6,12 @@
 #include <ShellAPI.h>
 #include <stdexcept>
 
-#include <QDir>
-#include <QThread>
-#include <QProcess>
-#include <QFileInfo>
-
 #pragma comment(lib, "Psapi.lib")
 #pragma comment(lib, "Shell32.lib")
 #pragma comment(lib, "Advapi32.lib")
 
-namespace GlodonProcessInfo
-{
+CBB_GLODON_BEGIN_NAMESPACE
+
     BOOL setPrivilege(HANDLE hProcess, LPCTSTR lpszPrivilege, BOOL bEnablePrivilege)
     {
         HANDLE hToken;
@@ -143,7 +138,7 @@ namespace GlodonProcessInfo
                                              &ftProcExit,
                                              &ftProcKernel,
                                              &ftProcUser);
-            if (!proceTime && false)
+            if (!proceTime)
             {
                 return 0;
             }
@@ -298,7 +293,7 @@ namespace GlodonProcessInfo
     ulong getPrivateWorkingSet(DWORD processID)
     {
         // hold the working set
-        DWORD dWorkingSetPages[1024 * 128];
+        DWORD dWorkingSetPages[1024 * 128] = {0};
 
         // information get from QueryWorkingSet()
         DWORD dPageSize = 0x1000;
@@ -449,14 +444,12 @@ namespace GlodonProcessInfo
 
             if (pathDelim != std::string::npos)
             {
+                CloseHandle(hProcess);
                 return QString::fromStdString(processName.substr(pathDelim + 1));
             }
-
-            return "";
         }
 
         return "";
-
     }
 
     HANDLE getHandleByName(const QString &processName)
@@ -517,4 +510,5 @@ namespace GlodonProcessInfo
     {
         return GetCurrentProcess();
     }
-}
+
+CBB_GLODON_END_NAMESPACE

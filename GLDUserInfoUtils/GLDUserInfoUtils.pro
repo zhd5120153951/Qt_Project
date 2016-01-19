@@ -25,4 +25,5 @@ HEADERS += \
     GLDProcessUtils.h \
     GLDDiskInfoUtils.h \
     GLDMemoryInfoUtils.h \
-    GLDCpuInfoUtils.h
+    GLDCpuInfoUtils.h \
+    CBBNameSpace.h
