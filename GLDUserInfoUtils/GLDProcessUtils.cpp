@@ -4,6 +4,7 @@
 #include <strsafe.h>
 #include <Tlhelp32.h>
 #include <ShellAPI.h>
+#include <stdexcept>
 
 #include <QDir>
 #include <QThread>
@@ -46,6 +47,14 @@ namespace GlodonProcessInfo
         }
 
         return TRUE;
+    }
+
+    int Compare(const void * Val1, const void * Val2)
+    {
+        if (*(PDWORD)Val1 == *(PDWORD)Val2)
+            return 0;
+
+        return *(PDWORD)Val1 > *(PDWORD)Val2 ? 1 : -1;
     }
 
 
@@ -221,29 +230,181 @@ namespace GlodonProcessInfo
         return cpu.getUsageEx();
     }
 
-    SIZE_T GLDProcessFunc::getMemoryInfo(const QString &processName)
-    {
-        HANDLE handle = GLDProcessFunc::getHandleByName(processName);
 
-        if (handle != 0)
+    SIZE_T GLDProcessFunc::getCurrentWorkingSet(DWORD processID)
+    {
+        HANDLE processHandle = getHandleByID(processID);
+
+        if (processHandle != NULL)
         {
-            return GLDProcessFunc::getMemoryInfo(handle);
+            return GLDProcessFunc::getCurrentWorkingSet(processHandle);
         }
 
         return 0;
     }
 
-    SIZE_T GLDProcessFunc::getMemoryInfo(HANDLE processID)
+    SIZE_T GLDProcessFunc::getCurrentWorkingSet(const QString &processName)
     {
-        PROCESS_MEMORY_COUNTERS pmc;
-        GetProcessMemoryInfo(processID, &pmc, sizeof(pmc));
+        HANDLE handle = GLDProcessFunc::getHandleByName(processName);
+
+        if (handle != NULL)
+        {
+            return GLDProcessFunc::getCurrentWorkingSet(handle);
+        }
+
+        return 0;
+    }
+
+    SIZE_T GLDProcessFunc::getCurrentWorkingSet(HANDLE handle)
+    {
+        PROCESS_MEMORY_COUNTERS_EX pmc;
+        GetProcessMemoryInfo(handle, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
         return pmc.WorkingSetSize / 1024;
     }
 
-    SIZE_T GLDProcessFunc::getMemoryInfo(DWORD processID)
+    SIZE_T GLDProcessFunc::getPeekWorkingSet(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
-        return getMemoryInfo(processHandle);
+
+        if (processHandle != NULL)
+        {
+            return GLDProcessFunc::getPeekWorkingSet(processHandle);
+        }
+
+        return 0;
+    }
+
+    SIZE_T GLDProcessFunc::getPeekWorkingSet(const QString &processName)
+    {
+        HANDLE handle = GLDProcessFunc::getHandleByName(processName);
+
+        if (handle != NULL)
+        {
+            return GLDProcessFunc::getPeekWorkingSet(handle);
+        }
+
+        return 0;
+    }
+
+    SIZE_T GLDProcessFunc::getPeekWorkingSet(HANDLE handle)
+    {
+        PROCESS_MEMORY_COUNTERS_EX pmc;
+        GetProcessMemoryInfo(handle, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+        return pmc.PeakWorkingSetSize / 1024;
+    }
+
+    ulong GLDProcessFunc::getPrivateWorkingSet(DWORD processID)
+    {
+        // hold the working set
+        DWORD dWorkingSetPages[1024 * 128];
+
+        // information get from QueryWorkingSet()
+        DWORD dPageSize = 0x1000;
+
+        DWORD dSharedPages = 0;
+        DWORD dPrivatePages = 0;
+        DWORD dPageTablePages = 0;
+
+        HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
+                                      FALSE,
+                                      processID);
+
+        if (!hProcess)
+        {
+            return 0;
+        }
+
+        ulong WSPrivate;
+
+        __try
+        {
+            if (!QueryWorkingSet(hProcess, dWorkingSetPages, sizeof(dWorkingSetPages)))
+            {
+                __leave;
+            }
+
+            DWORD dPages = dWorkingSetPages[0];
+
+            qsort(&dWorkingSetPages[1], dPages, sizeof(DWORD), Compare);
+
+            for (DWORD i = 1; i <= dPages; i++)
+            {
+                DWORD dCurrentPageStatus = 0;
+                DWORD dCurrentPageAddress;
+                DWORD dNextPageAddress;
+                DWORD dNextPageFlags;
+                DWORD dPageAddress = dWorkingSetPages[i] & 0xFFFFF000;
+                DWORD dPageFlags = dWorkingSetPages[i] & 0x00000FFF;
+
+                while (i <= dPages) // iterate all pages
+                {
+                    dCurrentPageStatus++;
+
+                    if (i == dPages) //if last page
+                        break;
+
+                    dCurrentPageAddress = dWorkingSetPages[i] & 0xFFFFF000;
+                    dNextPageAddress = dWorkingSetPages[i + 1] & 0xFFFFF000;
+                    dNextPageFlags = dWorkingSetPages[i + 1] & 0x00000FFF;
+
+                    //decide whether iterate further or exit
+                    //(this is non-contiguous page or have different flags) 
+                    if ((dNextPageAddress == (dCurrentPageAddress + dPageSize))
+                        && (dNextPageFlags == dPageFlags))
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if ((dPageAddress < 0xC0000000) || (dPageAddress > 0xE0000000))
+                {
+                    if (dPageFlags & 0x100)
+                    {
+                        // this is shared one
+                        dSharedPages += dCurrentPageStatus;
+                    }
+                    else
+                    {
+                        // private one
+                        dPrivatePages += dCurrentPageStatus;
+                    }
+                }
+                else
+                {
+                    //page table region
+                    dPageTablePages += dCurrentPageStatus;
+                }
+            }
+
+            DWORD dTotal = dPages * 4;
+            DWORD dShared = dSharedPages * 4;
+            WSPrivate = dTotal - dShared;
+        }
+        __finally
+        {
+            CloseHandle(hProcess);
+        }
+
+        return WSPrivate;
+    }
+
+    SIZE_T GLDProcessFunc::getPrivateWorkingSet(const QString &processName)
+    {
+        return getPrivateWorkingSet(getIDByName(processName));
+    }
+
+    ulong GLDProcessFunc::getSharedWorkingSet(DWORD processID)
+    {
+        return getCurrentWorkingSet(processID) - getPrivateWorkingSet(processID);
+    }
+
+    SIZE_T GLDProcessFunc::getSharedWorkingSet(const QString &processName)
+    {
+        return getCurrentWorkingSet(processName) - getPrivateWorkingSet(processName);
     }
 
     DWORD GLDProcessFunc::getIDByName(const QString &processName)
@@ -325,15 +486,6 @@ namespace GlodonProcessInfo
         }
 
         PROCESSENTRY32 pe = { sizeof(pe) };
-        //BOOL fOk;
-        //for (fOk = Process32First(hSnapshot, &pe); fOk; fOk = Process32Next(hSnapshot, &pe))
-        //{
-        //    if (pe.th32ProcessID == processId)
-        //    {
-        //        CloseHandle(hSnapshot);
-        //        return OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe.th32ProcessID);
-        //    }
-        //}
 
         if (Process32First(hSnapshot, &pe))
         {

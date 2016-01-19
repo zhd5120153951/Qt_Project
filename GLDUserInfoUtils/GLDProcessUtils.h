@@ -16,16 +16,30 @@ namespace GlodonProcessInfo
         static ULONGLONG getCpuUsage(DWORD processID);
         static ULONGLONG getCpuUsage(const QString &processName);
 
-        //当前指定进程的占用的内存KB为单元
-        static SIZE_T getMemoryInfo(DWORD processID);
-        static SIZE_T getMemoryInfo(const QString &processName);
+        // 当前指定进程的占用的工作集(内存),KB为单元
+        static SIZE_T getCurrentWorkingSet(DWORD processID);
+        static SIZE_T getCurrentWorkingSet(const QString &processName);
 
-        static SIZE_T getMemoryInfo(HANDLE processID);
+        // 当前指定进程的占用的峰值工作集(内存),KB为单元
+        static SIZE_T getPeekWorkingSet(DWORD processID);
+        static SIZE_T getPeekWorkingSet(const QString &processName);
 
-        static DWORD getIDByName(const QString &processName);
+        // 当前指定进程的占用的专用工作集(内存),KB为单元
+        static ulong getPrivateWorkingSet(DWORD processID);
+        static SIZE_T getPrivateWorkingSet(const QString &processName);
+
+        // 当前指定进程的占用的共享工作集(内存),KB为单元
+        static ulong getSharedWorkingSet(DWORD processID);
+        static SIZE_T getSharedWorkingSet(const QString &processName);
+
+
         static QString getNameByID(DWORD processID);
-
     private:
+        static DWORD getIDByName(const QString &processName);
+
+        static SIZE_T getCurrentWorkingSet(HANDLE handle);
+        static SIZE_T getPeekWorkingSet(HANDLE handle);
+
         static HANDLE getHandleByName(const QString &processName);
         static HANDLE getHandleByID(DWORD processId);
 

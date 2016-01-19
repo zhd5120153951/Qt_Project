@@ -93,11 +93,25 @@ int main(int argc, char *argv[])
 
 
     QString processName = "notepad++.exe";
-    SIZE_T cpuUsage = GLDProcessFunc::getMemoryInfo(processName);
-    SIZE_T cpuUsageById = GLDProcessFunc::getMemoryInfo(23856);
+    SIZE_T cpuUsage = GLDProcessFunc::getCurrentWorkingSet(processName);
+    SIZE_T cpuUsageById = GLDProcessFunc::getCurrentWorkingSet(23856);
 
 
     QString process = GLDProcessFunc::getNameByID(8048);
     qDebug() << "process's name is " << process;
+
+    ulong process345 = GLDProcessFunc::getPrivateWorkingSet(23576);
+    ulong process678 = GLDProcessFunc::getPrivateWorkingSet(processName);
+
+
+    ulong sharedWork = GLDProcessFunc::getSharedWorkingSet(processName);
+
+    QString exeName = "GLDTableViewBasicDemo.exe";
+    ulong exeNameWs = GLDProcessFunc::getCurrentWorkingSet(exeName);
+    ulong exeNamePeeKWs = GLDProcessFunc::getPeekWorkingSet(exeName);
+    ulong exeNamePWs = GLDProcessFunc::getPrivateWorkingSet(exeName);
+
+    ulong exeNameSharedWork = GLDProcessFunc::getSharedWorkingSet(exeName);
+
     return a.exec();
 }
