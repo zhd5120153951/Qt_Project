@@ -9,7 +9,14 @@ namespace GlodonDiskInfo
         WCHAR str[MAX_PATH];
         char sysDiskName[MAX_PATH * 2 + 1];
         GetSystemDirectory(str, MAX_PATH);
-        WideCharToMultiByte(CP_ACP, 0, str, -1, sysDiskName, sizeof(sysDiskName), NULL, NULL);
+        WideCharToMultiByte(CP_ACP,
+                            0,
+                            str,
+                            -1,
+                            sysDiskName,
+                            sizeof(sysDiskName),
+                            NULL,
+                            NULL);
         return QString(sysDiskName[0]);
     }
 
@@ -17,12 +24,26 @@ namespace GlodonDiskInfo
     {
         /* Path of Module */
         WCHAR szModulePath[MAX_PATH];
+
         char curDiskName[MAX_PATH * 2 + 1];
+
         // Get current module handle
         HMODULE module = GetModuleHandle(0);
+
         // Get current file path
-        GetModuleFileName(module, szModulePath, sizeof(szModulePath));
-        WideCharToMultiByte(CP_ACP, 0, szModulePath, -1, curDiskName, sizeof(curDiskName), NULL, NULL);
+        GetModuleFileName(module,
+                          szModulePath,
+                          sizeof(szModulePath));
+
+        WideCharToMultiByte(CP_ACP,
+                            0,
+                            szModulePath,
+                            -1,
+                            curDiskName,
+                            sizeof(curDiskName),
+                            NULL,
+                            NULL);
+
         return QString(curDiskName[0]);
     }
 
@@ -38,11 +59,18 @@ namespace GlodonDiskInfo
         strDrivePath.Format(_T("\\\\.\\PhysicalDrive%u"), nDriveNumber);
 
         // call CreateFile to get a handle to physical drive
-        HANDLE hDevice = ::CreateFile(strDrivePath, 0, FILE_SHARE_READ | FILE_SHARE_WRITE,
-            NULL, OPEN_EXISTING, 0, NULL);
+        HANDLE hDevice = ::CreateFile(strDrivePath,
+                                      0,
+                                      FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                      NULL,
+                                      OPEN_EXISTING,
+                                      0,
+                                      NULL);
 
         if (INVALID_HANDLE_VALUE == hDevice)
+        {
             return "";
+        }
 
         // set the input STORAGE_PROPERTY_QUERY data structure
         STORAGE_PROPERTY_QUERY storagePropertyQuery;

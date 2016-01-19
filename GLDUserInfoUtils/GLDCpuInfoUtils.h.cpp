@@ -10,6 +10,21 @@ namespace GlodonCpuInfo
 {
     typedef BOOL(WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
+    DWORD countSetBits(ULONG_PTR bitMask)
+    {
+        DWORD LSHIFT = sizeof(ULONG_PTR) * 8 - 1;
+        DWORD bitSetCount = 0;
+        ULONG_PTR bitTest = (ULONG_PTR)1 << LSHIFT;
+
+        for (DWORD i = 0; i <= LSHIFT; ++i)
+        {
+            bitSetCount += ((bitMask & bitTest) ? 1 : 0);
+            bitTest /= 2;
+        }
+
+        return bitSetCount;
+    }
+
     QString getCpuBrand()
     {
         // get extended ids.
@@ -83,26 +98,11 @@ namespace GlodonCpuInfo
         return systemInfo.dwNumberOfProcessors;
     }
 
-    DWORD countSetBits(ULONG_PTR bitMask)
-    {
-        DWORD LSHIFT = sizeof(ULONG_PTR) * 8 - 1;
-        DWORD bitSetCount = 0;
-        ULONG_PTR bitTest = (ULONG_PTR)1 << LSHIFT;
-        DWORD i;
-
-        for (i = 0; i <= LSHIFT; ++i)
-        {
-            bitSetCount += ((bitMask & bitTest) ? 1 : 0);
-            bitTest /= 2;
-        }
-
-        return bitSetCount;
-    }
-
     CoreCount getCpuCoreCount()
     {
         LPFN_GLPI glpi;
         BOOL done = FALSE;
+        CoreCount coreCount;
         PSYSTEM_LOGICAL_PROCESSOR_INFORMATION buffer = NULL;
         PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = NULL;
         DWORD returnLength = 0;
@@ -115,7 +115,7 @@ namespace GlodonCpuInfo
 
         if (NULL == glpi)
         {
-            _tprintf("\nGetLogicalProcessorInformation is not supported.\n");
+            return coreCount;
         }
 
         while (!done)
@@ -135,12 +135,12 @@ namespace GlodonCpuInfo
 
                     if (NULL == buffer)
                     {
-                        _tprintf("\nError: Allocation failure\n");
+                        return coreCount;
                     }
                 }
                 else
                 {
-                    _tprintf("\nError %d\n", GetLastError());
+                    return coreCount;
                 }
             }
             else
@@ -153,19 +153,6 @@ namespace GlodonCpuInfo
 
         while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
         {
-            //switch (ptr->Relationship)
-            //{
-            //case RelationProcessorCore:
-            //    processorCoreCount++;
-
-            //    // A hyperthreaded core supplies more than one logical processor.
-            //    logicalProcessorCount += countSetBits(ptr->ProcessorMask);
-            //    break;
-
-            //default:
-            //    _tprintf("\nError: Unsupported LOGICAL_PROCESSOR_RELATIONSHIP value.\n");
-            //    break;
-            //}
             if (RelationProcessorCore == ptr->Relationship)
             {
                 processorCoreCount++;
@@ -178,7 +165,6 @@ namespace GlodonCpuInfo
             ptr++;
         }
 
-        CoreCount coreCount;
         coreCount.m_cpuCoreCount = processorCoreCount;
         coreCount.m_cpuLogicalCoreCount = logicalProcessorCount;
 

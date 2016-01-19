@@ -186,7 +186,7 @@ namespace GlodonProcessInfo
 
         bool isFirstRun() const
         {
-            return (m_dwLastRun == 0);
+            return m_dwLastRun == 0;
         }
 
         //system total times
@@ -233,62 +233,62 @@ namespace GlodonProcessInfo
     }
 
 
-    SIZE_T getCurrentWorkingSet(DWORD processID)
+    ulong getCurrentWorkingSetByHandle(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
 
         if (processHandle != NULL)
         {
-            return getCurrentWorkingSet(processHandle);
+            return getCurrentWorkingSetByHandle(processHandle);
         }
 
-        return 0;
+        return -1;
     }
 
-    SIZE_T getCurrentWorkingSet(const QString &processName)
+    ulong getCurrentWorkingSetByHandle(const QString &processName)
     {
         HANDLE handle = getHandleByName(processName);
 
         if (handle != NULL)
         {
-            return getCurrentWorkingSet(handle);
+            return getCurrentWorkingSetByHandle(handle);
         }
 
-        return 0;
+        return -1;
     }
 
-    SIZE_T getCurrentWorkingSet(HANDLE handle)
+    ulong getCurrentWorkingSetByHandle(HANDLE handle)
     {
         PROCESS_MEMORY_COUNTERS_EX pmc;
         GetProcessMemoryInfo(handle, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
         return pmc.WorkingSetSize / 1024;
     }
 
-    SIZE_T getPeekWorkingSet(DWORD processID)
+    ulong getPeekWorkingSetByHandle(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
 
         if (processHandle != NULL)
         {
-            return getPeekWorkingSet(processHandle);
+            return getPeekWorkingSetByHandle(processHandle);
         }
 
-        return 0;
+        return -1;
     }
 
-    SIZE_T getPeekWorkingSet(const QString &processName)
+    ulong getPeekWorkingSetByHandle(const QString &processName)
     {
         HANDLE handle = getHandleByName(processName);
 
         if (handle != NULL)
         {
-            return getPeekWorkingSet(handle);
+            return getPeekWorkingSetByHandle(handle);
         }
 
-        return 0;
+        return -1;
     }
 
-    SIZE_T getPeekWorkingSet(HANDLE handle)
+    ulong getPeekWorkingSetByHandle(HANDLE handle)
     {
         PROCESS_MEMORY_COUNTERS_EX pmc;
         GetProcessMemoryInfo(handle, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
@@ -343,7 +343,9 @@ namespace GlodonProcessInfo
                     dCurrentPageStatus++;
 
                     if (i == dPages) //if last page
+                    {
                         break;
+                    }
 
                     dCurrentPageAddress = dWorkingSetPages[i] & 0xFFFFF000;
                     dNextPageAddress = dWorkingSetPages[i + 1] & 0xFFFFF000;
@@ -394,22 +396,22 @@ namespace GlodonProcessInfo
         return WSPrivate;
     }
 
-    SIZE_T getPrivateWorkingSet(const QString &processName)
+    ulong getPrivateWorkingSet(const QString &processName)
     {
         return getPrivateWorkingSet(getIDByName(processName));
     }
 
     ulong getSharedWorkingSet(DWORD processID)
     {
-        return getCurrentWorkingSet(processID) - getPrivateWorkingSet(processID);
+        return getCurrentWorkingSetByHandle(processID) - getPrivateWorkingSet(processID);
     }
 
-    SIZE_T getSharedWorkingSet(const QString &processName)
+    ulong getSharedWorkingSet(const QString &processName)
     {
-        return getCurrentWorkingSet(processName) - getPrivateWorkingSet(processName);
+        return getCurrentWorkingSetByHandle(processName) - getPrivateWorkingSet(processName);
     }
 
-    DWORD getIDByName(const QString &processName)
+    ulong getIDByName(const QString &processName)
     {
         PROCESSENTRY32 pe = { sizeof(PROCESSENTRY32) };
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
@@ -430,7 +432,7 @@ namespace GlodonProcessInfo
             CloseHandle(hSnapshot);
         }
 
-        return 0;
+        return -1;
     }
 
     QString getNameByID(DWORD processID)
@@ -460,28 +462,34 @@ namespace GlodonProcessInfo
     HANDLE getHandleByName(const QString &processName)
     {
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
         if (INVALID_HANDLE_VALUE == hSnapshot)
         {
             return NULL;
         }
 
         PROCESSENTRY32 pe = { sizeof(pe) };
-        BOOL fOk;
-        for (fOk = Process32First(hSnapshot, &pe); fOk; fOk = Process32Next(hSnapshot, &pe))
+
+        if (Process32First(hSnapshot, &pe))
         {
-            if (!wcscmp(pe.szExeFile, processName.toStdWString().c_str()))
+            do
             {
-                CloseHandle(hSnapshot);
-                return OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe.th32ProcessID);
-            }
+                if (!wcscmp(pe.szExeFile, processName.toStdWString().c_str()))
+                {
+                    CloseHandle(hSnapshot);
+                    return OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe.th32ProcessID);
+                }
+            } while (Process32Next(hSnapshot, &pe));
         }
 
+        CloseHandle(hSnapshot);
         return NULL;
     }
 
     HANDLE getHandleByID(DWORD processId)
     {
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
         if (INVALID_HANDLE_VALUE == hSnapshot)
         {
             return NULL;
@@ -501,6 +509,7 @@ namespace GlodonProcessInfo
             } while (Process32Next(hSnapshot, &pe));
         }
 
+        CloseHandle(hSnapshot);
         return NULL;
     }
 
