@@ -1,9 +1,10 @@
 #ifndef GLDDISKINFOUTILS_H
 #define GLDDISKINFOUTILS_H
 
-#include <qt_windows.h>
-#include <bitset>
+#include <windows.h>
 #include <Winioctl.h>
+
+#include <bitset>
 #include <QVector>
 #include <QString>
 
@@ -31,7 +32,6 @@ namespace GlodonDiskInfo
         QString      m_strFileSystem; // 分区格式
         qulonglong   m_dwTotalMBytes; // 总空间
         qulonglong   m_dwFreeMBytes;  // 可用空间
-
     }DiskInfomation;
 
     /**

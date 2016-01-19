@@ -93,25 +93,24 @@ int main(int argc, char *argv[])
 
 
     QString processName = "notepad++.exe";
-    SIZE_T cpuUsage = GLDProcessFunc::getCurrentWorkingSet(processName);
-    SIZE_T cpuUsageById = GLDProcessFunc::getCurrentWorkingSet(23856);
+    SIZE_T cpuUsage = getCurrentWorkingSet(processName);
+    SIZE_T cpuUsageById = getCurrentWorkingSet(23856);
 
 
-    QString process = GLDProcessFunc::getNameByID(8048);
+    QString process = getNameByID(8048);
     qDebug() << "process's name is " << process;
 
-    ulong process345 = GLDProcessFunc::getPrivateWorkingSet(23576);
-    ulong process678 = GLDProcessFunc::getPrivateWorkingSet(processName);
+    ulong privateWS1 = getPrivateWorkingSet(23576);
+    ulong privateWS2 = getPrivateWorkingSet(processName);
 
-
-    ulong sharedWork = GLDProcessFunc::getSharedWorkingSet(processName);
+    ulong sharedWork = getSharedWorkingSet(processName);
 
     QString exeName = "GLDTableViewBasicDemo.exe";
-    ulong exeNameWs = GLDProcessFunc::getCurrentWorkingSet(exeName);
-    ulong exeNamePeeKWs = GLDProcessFunc::getPeekWorkingSet(exeName);
-    ulong exeNamePWs = GLDProcessFunc::getPrivateWorkingSet(exeName);
+    ulong exeNameWs = getCurrentWorkingSet(exeName);
+    ulong exeNamePeeKWs = getPeekWorkingSet(exeName);
+    ulong exeNamePWs = getPrivateWorkingSet(exeName);
 
-    ulong exeNameSharedWork = GLDProcessFunc::getSharedWorkingSet(exeName);
+    ulong exeNameSharedWork = getSharedWorkingSet(exeName);
 
     return a.exec();
 }

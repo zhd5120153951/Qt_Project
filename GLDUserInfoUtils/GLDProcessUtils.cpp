@@ -1,5 +1,5 @@
 #include "GLDProcessUtils.h"
-//#include <Windows.h>
+
 #include <Psapi.h>
 #include <strsafe.h>
 #include <Tlhelp32.h>
@@ -52,7 +52,9 @@ namespace GlodonProcessInfo
     int Compare(const void * Val1, const void * Val2)
     {
         if (*(PDWORD)Val1 == *(PDWORD)Val2)
+        {
             return 0;
+        }
 
         return *(PDWORD)Val1 > *(PDWORD)Val2 ? 1 : -1;
     }
@@ -207,19 +209,19 @@ namespace GlodonProcessInfo
 
 
 
-    ULONGLONG GLDProcessFunc::getCpuUsage(const QString &processName)
+    ULONGLONG getCpuUsage(const QString &processName)
     {
-        DWORD handle = GLDProcessFunc::getIDByName(processName);
+        DWORD handle = getIDByName(processName);
 
         if (handle != 0)
         {
-            return GLDProcessFunc::getCpuUsage(handle);
+            return getCpuUsage(handle);
         }
 
         return 0;
     }
 
-    ULONGLONG GLDProcessFunc::getCpuUsage(DWORD processID)
+    ULONGLONG getCpuUsage(DWORD processID)
     {
         if (0 == processID)
         {
@@ -231,69 +233,69 @@ namespace GlodonProcessInfo
     }
 
 
-    SIZE_T GLDProcessFunc::getCurrentWorkingSet(DWORD processID)
+    SIZE_T getCurrentWorkingSet(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
 
         if (processHandle != NULL)
         {
-            return GLDProcessFunc::getCurrentWorkingSet(processHandle);
+            return getCurrentWorkingSet(processHandle);
         }
 
         return 0;
     }
 
-    SIZE_T GLDProcessFunc::getCurrentWorkingSet(const QString &processName)
+    SIZE_T getCurrentWorkingSet(const QString &processName)
     {
-        HANDLE handle = GLDProcessFunc::getHandleByName(processName);
+        HANDLE handle = getHandleByName(processName);
 
         if (handle != NULL)
         {
-            return GLDProcessFunc::getCurrentWorkingSet(handle);
+            return getCurrentWorkingSet(handle);
         }
 
         return 0;
     }
 
-    SIZE_T GLDProcessFunc::getCurrentWorkingSet(HANDLE handle)
+    SIZE_T getCurrentWorkingSet(HANDLE handle)
     {
         PROCESS_MEMORY_COUNTERS_EX pmc;
         GetProcessMemoryInfo(handle, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
         return pmc.WorkingSetSize / 1024;
     }
 
-    SIZE_T GLDProcessFunc::getPeekWorkingSet(DWORD processID)
+    SIZE_T getPeekWorkingSet(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
 
         if (processHandle != NULL)
         {
-            return GLDProcessFunc::getPeekWorkingSet(processHandle);
+            return getPeekWorkingSet(processHandle);
         }
 
         return 0;
     }
 
-    SIZE_T GLDProcessFunc::getPeekWorkingSet(const QString &processName)
+    SIZE_T getPeekWorkingSet(const QString &processName)
     {
-        HANDLE handle = GLDProcessFunc::getHandleByName(processName);
+        HANDLE handle = getHandleByName(processName);
 
         if (handle != NULL)
         {
-            return GLDProcessFunc::getPeekWorkingSet(handle);
+            return getPeekWorkingSet(handle);
         }
 
         return 0;
     }
 
-    SIZE_T GLDProcessFunc::getPeekWorkingSet(HANDLE handle)
+    SIZE_T getPeekWorkingSet(HANDLE handle)
     {
         PROCESS_MEMORY_COUNTERS_EX pmc;
         GetProcessMemoryInfo(handle, (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
         return pmc.PeakWorkingSetSize / 1024;
     }
 
-    ulong GLDProcessFunc::getPrivateWorkingSet(DWORD processID)
+    ulong getPrivateWorkingSet(DWORD processID)
     {
         // hold the working set
         DWORD dWorkingSetPages[1024 * 128];
@@ -392,22 +394,22 @@ namespace GlodonProcessInfo
         return WSPrivate;
     }
 
-    SIZE_T GLDProcessFunc::getPrivateWorkingSet(const QString &processName)
+    SIZE_T getPrivateWorkingSet(const QString &processName)
     {
         return getPrivateWorkingSet(getIDByName(processName));
     }
 
-    ulong GLDProcessFunc::getSharedWorkingSet(DWORD processID)
+    ulong getSharedWorkingSet(DWORD processID)
     {
         return getCurrentWorkingSet(processID) - getPrivateWorkingSet(processID);
     }
 
-    SIZE_T GLDProcessFunc::getSharedWorkingSet(const QString &processName)
+    SIZE_T getSharedWorkingSet(const QString &processName)
     {
         return getCurrentWorkingSet(processName) - getPrivateWorkingSet(processName);
     }
 
-    DWORD GLDProcessFunc::getIDByName(const QString &processName)
+    DWORD getIDByName(const QString &processName)
     {
         PROCESSENTRY32 pe = { sizeof(PROCESSENTRY32) };
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
@@ -431,7 +433,7 @@ namespace GlodonProcessInfo
         return 0;
     }
 
-    QString GLDProcessFunc::getNameByID(DWORD processID)
+    QString getNameByID(DWORD processID)
     {
         HANDLE hProcess = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
 
@@ -455,7 +457,7 @@ namespace GlodonProcessInfo
 
     }
 
-    HANDLE GLDProcessFunc::getHandleByName(const QString &processName)
+    HANDLE getHandleByName(const QString &processName)
     {
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
         if (INVALID_HANDLE_VALUE == hSnapshot)
@@ -477,7 +479,7 @@ namespace GlodonProcessInfo
         return NULL;
     }
 
-    HANDLE GLDProcessFunc::getHandleByID(DWORD processId)
+    HANDLE getHandleByID(DWORD processId)
     {
         HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
         if (INVALID_HANDLE_VALUE == hSnapshot)
@@ -502,250 +504,8 @@ namespace GlodonProcessInfo
         return NULL;
     }
 
-
-    bool GLDProcessFunc::killProcess(const QString &lpProcessName)
-    {
-        HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        PROCESSENTRY32 pe;
-        pe.dwSize = sizeof(PROCESSENTRY32);
-
-        if (!Process32First(hSnapShot, &pe))
-        {
-            return FALSE;
-        }
-
-        bool result = false;
-        QString strProcessName = lpProcessName;
-
-        while (Process32Next(hSnapShot, &pe))
-        {
-            QString scTmp = QString::fromUtf16((ushort*)pe.szExeFile);
-
-            if (0 == scTmp.compare(strProcessName, Qt::CaseInsensitive))
-            {
-                DWORD dwProcessID = pe.th32ProcessID;
-                if (dwProcessID == ::GetCurrentProcessId())
-                {
-                    continue;
-                }
-
-                HANDLE hProcess = ::OpenProcess(PROCESS_TERMINATE, FALSE, dwProcessID);
-                ::TerminateProcess(hProcess, 0);
-                CloseHandle(hProcess);
-                result = true;
-            }
-        }
-
-        return result;
-    }
-
-    QStringList GLDProcessFunc::getPathByName(const QString &lpProcessName)
-    {
-        QStringList retList;
-        TCHAR szEXEName[MAX_PATH] = {0};
-        lpProcessName.toWCharArray(szEXEName);
-        //为当前系统进程建立快照
-        HANDLE hHandle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        //当前进程的Id
-        DWORD dwId = ::GetCurrentProcessId();
-        //如果快照建立成功
-        if (INVALID_HANDLE_VALUE !=hHandle)
-        {
-            PROCESSENTRY32 stEntry;
-            stEntry.dwSize = sizeof(PROCESSENTRY32);
-            //在快照中查找一个进程,stEntry返回进程相关属性和信息
-            if (Process32First(hHandle, &stEntry))
-            {
-                do{
-                    //比较该进程名称是否与strProcessName相符
-                    if (wcsstr(stEntry.szExeFile, szEXEName))
-                    {
-                        //如果相等，且该进程的Id与当前进程不相等，则找到
-                        if (dwId != stEntry.th32ProcessID)
-                        {
-                            HANDLE h_Process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ,
-                                                           FALSE,
-                                                           stEntry.th32ProcessID);
-                            if (h_Process != NULL)
-                            {
-                                WCHAR name[MAX_PATH+1] = {0};
-                                GetModuleFileNameEx(h_Process, NULL, name, MAX_PATH+1);
-                                retList.append(QString::fromWCharArray(name));
-                                CloseHandle(h_Process);
-                            }
-                        }
-                    }
-                }while (Process32Next(hHandle, &stEntry));//再快照中查找下一个进程
-            }
-            // 释放快照句柄
-            // CloseToolhelp32Snapshot(hHandle);
-        }
-        return retList;
-    }
-
-    bool GLDProcessFunc::killProcessByAbPath(const QString &lpProcessPath)
-    {
-        bool bRet = false;
-        QFileInfo fileInfo(lpProcessPath);
-        TCHAR szEXEName[MAX_PATH] = {0};
-        fileInfo.fileName().toWCharArray(szEXEName);
-        //为当前系统进程建立快照
-        HANDLE hHandle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        //当前进程的Id
-        DWORD dwId = ::GetCurrentProcessId();
-        //如果快照建立成功
-        if (INVALID_HANDLE_VALUE !=hHandle)
-        {
-            PROCESSENTRY32 stEntry;
-            stEntry.dwSize = sizeof(PROCESSENTRY32);
-            //在快照中查找一个进程,stEntry返回进程相关属性和信息
-            if (Process32First(hHandle, &stEntry))
-            {
-                do{
-                    //比较该进程名称是否与strProcessName相符
-                    if (wcsstr(stEntry.szExeFile, szEXEName))
-                    {
-                        //如果相等,且该进程的Id与当前进程不相等,则找到
-                        if (dwId != stEntry.th32ProcessID)
-                        {
-                            HANDLE h_Process = OpenProcess(PROCESS_ALL_ACCESS,
-                                                           TRUE,
-                                                           stEntry.th32ProcessID);
-
-                            if (h_Process != NULL)
-                            {
-                                WCHAR name[MAX_PATH + 1] = {0};
-                                GetModuleFileNameEx(h_Process, NULL, name, MAX_PATH+1);
-                                QString path = QString::fromWCharArray(name);
-
-                                if (path.compare(lpProcessPath, Qt::CaseInsensitive)==0)
-                                {
-                                    TerminateProcess(h_Process, 0);
-                                    CloseHandle(h_Process);
-                                    bRet = true;
-                                }
-                            }
-                        }
-                    }
-                }while (Process32Next(hHandle, &stEntry));//再快照中查找下一个进程
-            }
-        }
-        return bRet;
-    }
-
-    QList<DWORD> GLDProcessFunc::getProcessIDList(const QStringList &processNameList)
-    {
-        QList<DWORD> processIDList;
-        PROCESSENTRY32 pe = {sizeof(PROCESSENTRY32)};
-        HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
-
-        if (hSnapshot != INVALID_HANDLE_VALUE)
-        {
-            if (Process32First(hSnapshot, &pe))
-            {
-                while (Process32Next(hSnapshot, &pe))
-                {
-                    if (-1 != processNameList.indexOf(QString::fromStdWString(pe.szExeFile)))
-                    {
-                        processIDList.append(pe.th32ProcessID);
-                    }
-
-                    QThread::usleep(10);
-                }
-            }
-
-            CloseHandle(hSnapshot);
-        }
-
-        return processIDList;
-    }
-
-    void GLDProcessFunc::startProcess(const QString &strExe, const QStringList &params)
-    {
-        QProcess::startDetached("\"" + strExe + "\"", params);
-    }
-
-    void GLDProcessFunc::startProcess(const QString &strExe)
-    {
-        if (!QProcess::startDetached("\"" + strExe + "\""))
-        {
-            QDir dir(strExe);
-            QString strExePath = dir.absolutePath();
-            ShellExecute(0, L"open", strExePath.toStdWString().c_str(), NULL, NULL, SW_SHOW);
-        }
-    }
-
-    HANDLE GLDProcessFunc::getCurrentID()
+    HANDLE getCurrentID()
     {
         return GetCurrentProcess();
     }
-
-    bool GLDProcessFunc::isProcessRunning(TCHAR *szEXEName)
-    {
-        //为当前系统进程建立快照
-        HANDLE hHandle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        //当前进程的Id
-        DWORD dwId = ::GetCurrentProcessId();
-        //如果快照建立成功
-        if (INVALID_HANDLE_VALUE != hHandle)
-        {
-            PROCESSENTRY32 stEntry;
-            stEntry.dwSize = sizeof(PROCESSENTRY32);
-            //在快照中查找一个进程,stEntry返回进程相关属性和信息
-            if (Process32First(hHandle, &stEntry))
-            {
-                do{
-                    //比较该进程名称是否与strProcessName相符
-                    if (wcsstr(stEntry.szExeFile, szEXEName))
-                    {
-                        //如果相等,且该进程的Id与当前进程不相等,则找到
-                        if (dwId != stEntry.th32ProcessID)
-                        {
-                            return true;
-                        }
-                    }
-                }while (Process32Next(hHandle, &stEntry));//再快照中查找下一个进程
-            }
-            // 释放快照句柄
-            // CloseToolhelp32Snapshot(hHandle);
-        }
-        return false;
-    }
-
-    bool GLDProcessFunc::isProcessRunning(const QStringList &exeNameList)
-    {
-        //为当前系统进程建立快照
-        HANDLE hHandle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        //当前进程的Id
-        DWORD dwId = ::GetCurrentProcessId();
-        //如果快照建立成功
-        if (INVALID_HANDLE_VALUE !=hHandle)
-        {
-            PROCESSENTRY32 stEntry;
-            stEntry.dwSize = sizeof(PROCESSENTRY32);
-            // 在快照中查找一个进程,stEntry返回进程相关属性和信息
-            if (Process32First(hHandle, &stEntry))
-            {
-                do{
-                    if(exeNameList.contains(QString::fromStdWString(stEntry.szExeFile), Qt::CaseInsensitive))
-                    {
-                        //如果相等,且该进程的Id与当前进程不相等,则找到
-                        if (dwId != stEntry.th32ProcessID)
-                        {
-                            return true;
-                        }
-                    }
-                }while(Process32Next(hHandle, &stEntry));//在快照中查找下一个进程
-            }
-            // 释放快照句柄
-            // CloseToolhelp32Snapshot(hHandle);
-        }
-        return false;
-    }
-
-    bool GLDProcessFunc::isProcessRunning(const QString &processName)
-    {
-        return GLDProcessFunc::isProcessRunning((TCHAR*)processName.toStdWString().c_str());
-    }
-
 }
