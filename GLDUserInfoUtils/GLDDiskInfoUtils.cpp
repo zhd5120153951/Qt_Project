@@ -3,7 +3,6 @@
 
 namespace GlodonDiskInfo
 {
-
     QString getSystemVolumeName()
     {
         WCHAR str[MAX_PATH];

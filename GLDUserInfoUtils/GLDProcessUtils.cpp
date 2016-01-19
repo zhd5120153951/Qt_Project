@@ -218,14 +218,14 @@ namespace GlodonProcessInfo
             return getCpuUsage(handle);
         }
 
-        return 0;
+        return -1;
     }
 
     ULONGLONG getCpuUsage(DWORD processID)
     {
         if (0 == processID)
         {
-            return 0;
+            return -1;
         }
 
         CpuUsage cpu(processID);

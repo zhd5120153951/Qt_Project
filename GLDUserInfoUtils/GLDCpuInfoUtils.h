@@ -14,6 +14,7 @@ namespace GlodonCpuInfo
         {
 
         }
+
         int m_cpuLogicalCoreCount;   // CPUºËÐÄÊý
         int m_cpuCoreCount;          // Âß¼­CPUÊý
     } CoreCount;

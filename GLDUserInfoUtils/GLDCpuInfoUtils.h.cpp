@@ -8,6 +8,7 @@
 
 namespace GlodonCpuInfo
 {
+    const LPCWSTR proSpeed = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
     typedef BOOL(WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
     DWORD countSetBits(ULONG_PTR bitMask)
@@ -65,7 +66,7 @@ namespace GlodonCpuInfo
 
         // open the key where the proc speed is hidden:
         long lError = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                                   L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0",
+                                   proSpeed,
                                    0,
                                    KEY_READ,
                                    &hKey);

@@ -17,5 +17,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    QString str = "chrome.exe";
+    ulong id = getIDByName(str);
     return a.exec();
 }
