@@ -342,6 +342,35 @@ CBB_GLODON_BEGIN_NAMESPACE
         return true;
     }
 
+    ulong getDiskNum()
+    {
+        HKEY hKEY;
+        long lRet;
+        lRet = RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                            L"SYSTEM\\CurrentControlSet\\Services\\Disk\\Enum",
+                            0,
+                            KEY_READ,
+                            &hKEY);
+
+        if (lRet != ERROR_SUCCESS)
+        {
+            return -1;
+        }
+
+        DWORD dwType;
+        DWORD dwValue;
+        DWORD dwBufLen = sizeof(DWORD);
+
+        lRet = ::RegQueryValueEx (hKEY, L"Count", NULL, &dwType, (BYTE*)&dwValue, &dwBufLen);
+
+        if(lRet != ERROR_SUCCESS)
+        {
+            return -1;
+        }
+
+        return dwValue;
+    }
+
 CBB_GLODON_END_NAMESPACE
 
 

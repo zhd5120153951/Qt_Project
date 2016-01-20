@@ -101,6 +101,12 @@ CBB_GLODON_BEGIN_NAMESPACE
     bool getVolumeSpace(const QString& dir, qulonglong& ri64FreeBytesToCaller, qulonglong& ri64TotalBytes);
 
     /**
+     * @brief 获取硬盘个数
+     * @return
+     */
+    ulong getDiskNum();
+
+    /**
     * @brief 获取硬盘空间信息
     * @param ri64FreeBytesToCaller    硬盘可用空间
     * @param ri64TotalBytes           硬盘总空间
