@@ -7,7 +7,7 @@
 #pragma comment(lib, "User32.lib")
 
 CBB_GLODON_BEGIN_NAMESPACE
-    // todo
+
     const LPCWSTR proSpeed = L"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0";
     typedef BOOL(WINAPI *LPFN_GLPI)(PSYSTEM_LOGICAL_PROCESSOR_INFORMATION, PDWORD);
 
