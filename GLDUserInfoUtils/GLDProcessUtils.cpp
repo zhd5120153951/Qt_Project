@@ -228,7 +228,7 @@ CBB_GLODON_BEGIN_NAMESPACE
     }
 
 
-    ulong getCurrentWorkingSetByHandle(DWORD processID)
+    ulong getCurrentWorkingSetByPID(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
 
@@ -240,7 +240,7 @@ CBB_GLODON_BEGIN_NAMESPACE
         return -1;
     }
 
-    ulong getCurrentWorkingSetByHandle(const QString &processName)
+    ulong getCurrentWorkingSetByName(const QString &processName)
     {
         HANDLE handle = getHandleByName(processName);
 
@@ -259,7 +259,7 @@ CBB_GLODON_BEGIN_NAMESPACE
         return pmc.WorkingSetSize / 1024;
     }
 
-    ulong getPeekWorkingSetByHandle(DWORD processID)
+    ulong getPeekWorkingSetByPID(DWORD processID)
     {
         HANDLE processHandle = getHandleByID(processID);
 
@@ -271,7 +271,7 @@ CBB_GLODON_BEGIN_NAMESPACE
         return -1;
     }
 
-    ulong getPeekWorkingSetByHandle(const QString &processName)
+    ulong getPeekWorkingSetByName(const QString &processName)
     {
         HANDLE handle = getHandleByName(processName);
 
@@ -290,7 +290,7 @@ CBB_GLODON_BEGIN_NAMESPACE
         return pmc.PeakWorkingSetSize / 1024;
     }
 
-    ulong getPrivateWorkingSet(DWORD processID)
+    ulong getPrivateWorkingSetByPID(DWORD processID)
     {
         // hold the working set
         DWORD dWorkingSetPages[1024 * 128] = {0};
@@ -391,19 +391,19 @@ CBB_GLODON_BEGIN_NAMESPACE
         return WSPrivate;
     }
 
-    ulong getPrivateWorkingSet(const QString &processName)
+    ulong getPrivateWorkingSetByName(const QString &processName)
     {
-        return getPrivateWorkingSet(getIDByName(processName));
+        return getPrivateWorkingSetByPID(getIDByName(processName));
     }
 
-    ulong getSharedWorkingSet(DWORD processID)
+    ulong getSharedWorkingSetByPID(DWORD processID)
     {
-        return getCurrentWorkingSetByHandle(processID) - getPrivateWorkingSet(processID);
+        return getCurrentWorkingSetByPID(processID) - getPrivateWorkingSetByPID(processID);
     }
 
-    ulong getSharedWorkingSet(const QString &processName)
+    ulong getSharedWorkingSetByName(const QString &processName)
     {
-        return getCurrentWorkingSetByHandle(processName) - getPrivateWorkingSet(processName);
+        return getCurrentWorkingSetByName(processName) - getPrivateWorkingSetByName(processName);
     }
 
     ulong getIDByName(const QString &processName)

@@ -149,7 +149,7 @@ CBB_GLODON_BEGIN_NAMESPACE
                 done = TRUE;
             }
         }
-        // todo  Õ∑≈
+
         ptr = buffer;
 
         while (byteOffset + sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION) <= returnLength)
@@ -166,6 +166,7 @@ CBB_GLODON_BEGIN_NAMESPACE
             ptr++;
         }
 
+        free(buffer);
         coreCount.m_cpuCoreCount = processorCoreCount;
         coreCount.m_cpuLogicalCoreCount = logicalProcessorCount;
 

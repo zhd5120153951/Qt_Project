@@ -68,9 +68,9 @@ CBB_GLODON_BEGIN_NAMESPACE
                                       0,
                                       NULL);
 
-        std::shared_ptr<HANDLE> spHandle(hDevice, CloseHandle);
+        std::shared_ptr<void> spHandle(hDevice, CloseHandle);
 
-        if (INVALID_HANDLE_VALUE == hDevice)
+        if (INVALID_HANDLE_VALUE == spHandle.get())
         {
             return "";
         }
@@ -84,7 +84,7 @@ CBB_GLODON_BEGIN_NAMESPACE
         // get the necessary output buffer size
         STORAGE_DESCRIPTOR_HEADER storageDescriptorHeader = { 0 };
         DWORD dwBytesReturned = 0;
-        if (!::DeviceIoControl(hDevice, IOCTL_STORAGE_QUERY_PROPERTY,
+        if (!::DeviceIoControl(spHandle.get(), IOCTL_STORAGE_QUERY_PROPERTY,
             &storagePropertyQuery, sizeof(STORAGE_PROPERTY_QUERY),
             &storageDescriptorHeader, sizeof(STORAGE_DESCRIPTOR_HEADER),
             &dwBytesReturned, NULL))
@@ -99,7 +99,7 @@ CBB_GLODON_BEGIN_NAMESPACE
         ZeroMemory(pOutBuffer, dwOutBufferSize);
 
         // get the storage device descriptor
-        if (!::DeviceIoControl(hDevice, IOCTL_STORAGE_QUERY_PROPERTY,
+        if (!::DeviceIoControl(spHandle.get(), IOCTL_STORAGE_QUERY_PROPERTY,
             &storagePropertyQuery, sizeof(STORAGE_PROPERTY_QUERY),
             pOutBuffer, dwOutBufferSize,
             &dwBytesReturned, NULL))

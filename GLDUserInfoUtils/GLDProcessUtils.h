@@ -31,56 +31,56 @@ CBB_GLODON_BEGIN_NAMESPACE
      * @param processID  进程PID
      * @return
      */
-    ulong getCurrentWorkingSetByHandle(DWORD processID);
+    ulong getCurrentWorkingSetByPID(DWORD processID);
 
     /**
      * @brief 当前指定进程的占用的工作集(内存),KB为单元
      * @param processID  进程名
      * @return
      */
-    ulong getCurrentWorkingSetByHandle(const QString &processName);
+    ulong getCurrentWorkingSetByName(const QString &processName);
 
     /**
      * @brief 当前指定进程的占用的峰值工作集(内存),KB为单元
      * @param processID  进程PID
      * @return
      */
-    ulong getPeekWorkingSetByHandle(DWORD processID);
+    ulong getPeekWorkingSetByPID(DWORD processID);
 
     /**
      * @brief 当前指定进程的占用的峰值工作集(内存),KB为单元
      * @param processID  进程名
      * @return
      */
-    ulong getPeekWorkingSetByHandle(const QString &processName);
+    ulong getPeekWorkingSetByName(const QString &processName);
 
     /**
      * @brief 当前指定进程的占用的专用工作集(内存),KB为单元
      * @param processID  进程PID
      * @return
      */
-    ulong getPrivateWorkingSet(DWORD processID);
+    ulong getPrivateWorkingSetByPID(DWORD processID);
 
     /**
      * @brief 当前指定进程的占用的专用工作集(内存),KB为单元
      * @param processName  进程名
      * @return
      */
-    ulong getPrivateWorkingSet(const QString &processName);
+    ulong getPrivateWorkingSetByName(const QString &processName);
 
     /**
      * @brief 当前指定进程的占用的共享工作集(内存),KB为单元
      * @param processID  进程PID
      * @return
      */
-    ulong getSharedWorkingSet(DWORD processID);
+    ulong getSharedWorkingSetByPID(DWORD processID);
 
     /**
      * @brief 当前指定进程的占用的共享工作集(内存),KB为单元
      * @param processID  进程名
      * @return
      */
-    ulong getSharedWorkingSet(const QString &processName);
+    ulong getSharedWorkingSetByName(const QString &processName);
 
     /**
      * @brief 根据进程PID获取进程名
