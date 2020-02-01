@@ -13,13 +13,15 @@ DigiClock::DigiClock(QWidget *parent)
     setWindowFlags(Qt::FramelessWindowHint);
 
     setWindowOpacity(0.5);
+        
+    setDigitCount(10);
 
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(showTime()));
     timer->start(1000);
     showTime();
     resize(150,60);
-    showColon = true;                                 //³õÊ¼»¯
+    showColon = true;                                 //Â³ÃµÃŠÂ¼Â»Â¯
 }
 
 void DigiClock::showTime()
