@@ -12,13 +12,13 @@
 
 /*!
     * @brief  calcCrossLine2Rect
-    *   ¼ÆËãÖ±ÏßÓë¾ØÐÎµÄ½»µã
-    * @author:  litz-a
-    * @param [in] QLineF line              Ö±Ïß
-    * @param [in] QRectF rc                ¾ØÐÎ
-    * @param [out] QPointF & ptCross1      ½»µã1
-    * @param [out] QPointF & ptCross2      ½»µã2
-    * @return     bool ÊÇ·ñÏà½»(Ö±ÏßÔÚ¾ØÐÎÄÚ²»ËãÏà½»)
+    *   ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎµÄ½ï¿½ï¿½ï¿½
+    * @author:  min
+    * @param [in] QLineF line              Ö±ï¿½ï¿½
+    * @param [in] QRectF rc                ï¿½ï¿½ï¿½ï¿½
+    * @param [out] QPointF & ptCross1      ï¿½ï¿½ï¿½ï¿½1
+    * @param [out] QPointF & ptCross2      ï¿½ï¿½ï¿½ï¿½2
+    * @return     bool ï¿½Ç·ï¿½ï¿½à½»(Ö±ï¿½ï¿½ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½ï¿½à½»)
 */
 static bool calcCrossLine2Rect(const QLineF line, const QRectF rc, QPointF & ptCross1, QPointF & ptCross2)
 {
@@ -26,7 +26,7 @@ static bool calcCrossLine2Rect(const QLineF line, const QRectF rc, QPointF & ptC
 
     do
     {
-        // Á½µã¶¼ÔÚ¾ØÐÎÄÚ
+        // ï¿½ï¿½ï¿½ã¶¼ï¿½Ú¾ï¿½ï¿½ï¿½ï¿½ï¿½
         if (rc.toRect().contains(line.p1().toPoint(), true) &&
             rc.toRect().contains(line.p2().toPoint(), true))
         {
@@ -93,12 +93,12 @@ static bool calcCrossLine2Rect(const QLineF line, const QRectF rc, QPointF & ptC
 
 /*!
     * @brief  calcRadiusAndAngleOfPt2d
-    *   ¸ù¾ÝÄ¿±êµã¼ÆËã°ë¾¶ºÍ½Ç¶È£¨ÕýÔ²£©
-    * @author:  litz-a
-    * @param [in] QPointF ptTarget    Ä¿±êµã
-    * @param [out] double &dRadius    °ë¾¶
-    * @param [out] double &dAngle     ½Ç¶È
-    * @param [in] QPointF ptOrigin    Ô­µã
+    *   ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¾¶ï¿½Í½Ç¶È£ï¿½ï¿½ï¿½Ô²ï¿½ï¿½
+    * @author:  min
+    * @param [in] QPointF ptTarget    Ä¿ï¿½ï¿½ï¿½
+    * @param [out] double &dRadius    ï¿½ë¾¶
+    * @param [out] double &dAngle     ï¿½Ç¶ï¿½
+    * @param [in] QPointF ptOrigin    Ô­ï¿½ï¿½
     * @return     void
 */
 static void calcRadiusAndAngleOfPt2d(
@@ -122,13 +122,13 @@ static void calcRadiusAndAngleOfPt2d(
 
 /*!
     * @brief  calcPtOfAngle2d
-    *   Í¨¹ý°ë¾¶ºÍ½Ç¶È¼ÆËãÄ¿±êµã(ÍÖÔ²)
-    * @author:  litz-a
-    * @param [in] double dXRadius   XÖá°ë¾¶
-    * @param [in] double dYRadius   YÖá°ë¾¶
-    * @param [in] double dAngle     ½Ç¶È
-    * @param [in] QPointF ptOrigin  Ô­µã
-    * @return     QPointF           ·µ»ØÄ¿±êµã
+    *   Í¨ï¿½ï¿½ï¿½ë¾¶ï¿½Í½Ç¶È¼ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½(ï¿½ï¿½Ô²)
+    * @author:  min
+    * @param [in] double dXRadius   Xï¿½ï¿½ë¾¶
+    * @param [in] double dYRadius   Yï¿½ï¿½ë¾¶
+    * @param [in] double dAngle     ï¿½Ç¶ï¿½
+    * @param [in] QPointF ptOrigin  Ô­ï¿½ï¿½
+    * @return     QPointF           ï¿½ï¿½ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½
 */
 static QPointF calcPtOfAngle2d(
         const double dXRadius,

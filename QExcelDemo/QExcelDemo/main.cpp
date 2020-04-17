@@ -7,100 +7,100 @@ int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
 
-	//´ò¿ªÎÄ¼þ£¬È¡µÃ¹¤×÷²¾
-    QExcel j("C:/Users/litz-a/Desktop/QExcel/QExcelDemo/source.xls");
+	//ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½È¡ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½
+    QExcel j("C:/Users/min/Desktop/QExcel/QExcelDemo/source.xls");
 
-	//È¡µÃ¹¤×÷±íÊýÁ¿
+	//È¡ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     // qDebug() << "SheetCount" << j.getSheetsCount();
 
-	//¼¤»îÒ»ÕÅ¹¤×÷±í
+	//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½
 	//j.selectSheet(1);
     //j.selectSheet("JSheet2");
 
-	//È¡µÃ¹¤×÷±íÃû³Æ
+	//È¡ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//j.selectSheet(1);
 	//j.getSheetName();
     //qDebug()<<"SheetName 1"<<j.getSheetName(1);
 
-	//È¡µÃ¹¤×÷±íÒÑÊ¹ÓÃ·¶Î§
+	//È¡ï¿½Ã¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã·ï¿½Î§
 	//int topLeftRow, topLeftColumn, bottomRightRow, bottomRightColumn;
 	//j.getUsedRange(&topLeftRow, &topLeftColumn, &bottomRightRow, &bottomRightColumn);
 
-	//¶ÁÖµ
+	//ï¿½ï¿½Öµ
 	//j.getCellValue(2, 2).toString();
 
-	//É¾³ý¹¤×÷±í
+	//É¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//j.selectSheet("Sheet1");
 	//j.selectSheet(1);
 	//j.deleteSheet();
 	//j.save();
 
-	//²åÈëÊý¾Ý
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //j.selectSheet("JSheet3");
     //j.setCellString(1, 7, "addString");
     //j.setCellString("A3", "abc");
     //j.save();
 
-	//ºÏ²¢µ¥Ôª¸ñ
+	//ï¿½Ï²ï¿½ï¿½ï¿½Ôªï¿½ï¿½
 	//j.selectSheet(2);
 	//j.mergeCells("G1:H2");
 	//j.mergeCells(4, 7, 5 ,8);
 	//j.save();
 
-	//ÉèÖÃÁÐ¿í
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½
 	//j.selectSheet(1);
 	//j.setColumnWidth(1, 20);
 	//j.save();
 
-	//ÉèÖÃ´ÖÌå
+	//ï¿½ï¿½ï¿½Ã´ï¿½ï¿½ï¿½
 	//j.selectSheet(1);
 	//j.setCellFontBold(2, 2, true);
 	//j.setCellFontBold("A2", true);
 	//j.save();
 
-	//ÉèÖÃÎÄ×Ö´óÐ¡
+	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð¡
 	//j.selectSheet(1);
 	//j.setCellFontSize("B3", 20);
 	//j.setCellFontSize(1, 2, 20);
 	//j.save();
 
-	//ÉèÖÃµ¥Ôª¸ñÎÄ×Ö¾ÓÖÐ
+	//ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ï¿½
 	//j.selectSheet(2);
 	//j.setCellTextCenter(1, 2);
 	//j.setCellTextCenter("A2");
 	//j.save();
 
-	//ÉèÖÃµ¥Ôª¸ñÎÄ×Ö×Ô¶¯ÕÛÐÐ
+	//ï¿½ï¿½ï¿½Ãµï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½
 	//j.selectSheet(1);
 	//j.setCellTextWrap(2,2,true);
 	//j.setCellTextWrap("A2", true);
 	//j.save();
 
-	//ÉèÖÃÒ»ÐÐ×ÔÊÊÓ¦ÐÐ¸ß
+	//ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ð¸ï¿½
 	//j.selectSheet(1);
 	//j.setAutoFitRow(2);
 	//j.save();
 
-	//ÐÂ½¨¹¤×÷±í
+	//ï¿½Â½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//j.insertSheet("abc");
 	//j.save();
 
-	//Çå³ýµ¥Ôª¸ñÄÚÈÝ
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ôªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	//j.selectSheet(4);
 	//j.clearCell(1,1);
     //j.clearCell("A2");
     //j.save();
 
-	//ºÏ²¢Ò»ÁÐÖÐÏàÍ¬Á¬ÐøµÄµ¥Ôª¸ñ
+	//ï¿½Ï²ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Äµï¿½Ôªï¿½ï¿½
 	//j.selectSheet(1);
 	//j.mergeSerialSameCellsInColumn(1, 2);
 	//j.save();
 
-	//»ñÈ¡Ò»ÕÅ¹¤×÷±íÒÑÓÃÐÐÊý
+	//ï¿½ï¿½È¡Ò»ï¿½Å¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     j.selectSheet(1);
     qDebug() << j.getUsedRowsCount();
 
-	//ÉèÖÃÐÐ¸ß
+	//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½
 //	j.selectSheet(1);
 //    j.setRowHeight(2, 200);
 //	j.save();
